@@ -39,7 +39,6 @@
 * mpvue-小程序端的 vue 实现
 * vuex-集中状态与数据处理
 * 由于不考虑多前端，路由和数据请求可直接采用小程序 api
-* iView Weapp和color-ui——UI框架 
 
 后端：
 * Django-啥都有
@@ -48,18 +47,3 @@
 ####  技术难点
 * 站内信广播
 * 双向确认
-
-#### 学习资料
-* [ES6](http://es6.ruanyifeng.com/)
-* [Git](https://www.liaoxuefeng.com/wiki/0013739516305929606dd18361248578c67b8067c8c017b000)
-* [python](https://www.liaoxuefeng.com/wiki/0014316089557264a6b348958f449949df42a6d3a2e542c000)
-* [Django](https://docs.djangoproject.com/zh-hans/2.2/)
-* [小程序官方文档](https://developers.weixin.qq.com/miniprogram/dev/)
-* [小程序开发指南](https://developers.weixin.qq.com/ebook?action=get_post_info&token=935589521&volumn=1&lang=zh_CN&book=miniprogram&docid=0008aeea9a8978ab0086a685851c0a)
-* [Vue](https://cn.vuejs.org/)
-* [Vuex](https://vuex.vuejs.org/zh/)
-* [mpvue](http://mpvue.com/mpvue/)
-* [iView](https://weapp.iviewui.com/)
-* [Color-UI](https://www.color-ui.com/)
-* [色彩搭配](https://www.materialpalette.com)
-* [渐变搭配](https://m.okjike.com/originalPosts/5c87f309b9baeb0018afdc0b?source_username=0e026b8b-4f5c-4ad6-97c8-a44bb082334e&utm_source=qq&share_distinct_id=169dd5108a659-0e2f326feec91d-7a1437-2073600-169dd5108aada&share_depth=1)
