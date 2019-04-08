@@ -7,4 +7,4 @@ App.mpType = 'app'
 const app = new Vue(App)
 app.$mount()
 const store = require("./stores/globalStore");
-Vue.prototype.$store = store;
+Vue.prototype.$store = store; //全局引用 store

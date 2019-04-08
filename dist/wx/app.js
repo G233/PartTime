@@ -54,7 +54,7 @@ __WEBPACK_IMPORTED_MODULE_1__App__["a" /* default */].mpType = 'app';
 var app = new __WEBPACK_IMPORTED_MODULE_0_vue___default.a(__WEBPACK_IMPORTED_MODULE_1__App__["a" /* default */]);
 app.$mount();
 var store = __webpack_require__(24);
-__WEBPACK_IMPORTED_MODULE_0_vue___default.a.prototype.$store = store;
+__WEBPACK_IMPORTED_MODULE_0_vue___default.a.prototype.$store = store; //全局引用 store
 
 /***/ }),
 
@@ -124,6 +124,7 @@ if (false) {(function () {
 
 /* harmony default export */ __webpack_exports__["a"] = ({
   onLaunch: function onLaunch() {
+    //初始化云服务
     if (!wx.cloud) {
       console.error("请使用 2.2.3 或以上的基础库以使用云能力");
     } else {
