@@ -1,0 +1,12 @@
+<template name="21a5e94a">
+  <view class="_div data-v-2f19e1de">
+    <row class="_row data-v-2f19e1de">
+      <view offset="8" bindtap="handleProxy" span="8" data-eventid="{{'0'}}" data-comkey="{{$k}}" class="_col data-v-2f19e1de">{{ userInfo.nickName}}</view>
+    </row>
+    <row class="_row data-v-2f19e1de">
+      <view span="6" class="_col data-v-2f19e1de">
+        <i-button type="primary" shape="circle" open-type="getUserInfo" bindgetuserinfo="handleProxy" size="small" data-eventid="{{'1'}}" data-comkey="{{$k}}" class="_i-button data-v-2f19e1de">登录</i-button>
+      </view>
+    </row>
+  </view>
+</template>
