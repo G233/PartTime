@@ -1,0 +1,5 @@
+<import src="/components/card.vue.wxml" /><template name="data-v-2f19e1de-default-0"></template>
+<template name="data-v-2f19e1de-title-0">awd</template>
+<template name="data-v-2f19e1de-default-1">
+  <i-button type="primary" bind:click="handleClick" class="_i-button data-v-2f19e1de">这是一个按钮</i-button>
+</template>
