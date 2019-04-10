@@ -1,5 +1,6 @@
 {
   "pages": [
+    "pages/mine/main",
     "pages/index/main"
 
   ],
@@ -10,6 +11,9 @@
     "navigationBarTextStyle": "black"
   },
   "tabBar": {
+    "selectedColor":"#2d8cf0",
+    "color":"#000",
+    "backgroundColor":"#fff",
     "list": [
       {
         "pagePath": "pages/index/main",
@@ -24,7 +28,7 @@
         "text": "收藏"
       },
       {
-        "pagePath": "pages/index/main",
+        "pagePath": "pages/mine/main",
         "text": "我的"
       }
     ]
