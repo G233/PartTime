@@ -1,3 +1,6 @@
+
+
+
 <script>
 export default {
   onLaunch: function() {
@@ -16,6 +19,8 @@ export default {
 </script>
 
 <style>
+@import url("../static/css/animate.css");
+@import url("../static/css/colorui.wxss");
 .container {
   height: 100%;
   display: flex;

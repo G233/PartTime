@@ -5,18 +5,20 @@ Vue.use(Vuex)
 
 const store = new Vuex.Store({
   state: {
-    openId: 0,
-    haslogin: 0
+    userInfo: null, //用户基本信息
+    openId: 0, //用户唯一识别码
+    haslogin: 0 //是否登录
   },
   mutations: {
-    increment: (state) => {
-      const obj = state
-      obj.count += 1
-    },
+    //登录
     login: (state, data) => {
+      console.log(data)
       state.haslogin = true
       state.openId = data.openId
+      state.userInfo = data
+
     }
+
 
   }
 })

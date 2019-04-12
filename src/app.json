@@ -1,12 +1,12 @@
 {
   "pages": [
-    "pages/index/main"
+    "pages/login/main"
 
   ],
   "window": {
     "backgroundTextStyle": "light",
     "navigationBarBackgroundColor": "#fff",
-    "navigationBarTitleText": "WeChat",
+    "navigationBarTitleText": "工大课兼",
     "navigationBarTextStyle": "black"
   }
 

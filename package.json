@@ -23,6 +23,7 @@
     "build": "node build/build.js wx"
   },
   "dependencies": {
+    "animate.css": "^3.7.0",
     "mpvue": "^2.0.0",
     "vuex": "^3.0.1"
   },
