@@ -7,13 +7,13 @@
         <div>你好</div>
         <div>请登录后使用鸭</div>
       </div>
-      <div>
+
+      <div class="flex padding justify-center">
         <button
-          :class="loginbtn"
+          class="cu-btn bg-blue round lg shadow loginbtn"
           open-type="getUserInfo"
           @getuserinfo="login"
-          hover-class="loginbtnh"
-        >登录</button>
+        >确定</button>
       </div>
     </div>
     <div :class="choseclass" v-else-if="step==1">
@@ -33,19 +33,38 @@
           </i-col>
         </i-row>
         <i-row>
-          <button :disabled="!chose" class="commitbtn" @click="commit" hover-class="commitbtnh">确认</button>
+          <div class="flex padding justify-center">
+            <button
+              :disabled="!chose"
+              class="cu-btn bg-blue round lg shadow commitbtn"
+              @click="commit"
+            >确定</button>
+          </div>
         </i-row>
       </div>
     </div>
-    <div v-else-if="step==2">2</div>
+    <div v-else-if="step==2" :class="step3">
+      <div v-if="chose==1">
+        <loginform1></loginform1>
+      </div>
+      <div v-else>
+        <loginform2></loginform2>
+      </div>
+    </div>
     <div v-else-if="step==3">3</div>
   </div>
 </template>
 
 <script>
+import loginform1 from "../../components/loginform1";
+import loginform2 from "../../components/loginform2";
 //登录页面
 
 export default {
+  components: {
+    loginform1,
+    loginform2
+  },
   data() {
     return {
       step: false, //仅用于控制当前页面的元素显示
@@ -55,7 +74,8 @@ export default {
       choseclass: ["chose"],
       chose: false, //选择身份 1 为求职者 2 为招聘者
       qiu: "",
-      zhao: ""
+      zhao: "",
+      step3: ["animated fadeInRightBig"]
     };
   },
   computed: {
@@ -108,7 +128,7 @@ export default {
       setTimeout(() => {
         this.step = 2;
         console.log("跳转页面2");
-      }, 90);
+      }, 100);
     }
   },
 
@@ -119,32 +139,30 @@ export default {
 </script>
 
 <style scoped>
+page {
+  background-color: white;
+}
 .wlctxt {
+  line-height: 1.45;
   font-weight: bolder;
   width: 50%;
   margin: auto;
-  margin-top: 400rpx;
-  margin-bottom: 200rpx;
+  margin-top: 500rpx;
+  margin-bottom: 100rpx;
   text-align: center;
 }
 .loginbtn {
   position: absolute;
-  top: 400px;
-  left: 25%;
-  width: 50%;
-  background-color: #0288d1;
-  color: #fff;
-  border-radius: 50rpx;
-  margin: auto;
-}
-.loginbtnh {
-  background-color: #03a9f4;
+  bottom: 150rpx;
+  left: 20%;
+  width: 60%;
 }
 
 .look {
   background-color: #0288d1;
 }
 .chose {
+  line-height: 1.45;
   margin-top: 400rpx;
   font-weight: bolder;
   text-align: center;
@@ -161,18 +179,11 @@ export default {
 }
 .commitbtn {
   position: absolute;
-  top: 650rpx;
+  top: 800rpx;
   left: 20%;
   width: 60%;
-  background-color: #038bfa;
-  color: #fff;
-  border-radius: 50rpx;
-  margin: auto;
 }
 
-.commitbtnh {
-  background-color: #68cfff;
-}
 button[disabled] {
   background-color: #b3e5fc;
   color: #fff;

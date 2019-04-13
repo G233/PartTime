@@ -3,7 +3,11 @@
   "usingComponents": {
     "i-button": "../../static/iview/button/index",
     "i-row": "../../static/iview/row/index",
-    "i-col": "../../static/iview/col/index"
+    "i-col": "../../static/iview/col/index",
+    "i-message": "../../static/iview/message/index",
+    "i-radio-group": "../../static/iview/radio-group/index",
+    "i-radio": "../../static/iview/radio/index"
+
   }
 
 }
