@@ -20,7 +20,8 @@ export default {
 
 <style>
 @import url("../static/css/animate.css");
-@import url("../static/css/colorui.wxss");
+@import url("../static/css/colorui/main.wxss");
+@import url("../static/css/colorui/icon.wxss");
 .container {
   height: 100%;
   display: flex;

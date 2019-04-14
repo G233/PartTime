@@ -44,30 +44,37 @@
       </div>
     </div>
     <div v-else-if="step==2" :class="step3">
-      <div v-if="chose==1">
-        <loginform1></loginform1>
-      </div>
-      <div v-else>
-        <loginform2></loginform2>
+      <loginform @nextstep="nextstep"></loginform>
+    </div>
+    <div v-else-if="step==3" class="animated fadeInRightBig">
+      <div class="step3">
+        <view
+          class="cu-avatar xl round"
+          :style="{'background-image':'url('+userInfo.avatarUrl+')'}"
+        ></view>
+        <div style=" padding-top: 100rpx;">
+          <div>你好，{{userInfo.nickName}}</div>
+          <div>欢迎使用工大课兼小程序</div>
+          <div v-if="chose==1">祝你找到满意的兼职，走上人生巅峰</div>
+          <div v-else>祝你能找到满意的员工</div>
+        </div>
       </div>
     </div>
-    <div v-else-if="step==3">3</div>
   </div>
 </template>
 
 <script>
-import loginform1 from "../../components/loginform1";
-import loginform2 from "../../components/loginform2";
+import loginform from "../../components/loginform";
+
 //登录页面
 
 export default {
   components: {
-    loginform1,
-    loginform2
+    loginform
   },
   data() {
     return {
-      step: false, //仅用于控制当前页面的元素显示
+      step: 0, //仅用于控制当前页面的元素显示
       loginbtn: ["loginbtn"],
       wlctxt: ["wlctxt ", "animated ", "rubberBand  delay-1s"],
       commitbtn: ["commitbtn"],
@@ -75,17 +82,24 @@ export default {
       chose: false, //选择身份 1 为求职者 2 为招聘者
       qiu: "",
       zhao: "",
-      step3: ["animated fadeInRightBig"]
+      step3: "animated fadeInRightBig"
     };
   },
   computed: {
     //全局登录状态
     haslogin() {
       return this.$store.default.state.haslogin;
+    },
+    userInfo() {
+      return this.$store.default.state.userInfo;
     }
   },
 
   methods: {
+    nextstep() {
+      this.step3 = "animated fadeOutLeftBig";
+      this.step += 1;
+    },
     //为元素添加动画效果
     zhao1() {
       if (this.chose) {
@@ -114,20 +128,25 @@ export default {
       //元素离开页面后销毁
       setTimeout(() => {
         this.step = 1;
-        console.log("跳转页面1");
       }, 90);
 
       // 调用云函数
       let res = await wx.cloud.callFunction({ name: "login" });
-      this.$store.default.commit("login", res.result.event.userInfo);
+      console.log(e.mp.detail.userInfo);
+
+      let data = {
+        openId: res.result.event.userInfo.openId,
+        data: e.mp.detail.userInfo
+      };
+      this.$store.default.commit("login", data);
     },
 
     commit() {
-      console.log("确认好了");
+      this.$store.default.state.role = this.chose;
+
       this.choseclass.push("animated ", "fadeOutLeftBig");
       setTimeout(() => {
         this.step = 2;
-        console.log("跳转页面2");
       }, 100);
     }
   },
@@ -191,7 +210,13 @@ button[disabled] {
 .chosetxt {
   background-color: #03a9f4;
 }
-
+.step3 {
+  line-height: 2;
+  padding-top: 300rpx;
+  margin: auto;
+  font-weight: bolder;
+  text-align: center;
+}
 @keyframes chose {
   from {
   }
