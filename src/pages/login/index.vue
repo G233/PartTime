@@ -151,9 +151,7 @@ export default {
     }
   },
 
-  created() {
-    // let app = getApp()
-  }
+  created() {}
 };
 </script>
 

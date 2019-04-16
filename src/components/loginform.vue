@@ -43,7 +43,6 @@ export default {
       user: {
         name: "",
         phone: "",
-
         number: "",
         sex: 1,
         wx: ""
@@ -133,9 +132,22 @@ export default {
         return false;
       } else {
         this.$emit("nextstep");
+        this.saveuser();
       }
     },
-    //弹窗提示
+    //保存用户信息
+    async saveuser() {
+      let userdata = this.user;
+
+      userdata.UserInfo = this.$store.default.state.userInfo;
+      userdata.role = this.role;
+      let res = await wx.cloud.callFunction({
+        name: "SaveUser",
+        data: userdata
+      });
+      console.log(res);
+    },
+    //表单验证错误弹窗提示
     showWarn(data) {
       $Message({
         content: data.msg,
