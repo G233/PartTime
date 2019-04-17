@@ -2,13 +2,9 @@
     <div>
         <div class="user">
             <img src="../../../static/images/touxiang.jpg">
-            <div>
                 <b class="name">姓名</b>
                 <p>微信号</p>
-            </div>
         </div>
-        <p></p><p></p><p></p><p></p>
-        <p></p><p></p> <p></p><p></p><p></p><p></p><p></p><p></p>
     </div>
 </template>
 
@@ -24,8 +20,9 @@ export default {
 
 <style scoped>
 img{
-    width: 200rpx;
-    height: 200rpx;
+    position: fixed;
+    width: 150rpx;
+    height: 150rpx;
     border-radius: 50%;
 }
 .name{
@@ -39,10 +36,5 @@ p{
     height: 100rpx;
     text-align: center;
     padding-top: 5rpx;
-}
-.user{
-    padding-top: 150rpx;
-    display: flex;
-    justify-content: space-between
 }
 </style>
