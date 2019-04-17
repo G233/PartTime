@@ -1,13 +1,17 @@
 {
   "pages": [
+<<<<<<< HEAD
     "pages/mine/main",
     "pages/index/main"
+=======
+    "pages/login/main"
+>>>>>>> lg
 
   ],
   "window": {
     "backgroundTextStyle": "light",
     "navigationBarBackgroundColor": "#fff",
-    "navigationBarTitleText": "WeChat",
+    "navigationBarTitleText": "工大课兼",
     "navigationBarTextStyle": "black"
   },
   "tabBar": {
