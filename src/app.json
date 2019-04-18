@@ -1,8 +1,8 @@
 {
   "pages": [
     "pages/mine/main",
-    "pages/index/main",
-    "pages/login/main"
+    "pages/list/main",
+    "pages/enshrine/main"
 
   ],
   "window": {
@@ -12,28 +12,32 @@
     "navigationBarTextStyle": "black"
   },
   "tabBar": {
-    "selectedColor":"#2d8cf0",
-    "color":"#000",
-    "backgroundColor":"#fff",
-    "list": [
-      {
-        "pagePath": "pages/index/main",
-        "text": "首页"
+    "color": "#838383",
+    "selectedColor": "#3c87cc",
+    "position": "bottom",
+    "borderStyle": "white",
+    "list": [{
+        "pagePath": "pages/list/main",
+        "text": "招人",
+        "iconPath": "./static/images/home.png",
+        "selectedIconPath": "./static/images/home1.png"
       },
       {
-        "pagePath": "pages/index/main",
-        "text": "发布"
-      },
-      {
-        "pagePath": "pages/index/main",
-        "text": "收藏"
+        "pagePath": "pages/enshrine/main",
+        "text": "收藏",
+        "iconPath": "./static/images/star.png",
+        "selectedIconPath": "./static/images/star1.png"
       },
       {
         "pagePath": "pages/mine/main",
-        "text": "我的"
+        "text": "我的",
+        "iconPath": "./static/images/user.png",
+        "selectedIconPath": "./static/images/user1.png"
       }
+
     ]
   }
+
 
 
 }
