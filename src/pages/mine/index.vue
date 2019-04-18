@@ -11,7 +11,7 @@
             <span><i-avatar size="small" src="../../../static/images/add.png"  style="float:left;padding-top:25rpx;margin-left:40rpx;"></i-avatar><i-cell title="我的发布"></i-cell></span>
             <span><i-avatar size="small" src="../../../static/images/eye.png"  style="float:left;padding-top:25rpx;margin-left:40rpx;"></i-avatar><i-cell title="我的关注"></i-cell></span>
             <span><i-avatar size="small" src="../../../static/images/set.png"  style="float:left;padding-top:25rpx;margin-left:40rpx;"></i-avatar><i-cell title="隐私设置"></i-cell></span>
-            <span><i-avatar size="small" src="../../../static/images/help.png"  style="float:left;padding-top:25rpx;margin-left:40rpx;"></i-avatar><i-cell title="帮助与反馈"></i-cell></span>
+            <span><i-cell title="帮助与反馈"><i-avatar size="small" src="../../../static/images/help.png"  style="display:inline; padding-top:25rpx;margin-left:40rpx;"></i-avatar></i-cell></span>
         </i-cell-group>
     </div>
 </template>
