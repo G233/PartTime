@@ -16,37 +16,11 @@
         >确定</button>
       </div>
     </div>
-    <div :class="choseclass" v-else-if="step==1">
-      <div class="animated fadeInRightBig">
-        <i-row>
-          <i-col @click="qiu1" span="12">
-            <div :class="qiu">
-              <view>我来</view>
-              <div>求职位</div>
-            </div>
-          </i-col>
-          <i-col @click="zhao1" span="12">
-            <div :class="zhao">
-              <view>我来</view>
-              <div>招职位</div>
-            </div>
-          </i-col>
-        </i-row>
-        <i-row>
-          <div class="flex padding justify-center">
-            <button
-              :disabled="!chose"
-              class="cu-btn bg-blue round lg shadow commitbtn"
-              @click="commit"
-            >确定</button>
-          </div>
-        </i-row>
-      </div>
-    </div>
-    <div v-else-if="step==2" :class="step3">
+
+    <div v-else-if="step==1" :class="step3">
       <loginform @nextstep="nextstep"></loginform>
     </div>
-    <div v-else-if="step==3" class="animated fadeInRightBig">
+    <div v-else-if="step==2" class="animated fadeInRightBig">
       <div class="step3">
         <view
           class="cu-avatar xl round"
@@ -55,8 +29,7 @@
         <div style=" padding-top: 100rpx;">
           <div>你好，{{userInfo.nickName}}</div>
           <div>欢迎使用工大课兼小程序</div>
-          <div v-if="chose==1">祝你找到满意的兼职，走上人生巅峰</div>
-          <div v-else>祝你能找到满意的员工</div>
+          <div>祝你找到满意的兼职，走上人生巅峰</div>
         </div>
       </div>
     </div>

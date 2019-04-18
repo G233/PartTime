@@ -1,6 +1,8 @@
 {
   "pages": [
-    "pages/login/main"
+    "pages/mine/main",
+    "pages/list/main",
+    "pages/enshrine/main"
 
   ],
   "window": {
@@ -8,7 +10,34 @@
     "navigationBarBackgroundColor": "#fff",
     "navigationBarTitleText": "工大课兼",
     "navigationBarTextStyle": "black"
+  },
+  "tabBar": {
+    "color": "#838383",
+    "selectedColor": "#3c87cc",
+    "position": "bottom",
+    "borderStyle": "white",
+    "list": [{
+        "pagePath": "pages/list/main",
+        "text": "招人",
+        "iconPath": "./static/images/home.png",
+        "selectedIconPath": "./static/images/home1.png"
+      },
+      {
+        "pagePath": "pages/enshrine/main",
+        "text": "收藏",
+        "iconPath": "./static/images/star.png",
+        "selectedIconPath": "./static/images/star1.png"
+      },
+      {
+        "pagePath": "pages/mine/main",
+        "text": "我的",
+        "iconPath": "./static/images/user.png",
+        "selectedIconPath": "./static/images/user1.png"
+      }
+
+    ]
   }
+
 
 
 }
