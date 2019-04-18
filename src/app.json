@@ -1,11 +1,8 @@
 {
   "pages": [
-<<<<<<< HEAD
     "pages/mine/main",
-    "pages/index/main"
-=======
+    "pages/index/main",
     "pages/login/main"
->>>>>>> lg
 
   ],
   "window": {

@@ -1,10 +1,18 @@
 <template>
     <div>
         <div class="user">
-            <img src="../../../static/images/touxiang.jpg">
-                <b class="name">姓名</b>
-                <p>微信号</p>
+            <img class="touxiang" src="../../../static/images/touxiang.jpg">
+            <div class="beijin"></div>
+            <p class="hello">你好，</p>
+        <p class="name">{{userInfo.nickName}}</p>
         </div>
+        <i-cell-group style="color: #5cadff;">
+            <span><i-avatar size="small" src="../../../static/images/qingdan.png" style="float:left;padding-top:25rpx;margin-left:40rpx;"></i-avatar><i-cell title="我的简历"></i-cell></span>
+            <span><i-avatar size="small" src="../../../static/images/add.png"  style="float:left;padding-top:25rpx;margin-left:40rpx;"></i-avatar><i-cell title="我的发布"></i-cell></span>
+            <span><i-avatar size="small" src="../../../static/images/eye.png"  style="float:left;padding-top:25rpx;margin-left:40rpx;"></i-avatar><i-cell title="我的关注"></i-cell></span>
+            <span><i-avatar size="small" src="../../../static/images/set.png"  style="float:left;padding-top:25rpx;margin-left:40rpx;"></i-avatar><i-cell title="隐私设置"></i-cell></span>
+            <span><i-avatar size="small" src="../../../static/images/help.png"  style="float:left;padding-top:25rpx;margin-left:40rpx;"></i-avatar><i-cell title="帮助与反馈"></i-cell></span>
+        </i-cell-group>
     </div>
 </template>
 
@@ -12,29 +20,50 @@
 export default {
     data() {
         return {
-            userInfo:{}
         }
     },
+    computed:{
+    userInfo() {
+      return this.$store.default.state.userInfo;
+    }  
+    }
 }
 </script>
 
 <style scoped>
-img{
-    position: fixed;
-    width: 150rpx;
-    height: 150rpx;
+.touxiang{
+    width: 130rpx;
+    height: 130rpx;
     border-radius: 50%;
+    position : absolute;
+    top: 140rpx;
+    left: 100rpx;
 }
-.name{
-    border-bottom: 1rpx solid #dddee1;
+.hello{
     font-size: 42rpx;
     text-align: center;
+    height: 50rpx;
+    color: #fff;
+    margin-top: 180rpx;
 }
-p{
-    border-bottom: 1rpx solid #dddee1;
+.beijin{
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: -1;
+    height: 280rpx;
+    background: #2d8cf0;
+}
+.name{
     font-size: 27rpx;
-    height: 100rpx;
+    height: 150rpx;
     text-align: center;
-    padding-top: 5rpx;
+    border-bottom:1rpx solid #e9eaec ;
+    background: white;
+    color: #5cadff
+}
+.user{
+    height: 160rpx;
 }
 </style>
