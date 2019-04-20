@@ -2,7 +2,8 @@
   "pages": [
     "pages/mine/main",
     "pages/list/main",
-    "pages/enshrine/main"
+    "pages/enshrine/main",
+    "pages/login/main"
 
   ],
   "window": {

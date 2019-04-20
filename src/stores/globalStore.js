@@ -1,27 +1,35 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
-
+import createPersistedState from "vuex-persistedstate" //持久化vuex
 Vue.use(Vuex)
 
 const store = new Vuex.Store({
   state: {
 
-    userInfo: null, //用户基本信息
+
     openId: 0, //用户唯一识别码
-    haslogin: 0 //是否登录
+
   },
   mutations: {
     //登录
     login: (state, data) => {
-      state.haslogin = true
-      state.openId = data.openId
-      state.userInfo = data.data
 
-
+      state.openId = data
+      console.log(data + '保存好了')
     }
 
 
-  }
+  },
+  plugins: [createPersistedState({
+      storage: {
+        getItem: key => wx.getStorageSync(key),
+        setItem: (key, value) => wx.setStorageSync(key, value),
+        removeItem: key => {},
+
+      }
+    }
+
+  )]
 })
 
 export default store

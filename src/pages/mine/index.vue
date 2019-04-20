@@ -3,8 +3,9 @@
 <template>
   <div>
     <div class="tapbg">
-      <div class="userimg shadow-blur bg-img" :style="uesrimg"></div>
-      <div class="wlctxt">{{welcometxt}}</div>
+  
+      <div class="wlctxt">你好：<open-data  type="userNickName"></open-data></div>
+      <open-data class="userimg shadow-blur bg-img" type="userAvatarUrl"></open-data>
     </div>
     <div  class="cu-list menu sm-border  " style="margin-top: 100rpx;">
 
@@ -28,38 +29,40 @@ export default {
     return {
       listdata:[{
         img:"../../static/images/add.png",
-        text:"我的发布"
+        text:"我的简历"
       },{
         img:"../../static/images/add.png",
         text:"我的发布"
       },{
         img:"../../static/images/add.png",
-        text:"我的发布"
+        text:"我的想去"
       },{
         img:"../../static/images/add.png",
-        text:"我的发布"
+        text:"意见与反馈"
+      },{
+        img:"../../static/images/add.png",
+        text:"关于我们"
       },],
-      uesrimg:"{'background-image':'url('+userInfo.avatarUrl+')'}"
+      
     };
   },
   computed: {
     //全局登录状态
     haslogin() {
       return this.$store.default.state.haslogin;
-    },
-    userInfo() {
-      return this.$store.default.state.userInfo;
-    },
-    welcometxt() {
-      if (this.haslogin) {
-        return "你好" + this.userInfo.nickName;
-      } else return "请点击头像登录后使用";
     }
+    
+   
+   
   },
 
-  methods: {},
+  methods: {
+   
+  },
 
-  created() {}
+  created() {
+    
+  }
 };
 </script>
 
@@ -81,7 +84,7 @@ export default {
   left: 90rpx;
   background-color: white;
   border-radius: 50%;
-  background-image: url("https://i.loli.net/2017/08/21/599a521472424.jpg");
+  
 }
 .wlctxt {
   position: absolute;
