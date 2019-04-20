@@ -1,5 +1,6 @@
 {
   "pages": [
+    "pages/editing/main",
     "pages/mine/main",
     "pages/list/main",
     "pages/enshrine/main"
@@ -23,7 +24,7 @@
         "selectedIconPath": "./static/images/home1.png"
       },
       {
-        "pagePath": "pages/enshrine/main",
+        "pagePath": "pages/editing/main",
         "text": "收藏",
         "iconPath": "./static/images/star.png",
         "selectedIconPath": "./static/images/star1.png"

@@ -1,5 +1,6 @@
 {
-
+  
+  "navigationBarTitleText": "我的",
   "usingComponents": {
     "i-button": "../../static/iview/button/index",
     "i-row": "../../static/iview/row/index",
