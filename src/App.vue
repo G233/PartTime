@@ -2,18 +2,29 @@
 
 
 <script>
+const store = require("./stores/globalStore");
 export default {
   onLaunch: function() {
-    //初始化云服务
-    if (!wx.cloud) {
-      console.error("请使用 2.2.3 或以上的基础库以使用云能力");
-    } else {
-      wx.cloud.init({
-        traceUser: true
-      });
-    }
+    //用户登录流程处理
+    this.checklogin1();
+  },
 
-    this.globalData = {};
+  //判断是否授权，获取用户信息
+  methods: {
+    async checklogin1() {
+      if (this.$store.default.state.openId) {
+        //是否为新用户
+        console.log("老东西");
+      } else {
+        //新用户，启动登录流程
+        console.log("新用户");
+        let res = await this.$WX.login();
+        let openid = await this.$request.postRequest("/login", {
+          data: { code: res.code }
+        });
+        this.$store.default.commit("login", openid.data.data.openId);
+      }
+    }
   }
 };
 </script>

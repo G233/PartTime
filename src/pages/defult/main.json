@@ -5,8 +5,7 @@
     "i-row": "../../static/iview/row/index",
     "i-col": "../../static/iview/col/index",
     "i-message": "../../static/iview/message/index",
-    "i-switch": "../../static/iview/switch/index",
-    "i-avatar": "../../static/iview/avatar/index"
+    "i-switch": "../../static/iview/switch/index"
 
   }
 
