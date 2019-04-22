@@ -33,16 +33,16 @@
     <text class="text-gray padding" style="font-size: 13px;">本页信息不会公开，联系方式仅特定条件下展示</text>
 
     <div class="flex padding justify-center">
-      <button class="cu-btn bg-blue round lg shadow commitbtn" @click="formSubmit">确定</button>
+      <button class="cu-btn bg-blue round lg shadow commitbtn" @click="formSubmit">保存</button>
     </div>
   </div>
 </template>
 
 <script>
-import LgInput from "./lg-input";
-import WxValidate from "../utils/WxValidate.js";
+import LgInput from "../../components/lg-input";
+import WxValidate from "../../utils/WxValidate.js";
 
-const { $Message } = require("../../static/iview/base/index");
+const { $Message } = require("../../../static/iview/base/index");
 export default {
   props: ["chose"],
   onLoad() {
@@ -53,17 +53,28 @@ export default {
   data() {
     return {
       user: {
-        name: "",
+        name: "awsdawd",
         phone: "",
-
         sex: 1,
         wx: ""
       }
     };
   },
   computed: {},
+  onShow() {
+    this.get();
+  },
 
   methods: {
+    async get() {
+      let res = await this.$request.request("/getresume", {
+        data: { data: "" }
+      });
+      if (res.code == 200) {
+        this.user = res.data;
+      }
+    },
+
     onChange(e) {
       if (e.mp.detail.value) {
         this.user.sex = 1;
@@ -118,29 +129,19 @@ export default {
         return false;
       } else {
         this.saveuser();
-        this.$emit("nextstep");
+        this.$WX.navigateBack(1);
       }
     },
     //保存用户信息
     async saveuser() {
-      console.log("添加用户");
-      let userdata = this.user;
+      let res = await this.$request.postRequest("/setresume", {
+        data: { data: this.user }
+      });
 
-      userdata.UserInfo = this.$store.default.state.userInfo;
-
-      // let res = await wx.cloud.callFunction({
-      //   name: "SaveUser",
-      //   data: userdata
-      // });
-      const db = wx.cloud.database();
-      db
-        .collection("user")
-        .add({
-          data: userdata
-        })
-        .then(res => {
-          console.log(res);
-        });
+      $Message({
+        content: res.data.msg,
+        type: "success"
+      });
     },
     //表单验证错误弹窗提示
     showWarn(data) {

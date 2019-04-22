@@ -22,6 +22,7 @@ export default {
         let openid = await this.$request.postRequest("/login", {
           data: { code: res.code }
         });
+
         this.$store.default.commit("login", openid.data.data.openId);
       }
     }

@@ -15,7 +15,7 @@ const store = new Vuex.Store({
     login: (state, data) => {
 
       state.openId = data
-      console.log(data + '保存好了')
+
     }
 
 
@@ -25,7 +25,9 @@ const store = new Vuex.Store({
         getItem: key => wx.getStorageSync(key),
         setItem: (key, value) => wx.setStorageSync(key, value),
         removeItem: key => {},
-
+        reducer: state => ({
+          openId: state.openId
+        }),
       }
     }
 

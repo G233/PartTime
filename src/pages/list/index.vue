@@ -1,7 +1,11 @@
 
 
 <template>
-  <div>这是列表</div>
+  <div>
+    <div class="jinhuoniu shadow-lg" @click="jinhuo" > 
+ <image class="anniu " src="../../static/images/add.png"></image>
+</div>
+  </div>
 </template>
 
 <script>
@@ -23,4 +27,16 @@ export default {
 </script>
 
 <style scoped>
+.jinhuoniu{
+    position:fixed;
+    bottom: 70rpx;
+    right: 70rpx;    
+     border-radius: 50%;   
+      background-color: white       
+}
+.anniu{
+  width: 120rpx;
+  height: 120rpx;
+  border-radius: 50%;
+}
 </style>
