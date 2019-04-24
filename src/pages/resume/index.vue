@@ -1,7 +1,7 @@
 <template>
   <div>
     <i-message id="message"/>
-    <div class="title">请完善个人信息吧</div>
+    <div class="title">请填写个人信息吧</div>
     <lg-input
       placeholderlg="请输入姓名"
       titlelg="姓名"
@@ -61,20 +61,9 @@ export default {
     };
   },
   computed: {},
-  onShow() {
-    this.get();
-  },
+  onShow() {},
 
   methods: {
-    async get() {
-      let res = await this.$request.request("/getresume", {
-        data: { data: "" }
-      });
-      if (res.code == 200) {
-        this.user = res.data;
-      }
-    },
-
     onChange(e) {
       if (e.mp.detail.value) {
         this.user.sex = 1;

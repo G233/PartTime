@@ -2,6 +2,13 @@
 
 <template>
   <div>
+    <!-- 自定义顶栏 -->
+  <cu-custom bgColor="03a9f4" >
+	<block slot="backText">返回</block>
+	<block slot="content">工大课兼</block>
+</cu-custom>
+<!--  -->
+
     <i-message id="message"/>
     <div class="tapbg">
       <div class="wlctxt">
@@ -61,6 +68,7 @@ export default {
   },
 
   methods: {
+    //跳转
     topath(e){
       const path=e.currentTarget.id
       this.$WX.navigateTo(path)
@@ -80,7 +88,7 @@ export default {
 .tapbg {
   background-color: #03a9f4;
   position: relative;
-  height: 320rpx;
+  height: 260rpx;
   width: 100%;
   z-index: 1;
 }
@@ -89,7 +97,7 @@ export default {
   height: 160rpx;
   width: 160rpx;
   z-index: 2;
-  top: 210rpx;
+  top: 150rpx;
   left: 90rpx;
   background-color: white;
   border-radius: 50%;
@@ -100,7 +108,7 @@ export default {
   color: white;
   font-size: 35rpx;
   z-index: 2;
-  top: 250rpx;
+  top: 190rpx;
   left: 300rpx;
 }
 </style>

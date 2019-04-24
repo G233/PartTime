@@ -12,7 +12,7 @@
 	},
 	"appid": "wx810c94fefd2a180f",
 	"projectname": "PartTime",
-	"libVersion": "2.6.5",
+	"libVersion": "2.6.6",
 	"simulatorType": "wechat",
 	"simulatorPluginLibVersion": {},
 	"cloudfunctionTemplateRoot": "cloudfunctionTemplate",
