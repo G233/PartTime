@@ -5,17 +5,24 @@ Vue.use(Vuex)
 
 const store = new Vuex.Store({
   state: {
-
-
     openId: 0, //用户唯一识别码
-
+    SystemInfo: {
+      StatusBar: '',
+      Custom: '',
+      CustomBar: ''
+    }
   },
   mutations: {
     //登录
     login: (state, data) => {
 
       state.openId = data
-      console.log(data + '保存好了')
+
+    },
+    // 获取系统顶栏信息，实现自定义顶栏
+    setSystemInfo: (state, data) => {
+      state.SystemInfo = data
+      console.log(state.SystemInfo)
     }
 
 
@@ -25,7 +32,9 @@ const store = new Vuex.Store({
         getItem: key => wx.getStorageSync(key),
         setItem: (key, value) => wx.setStorageSync(key, value),
         removeItem: key => {},
-
+        reducer: state => ({
+          openId: state.openId
+        }),
       }
     }
 

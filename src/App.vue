@@ -2,16 +2,33 @@
 
 
 <script>
-const store = require("./stores/globalStore");
 export default {
   onLaunch: function() {
+    this.getSystemInfo();
+
     //用户登录流程处理
-    this.checklogin1();
+
+    this.checklogin();
   },
 
   //判断是否授权，获取用户信息
   methods: {
-    async checklogin1() {
+    // 获取机型信息，将状态栏高度信息存入vuex
+    async getSystemInfo() {
+      const e = await this.$WX.getSystemInfo();
+      let SystemInfo = {
+        StatusBar: "",
+        Custom: "",
+        CustomBar: ""
+      };
+      SystemInfo.StatusBar = e.statusBarHeight;
+      let custom = wx.getMenuButtonBoundingClientRect();
+      SystemInfo.Custom = custom;
+      SystemInfo.CustomBar = custom.bottom + custom.top - e.statusBarHeight;
+      //调用commit存入vuex
+      this.$store.default.commit("setSystemInfo", SystemInfo);
+    },
+    async checklogin() {
       if (this.$store.default.state.openId) {
         //是否为新用户
         console.log("老东西");
@@ -22,6 +39,7 @@ export default {
         let openid = await this.$request.postRequest("/login", {
           data: { code: res.code }
         });
+
         this.$store.default.commit("login", openid.data.data.openId);
       }
     }
