@@ -1,18 +1,18 @@
 <template>
-  <view>
-    <view class="cu-custom" :style="[{height:CustomBar + 'px'}]">
-      <view class="cu-bar fixed" :style="style">
-        <view class="action" @tap="BackPage" v-if="isBack">
+  <div class="cs">
+    <div class="cu-custom cs" :style="[{height:CustomBar + 'px'}]">
+      <div class="cu-bar fixed" :style="style">
+        <div class="action" @tap="BackPage" v-if="isBack">
           <text class="icon-back"></text>
           <slot name="backText"></slot>
-        </view>
-        <view class="content" :style="[{top:StatusBar + 'px'}]">
+        </div>
+        <div class="content" :style="[{top:StatusBar + 'px'}]">
           <slot name="content"></slot>
-        </view>
+        </div>
         <slot name="right"></slot>
-      </view>
-    </view>
-  </view>
+      </div>
+    </div>
+  </div>
 </template>
 
 <script>
@@ -27,12 +27,13 @@ export default {
   name: "cu-custom",
   computed: {
     style() {
-      var StatusBar = this.StatusBar;
+      let StatusBar = this.StatusBar;
       // 因为按照系统的数据，在我的手机上会有一条白线，所以加1
-      var CustomBar = this.CustomBar + 1;
-      var Color = this.bgColor;
+      let CustomBar = this.CustomBar + 1;
+      let Color = this.bgColor;
+      console.log(this.isBack);
       //拼接传入的参数
-      var style = `height:${CustomBar}px;padding-top:${StatusBar}px;background-color: #${Color};color:#fff;`;
+      var style = `height:${CustomBar}px;padding-top:${StatusBar}px;background-color:#${Color};color:#fff;`;
 
       return style;
     }
@@ -40,7 +41,7 @@ export default {
   props: {
     bgColor: {
       type: String,
-      default: ""
+      default: "03a9f4"
     },
     isBack: {
       type: [Boolean, String],
@@ -50,13 +51,15 @@ export default {
   methods: {
     // 返回
     BackPage() {
-      uni.navigateBack({
-        delta: 1
-      });
+      this.$WX.navigateBack(1);
     }
   }
 };
 </script>
 
 <style>
+.cs {
+  display: block;
+  z-index: -1;
+}
 </style>

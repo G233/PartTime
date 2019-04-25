@@ -1,7 +1,9 @@
 
 
 <template>
-  <div>这是收藏</div>
+  <div>
+    <div>昂啥事</div>
+  </div>
 </template>
 
 <script>

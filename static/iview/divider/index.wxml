@@ -1,7 +1,5 @@
 <view class="i-divider i-class" style="{{parse.getStyle(color,size,height)}}">
-    <view class="i-divider-content" wx:if="{{content !== ''}}">
-        {{content}}
-    </view>
+    <view class="i-divider-content" wx:if="{{content !== ''}}">{{content}}</view>
     <view class="i-divider-content" wx:else>
         <slot></slot>
     </view>

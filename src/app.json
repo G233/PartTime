@@ -12,9 +12,11 @@
     }
   },
   "window": {
-    "navigationBarBackgroundColor": "#fff",
-    "navigationBarTextStyle":"black",
-    "navigationBarTitleText":"工大课兼"
+    "backgroundTextStyle": "light",
+    "navigationBarBackgroundColor": "#03a9f4",
+    "navigationBarTitleText": "工大课兼",
+    "navigationBarTextStyle": "white"
+
   },
   "tabBar": {
     "color": "#838383",

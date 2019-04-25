@@ -1,10 +1,7 @@
 <template>
   <div>
-    <cu-custom bgcolor="03a9f4">
-      <block slot="backText">返回</block>
-      <block slot="content">工大课兼</block>
-    </cu-custom>
     <i-message id="message"/>
+
     <div v-if="step==0" :class="step0">
       <i-message id="message"/>
       <div class="title1">请填写招聘信息</div>
@@ -15,12 +12,12 @@
         confirm-type="next"
         v-model="job.name"
       />
-      <view class="cu-form-group solid-bottom">
-        <view class="title">类别</view>
+      <div class="cu-form-group solid-bottom">
+        <div class="title">类别</div>
         <picker @change="LeiChange" :value="index" :range="leidata">
-          <view class="picker">{{index?leidata[index]:'请选择职位类别'}}</view>
+          <div class="picker">{{index?leidata[index]:'请选择职位类别'}}</div>
         </picker>
-      </view>
+      </div>
 
       <lg-input
         placeholderlg="请输入薪资"
@@ -29,16 +26,16 @@
         confirm-type="next"
         v-model="job.salary"
       />
-      <view class="cu-form-group">
-        <view class="title">每</view>
-        <div v-if="choselei=='委托'">次</div>
+      <div class="cu-form-group">
+        <div class="title">每</div>
+        <div v-if="job.choselei=='委托'">次</div>
         <div v-else>
           <picker @change="TimeChange" :value="index2" :range="timedata">
-            <view class="picker">{{index2?timedata[index2]:'请选择薪资单位'}}</view>
+            <div class="picker">{{index2?timedata[index2]:'请选择薪资单位'}}</div>
           </picker>
         </div>
-      </view>
-      <view class="cu-form-group">
+      </div>
+      <div class="cu-form-group">
         <textarea
           data-placeholder="这里可以添加详情噢"
           maxlength="-1"
@@ -46,11 +43,11 @@
           :class="txtclass"
           v-model="job.details"
         ></textarea>
-      </view>
+      </div>
 
       <text class="text-gray padding" style="font-size: 13px;">若未找到合适的类别，请到反馈中提交类别申请</text>
       <div class="flex padding justify-center">
-        <button class="cu-btn bg-blue round lg shadow commitbtn" @click="nextstep">下一步</button>
+        <button class="cu-btn bg-blue round lg shadow commitbtn" @click="formSubmit">下一步</button>
       </div>
     </div>
     <div v-else :class="step1">
@@ -75,33 +72,26 @@ import WxValidate from "../../utils/WxValidate.js";
 
 const { $Message } = require("../../../static/iview/base/index");
 export default {
-  props: ["chose"],
-  onLoad() {
+  onShow() {
     this.mapCtx = wx.createMapContext("myMap");
-    // this.$WX.getLocation().then(res => {
-    //   console.log(res);
-    //   let latitude = res.latitude;
-    //   let longitude = res.longitude;
-    //   wx.openLocation({
-    //     latitude,
-    //     longitude,
-    //     scale: 18
-    //   });
-    // });
     this.initValidate(); //验证规则函数
   },
 
   components: { LgInput },
   data() {
     return {
+      a: true,
       step: 0, //控制步骤
       step0: "", //分步骤动画
-      step1: "",
+      step1: "animated fadeInRight",
       hassite: false,
       job: {
         details: "",
         name: null,
         salary: "",
+        chosetime: "",
+        choselei: "",
+
         site: {
           name: "",
           address: "",
@@ -109,58 +99,54 @@ export default {
           longitude: ""
         }
       },
+
       //类别相关
       leidata: ["家教", "服务", "跑腿", "委托"],
-      choselei: "",
 
       index: "",
       //薪资相关
       index2: "",
-      timedata: ["月", "周", "时"],
-      chosetime: ""
+      timedata: ["月", "周", "时", "天"]
     };
   },
   computed: {
-    Salary() {
-      if (this.choselei == "委托") {
-        return this.job.salary + "/次";
-      } else {
-        return this.job.salary + "/" + this.chosetime;
-      }
-    },
+    //详情栏样式控制
     txtclass() {
       if (this.job.details) {
         return "value";
       } else return "";
     }
   },
-  onShow() {},
-
+  //初始化数据
+  onUnload() {
+    Object.assign(this.$data, this.$options.data());
+  },
+  onLoad() {},
   methods: {
     nextstep() {
       this.step0 = "animated fadeOutLeft";
+
       setTimeout(() => {
         this.step += 1;
-      }, 90);
+      }, 200);
     },
     async chosemap() {
       let loca = await this.$WX.chooseLocation();
-      // this.job.site.address = loca.address;
-      // this.job.site.latitude = loca.latitude;
-      // this.job.site.longitude = loca.longitude;
-      // this.job.site.name = loca.name;
       this.job.site = loca;
       this.hassite = true;
       console.log(this.job.site);
     },
     // 选择职位类别
     LeiChange(e) {
-      this.choselei = this.leidata[e.mp.detail.value];
+      this.job.choselei = this.leidata[e.mp.detail.value];
       this.index = e.mp.detail.value;
     },
     // 选择薪资单位
     TimeChange(e) {
-      this.chosetime = this.timedata[e.mp.detail.value];
+      if (this.timedata[e.mp.detail.value] == "委托") {
+        this.job.chosetime = "次";
+      }
+      this.job.chosetime = this.timedata[e.mp.detail.value];
       this.index2 = e.mp.detail.value;
     },
     //表单数据验证
@@ -170,51 +156,51 @@ export default {
           required: true,
           minlength: 2
         },
-        phone: {
-          required: true,
-          tel: true
+        salary: {
+          required: true
         },
-        wx: {
-          required: true,
-          minlength: 5
+        chosetime: {
+          required: true
+        },
+        choselei: {
+          required: true
         }
       };
 
       //错误提示
       const messages = {
         name: {
-          required: "请填写姓名",
-          minlength: "请输入正确的名称"
+          required: "请输入职位名称",
+          minlength: "职位名称不得少于两个字"
         },
-        phone: {
-          required: "请填写手机号",
-          tel: "请填写正确的手机号"
+        salary: {
+          required: "请输入薪酬"
         },
-
-        wx: {
-          required: "请填写微信号",
-          tel: "请填写正确的微信号"
+        chosetime: {
+          required: "请选择薪酬单位"
+        },
+        choselei: {
+          required: "请选择职位类别"
         }
       };
-
+      console.log("aaa");
       this.WxValidate = new WxValidate(rules, messages);
     },
     //调用验证函数
     formSubmit: function(e) {
-      const params = this.user;
+      const params = this.job;
       //校验表单
       if (!this.WxValidate.checkForm(params)) {
         const error = this.WxValidate.errorList[0];
-
+        console.log(error);
         this.showWarn(error);
         return false;
       } else {
-        this.saveuser();
-        this.$WX.navigateBack(1);
+        this.nextstep();
       }
     },
+    //提交表单
     async commit() {
-      this.job.salary = this.Salary;
       let res = await this.$request.request("/addjob", {
         data: { data: this.job }
       });
@@ -222,6 +208,9 @@ export default {
         content: res.data.msg,
         type: "success"
       });
+      setTimeout(() => {
+        this.$WX.navigateBack(1);
+      }, 1000);
     },
     //保存用户信息
     async saveuser() {

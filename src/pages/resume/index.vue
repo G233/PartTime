@@ -1,6 +1,7 @@
 <template>
   <div>
     <i-message id="message"/>
+
     <div class="title">请填写个人信息吧</div>
     <lg-input
       placeholderlg="请输入姓名"
@@ -62,6 +63,9 @@ export default {
   },
   computed: {},
   onShow() {},
+  onUnload() {
+    Object.assign(this.$data, this.$options.data());
+  },
 
   methods: {
     onChange(e) {
