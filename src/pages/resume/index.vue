@@ -1,5 +1,9 @@
 <template>
   <div>
+    <cu-custom bgcolor="03a9f4" isBack="true">
+      <block slot="backText">返回</block>
+      <block slot="content">个人信息</block>
+    </cu-custom>
     <i-message id="message"/>
     <div class="title">请填写个人信息吧</div>
     <lg-input
@@ -62,6 +66,9 @@ export default {
   },
   computed: {},
   onShow() {},
+  onUnload() {
+    Object.assign(this.$data, this.$options.data());
+  },
 
   methods: {
     onChange(e) {
