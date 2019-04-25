@@ -1,6 +1,6 @@
 <template>
-  <div>
-    <div class="cu-custom" :style="[{height:CustomBar + 'px'}]">
+  <div class="cs">
+    <div class="cu-custom cs" :style="[{height:CustomBar + 'px'}]">
       <div class="cu-bar fixed" :style="style">
         <div class="action" @tap="BackPage" v-if="isBack">
           <text class="icon-back"></text>
@@ -58,4 +58,8 @@ export default {
 </script>
 
 <style>
+.cs {
+  display: block;
+  z-index: -1;
+}
 </style>

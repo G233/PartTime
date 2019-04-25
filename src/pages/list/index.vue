@@ -2,10 +2,6 @@
 
 <template>
   <div>
-     <cu-custom bgColor="03a9f4" >
-	<block slot="backText">返回</block>
-	<block slot="content">工大课兼</block>
-</cu-custom>
     <i-tabs :current="current" color="#03a9f4" @change="handleChange">
       <i-tab key="tab1" title="选项1"></i-tab>
       <i-tab key="tab2" title="选项2"></i-tab>

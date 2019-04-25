@@ -1,9 +1,5 @@
 <template>
   <div>
-    <cu-custom bgcolor="03a9f4" isBack="true">
-      <block slot="backText">返回</block>
-      <block slot="content">职位信息</block>
-    </cu-custom>
     <i-message id="message"/>
 
     <div v-if="step==0" :class="step0">
