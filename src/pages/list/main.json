@@ -1,6 +1,5 @@
 {
-  
-  "navigationBarBackgroundColor": "#03a9f4",
+  "navigationBarTitleText":"工大课兼",
   "usingComponents": {
     "i-tabs": "../../static/iview/tabs/index",
     "i-tab": "../../static/iview/tab/index",

@@ -2,7 +2,6 @@
 
 <template>
   <div>
-    <i-icon type="activity" size="28" color="#80848f" />
     <!--导航栏-->
     <i-tabs :current="current_scroll"  :color="color">
       <i-tab v-for="item in tabs" :key="item.id" :title="item.name" @click="handleChangeScroll(item.id)"></i-tab>
@@ -29,16 +28,16 @@
               <i-card :title="works.title" :extra="works.money+'元'" @click="gotodetail">
                 <view slot="content">
                   {{works.time}} 
-                  <i-icon :type="type" size=25 :color="works.Collection?'blue':''" style="float:right;" @click="changeCollection" />
                 </view>
                 <view slot="footer">发布于：{{works.pubtime}}</view>
               </i-card>
+              <i-icon :type="type" size=25 :color="works.Collection?'blue':''" class="soucang" @click="changeCollection" />
             </div>
           </scroll-view>
         </swiper-item>
       </block>
     </swiper>
-    <image v-if="flag" class="image1" :src="images[0]"/>
+    <image v-if="flag" class="image1" :src="images[0]" @click="addjob"/>
   </div>
 </template>
 
@@ -131,6 +130,11 @@ export default {
       wx.navigateTo({
         url: '../detail/main?id=1'
       })
+    },
+    addjob(){
+      wx.navigateTo({
+        url: '../addjob/main'
+      })
     }
   },
 
@@ -158,5 +162,11 @@ body{
   font-size: 30rpx;
   display: flex;
   justify-content: space-evenly;
+}
+.soucang{
+  position: absolute;
+  right: 100rpx;
+  top: 110rpx;
+  z-index:10;
 }
 </style>

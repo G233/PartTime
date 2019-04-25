@@ -2,12 +2,8 @@
   "pages": [
     "pages/list/main",
     "pages/mine/main",
-    "pages/editing/main",
     "pages/enshrine/main",
     "pages/detail/main",
-
-
-
     "pages/addjob/main"
   ],
   "permission": {
@@ -16,7 +12,9 @@
     }
   },
   "window": {
-    "navigationStyle": "custom"
+    "navigationBarBackgroundColor": "#fff",
+    "navigationBarTextStyle":"black",
+    "navigationBarTitleText":"工大课兼"
   },
   "tabBar": {
     "color": "#838383",
@@ -30,7 +28,7 @@
         "selectedIconPath": "./static/images/home1.png"
       },
       {
-        "pagePath": "pages/editing/main",
+        "pagePath": "pages/enshrine/main",
         "text": "收藏",
         "iconPath": "./static/images/star.png",
         "selectedIconPath": "./static/images/star1.png"
