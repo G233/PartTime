@@ -4,14 +4,19 @@
     "pages/mine/main",
     "pages/editing/main",
     "pages/enshrine/main",
-    "pages/detail/main"
+    "pages/detail/main",
 
+
+
+    "pages/addjob/main"
   ],
+  "permission": {
+    "scope.userLocation": {
+      "desc": "获取位置信息仅用于定位地图"
+    }
+  },
   "window": {
-    "backgroundTextStyle": "light",
-    "navigationBarBackgroundColor": "#fff",
-    "navigationBarTitleText": "工大课兼",
-    "navigationBarTextStyle": "black"
+    "navigationStyle": "custom"
   },
   "tabBar": {
     "color": "#838383",

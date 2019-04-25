@@ -167,9 +167,9 @@
 * vuex-集中状态与数据处理
 * 全部采用小程序的 promiseAPI 封装
 * iView Weapp
-
 * color-ui——UI 框架
 * animate:动画 css
+* WxService - Promise API
 
 #### 学习资料
 
@@ -184,3 +184,4 @@
 * [Color-UI](https://www.color-ui.com/)
 * [色彩搭配](https://www.materialpalette.com)
 * [渐变搭配](https://m.okjike.com/originalPosts/5c87f309b9baeb0018afdc0b?source_username=0e026b8b-4f5c-4ad6-97c8-a44bb082334e&utm_source=qq&share_distinct_id=169dd5108a659-0e2f326feec91d-7a1437-2073600-169dd5108aada&share_depth=1)
+* [微信 PromiseAPI](https://github.com/skyvow/wx-extend/blob/master/docs/components/service.md)

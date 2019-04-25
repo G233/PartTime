@@ -6,16 +6,15 @@ cloud.init()
 // 云函数入口函数
 exports.main = async (event, context) => {
   const wxContext = cloud.getWXContext()
-  const db = wx.cloud.database()
-  const user = db.collection('user')
-  user.add({
-    data: event
-  }).then()
+  const db = cloud.database({
+    env: 'aa'
+  })
+  let res = await db.collection('user').add({
+    data: {
+      "adwda": "awsdawsd"
+    }
+  })
+  console.log(res)
 
-  return {
-    event,
-    openid: wxContext.OPENID,
-    appid: wxContext.APPID,
-    unionid: wxContext.UNIONID,
-  }
+  return 0
 }
