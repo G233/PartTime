@@ -2,9 +2,6 @@
 
 <template>
   <div>
-    <cu-custom bgcolor="000">
-      <block slot="content">我的收藏</block>
-    </cu-custom>
     <div>昂啥事</div>
   </div>
 </template>

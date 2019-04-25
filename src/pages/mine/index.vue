@@ -2,11 +2,7 @@
 
 <template>
   <div>
-    <!-- 自定义顶栏 -->
-  <cu-custom bgColor="03a9f4" >
-	<block slot="content">我的</block>
-</cu-custom>
-<!--  -->
+ 
 
     <i-message id="message"/>
     <div class="tapbg">

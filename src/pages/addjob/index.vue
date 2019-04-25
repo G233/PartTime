@@ -1,9 +1,5 @@
 <template>
   <div>
-    <cu-custom bgcolor="03a9f4" isBack="true">
-      <block slot="backText">返回</block>
-      <block slot="content">职位信息</block>
-    </cu-custom>
     <i-message id="message"/>
 
     <div v-if="step==0" :class="step0">
@@ -51,7 +47,7 @@
 
       <text class="text-gray padding" style="font-size: 13px;">若未找到合适的类别，请到反馈中提交类别申请</text>
       <div class="flex padding justify-center">
-        <button class="cu-btn bg-blue round lg shadow commitbtn" @click="nextstep">下一步</button>
+        <button class="cu-btn bg-blue round lg shadow commitbtn" @click="formSubmit">下一步</button>
       </div>
     </div>
     <div v-else :class="step1">
@@ -76,19 +72,8 @@ import WxValidate from "../../utils/WxValidate.js";
 
 const { $Message } = require("../../../static/iview/base/index");
 export default {
-  props: ["chose"],
-  onLoad() {
+  onShow() {
     this.mapCtx = wx.createMapContext("myMap");
-    // this.$WX.getLocation().then(res => {
-    //   console.log(res);
-    //   let latitude = res.latitude;
-    //   let longitude = res.longitude;
-    //   wx.openLocation({
-    //     latitude,
-    //     longitude,
-    //     scale: 18
-    //   });
-    // });
     this.initValidate(); //验证规则函数
   },
 
@@ -125,12 +110,14 @@ export default {
     };
   },
   computed: {
+    //详情栏样式控制
     txtclass() {
       if (this.job.details) {
         return "value";
       } else return "";
     }
   },
+  //初始化数据
   onUnload() {
     Object.assign(this.$data, this.$options.data());
   },
@@ -138,16 +125,13 @@ export default {
   methods: {
     nextstep() {
       this.step0 = "animated fadeOutLeft";
+
       setTimeout(() => {
         this.step += 1;
       }, 200);
     },
     async chosemap() {
       let loca = await this.$WX.chooseLocation();
-      // this.job.site.address = loca.address;
-      // this.job.site.latitude = loca.latitude;
-      // this.job.site.longitude = loca.longitude;
-      // this.job.site.name = loca.name;
       this.job.site = loca;
       this.hassite = true;
       console.log(this.job.site);
@@ -159,6 +143,9 @@ export default {
     },
     // 选择薪资单位
     TimeChange(e) {
+      if (this.timedata[e.mp.detail.value] == "委托") {
+        this.job.chosetime = "次";
+      }
       this.job.chosetime = this.timedata[e.mp.detail.value];
       this.index2 = e.mp.detail.value;
     },
@@ -169,47 +156,47 @@ export default {
           required: true,
           minlength: 2
         },
-        phone: {
-          required: true,
-          tel: true
+        salary: {
+          required: true
         },
-        wx: {
-          required: true,
-          minlength: 5
+        chosetime: {
+          required: true
+        },
+        choselei: {
+          required: true
         }
       };
 
       //错误提示
       const messages = {
         name: {
-          required: "请填写姓名",
-          minlength: "请输入正确的名称"
+          required: "请输入职位名称",
+          minlength: "职位名称不得少于两个字"
         },
-        phone: {
-          required: "请填写手机号",
-          tel: "请填写正确的手机号"
+        salary: {
+          required: "请输入薪酬"
         },
-
-        wx: {
-          required: "请填写微信号",
-          tel: "请填写正确的微信号"
+        chosetime: {
+          required: "请选择薪酬单位"
+        },
+        choselei: {
+          required: "请选择职位类别"
         }
       };
-
+      console.log("aaa");
       this.WxValidate = new WxValidate(rules, messages);
     },
     //调用验证函数
     formSubmit: function(e) {
-      const params = this.user;
+      const params = this.job;
       //校验表单
       if (!this.WxValidate.checkForm(params)) {
         const error = this.WxValidate.errorList[0];
-
+        console.log(error);
         this.showWarn(error);
         return false;
       } else {
-        this.saveuser();
-        this.$WX.navigateBack(1);
+        this.nextstep();
       }
     },
     //提交表单
