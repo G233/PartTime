@@ -1,7 +1,7 @@
 <template>
-  <view>
-    <view class="cu-form-group padding solid-bottom">
-      <view class="title">{{titlelg}}</view>
+  <div>
+    <div class="cu-form-group padding solid-bottom">
+      <div class="title">{{titlelg}}</div>
       <input
         :value="value"
         :type="typelg"
@@ -11,8 +11,8 @@
         class="radius"
         name="input"
       >
-    </view>
-  </view>
+    </div>
+  </div>
 </template>
 
 <script>

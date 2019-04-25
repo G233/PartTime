@@ -1,6 +1,4 @@
-<view 
-    class="i-class i-tag {{ parse.getClass(color,type,checked,checkable) }} {{checkable ? '' : 'i-tag-disable'}}" 
-    bindtap="tapTag">
+<view class="i-class i-tag {{ parse.getClass(color,type,checked,checkable) }} {{checkable ? '' : 'i-tag-disable'}}" bindtap="tapTag">
     <slot></slot>
 </view>
 <wxs module="parse"> 

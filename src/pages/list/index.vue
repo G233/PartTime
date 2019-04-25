@@ -2,14 +2,16 @@
 
 <template>
   <div>
-      <cu-custom bgColor="03a9f4" >
+     <cu-custom bgColor="03a9f4" >
 	<block slot="backText">返回</block>
 	<block slot="content">工大课兼</block>
 </cu-custom>
-    <div class="a">a</div>
-    <div v-if="a" class="addjob shadow-lg" @click="addjob">
-      <image class="anniu " src="../../static/images/add.png"></image>
-    </div>
+    <i-tabs :current="current" color="#03a9f4" @change="handleChange">
+      <i-tab key="tab1" title="选项1"></i-tab>
+      <i-tab key="tab2" title="选项2"></i-tab>
+      <i-tab key="tab3" title="选项3"></i-tab>
+    </i-tabs>
+    <div v-if="a" class="addjob shadow-lg" @click="addjob"> <image class="anniu " src="../../static/images/add.png"></image></div>
   </div>
 </template>
 
@@ -20,9 +22,11 @@ export default {
   components: {},
   data() {
     return {
+      current: "tab1",
+      current_scroll: "tab1",
       toppx: "",
-      a:true,
-      zhuangtai:'up'
+      a: true,
+      zhuangtai: "up"
     };
   },
   computed: {
@@ -30,6 +34,11 @@ export default {
   },
 
   methods: {
+    handleChange(detail) {
+      console.log(detail);
+      this.current = detail.mp.detail.key;
+    },
+
     addjob() {
       this.$WX.navigateTo("../addjob/main");
     }
@@ -37,32 +46,25 @@ export default {
   watch: {
     toppx(newT, oldT) {
       if (newT < oldT) {
-        if(this.a){
-          return
+        if (this.a) {
+          return;
+        } else {
+          this.a = true;
         }
-        else{
- this.a=true
-       
-        }
-       
       } else {
-        if(!this.a){
-          return
+        if (!this.a) {
+          return;
+        } else {
+          this.a = false;
         }
-        else{
- this.a=false
-      
-        }
-      
       }
-    },
+    }
   },
 
-    onPageScroll(e) {
-   
-      this.toppx = e.scrollTop;
-    }
+  onPageScroll(e) {
+    this.toppx = e.scrollTop;
   }
+};
 </script>
 
 <style scoped>
