@@ -5,7 +5,7 @@
     <view>填写您的需求</view>
     <i-input :value="value1" title="1、职位名称 " autofocus placeholder="暂未填写" />
     <div>
-      <i-tag 
+     <!-- <i-tag 
         wx:for="{{tags}}" 
         wx:key="{{index}}"
         bindchange="onChange" 
@@ -16,7 +16,7 @@
         type="border"
         style="margin-right:5px;">
         {{item.name}}
-    </i-tag>
+    </i-tag>-->
     </div>
     </i-panel>
     <i-input :value="value2" type="number" title="3、薪资" placeholder="请输入金额" />

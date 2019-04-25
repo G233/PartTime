@@ -1,9 +1,10 @@
 {
   "pages": [
-    "pages/editing/main",
-    "pages/mine/main",
     "pages/list/main",
-    "pages/enshrine/main"
+    "pages/mine/main",
+    "pages/editing/main",
+    "pages/enshrine/main",
+    "pages/detail/main"
 
   ],
   "window": {
