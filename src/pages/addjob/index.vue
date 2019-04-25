@@ -1,10 +1,11 @@
 <template>
   <div>
-    <cu-custom bgcolor="03a9f4">
+    <cu-custom bgcolor="03a9f4" isBack="true">
       <block slot="backText">返回</block>
-      <block slot="content">工大课兼</block>
+      <block slot="content">职位信息</block>
     </cu-custom>
     <i-message id="message"/>
+
     <div v-if="step==0" :class="step0">
       <i-message id="message"/>
       <div class="title1">请填写招聘信息</div>
@@ -15,12 +16,12 @@
         confirm-type="next"
         v-model="job.name"
       />
-      <view class="cu-form-group solid-bottom">
-        <view class="title">类别</view>
+      <div class="cu-form-group solid-bottom">
+        <div class="title">类别</div>
         <picker @change="LeiChange" :value="index" :range="leidata">
-          <view class="picker">{{index?leidata[index]:'请选择职位类别'}}</view>
+          <div class="picker">{{index?leidata[index]:'请选择职位类别'}}</div>
         </picker>
-      </view>
+      </div>
 
       <lg-input
         placeholderlg="请输入薪资"
@@ -29,16 +30,16 @@
         confirm-type="next"
         v-model="job.salary"
       />
-      <view class="cu-form-group">
-        <view class="title">每</view>
-        <div v-if="choselei=='委托'">次</div>
+      <div class="cu-form-group">
+        <div class="title">每</div>
+        <div v-if="job.choselei=='委托'">次</div>
         <div v-else>
           <picker @change="TimeChange" :value="index2" :range="timedata">
-            <view class="picker">{{index2?timedata[index2]:'请选择薪资单位'}}</view>
+            <div class="picker">{{index2?timedata[index2]:'请选择薪资单位'}}</div>
           </picker>
         </div>
-      </view>
-      <view class="cu-form-group">
+      </div>
+      <div class="cu-form-group">
         <textarea
           data-placeholder="这里可以添加详情噢"
           maxlength="-1"
@@ -46,7 +47,7 @@
           :class="txtclass"
           v-model="job.details"
         ></textarea>
-      </view>
+      </div>
 
       <text class="text-gray padding" style="font-size: 13px;">若未找到合适的类别，请到反馈中提交类别申请</text>
       <div class="flex padding justify-center">
@@ -94,14 +95,18 @@ export default {
   components: { LgInput },
   data() {
     return {
+      a: true,
       step: 0, //控制步骤
       step0: "", //分步骤动画
-      step1: "",
+      step1: "animated fadeInRight",
       hassite: false,
       job: {
         details: "",
         name: null,
         salary: "",
+        chosetime: "",
+        choselei: "",
+
         site: {
           name: "",
           address: "",
@@ -109,39 +114,33 @@ export default {
           longitude: ""
         }
       },
+
       //类别相关
       leidata: ["家教", "服务", "跑腿", "委托"],
-      choselei: "",
 
       index: "",
       //薪资相关
       index2: "",
-      timedata: ["月", "周", "时"],
-      chosetime: ""
+      timedata: ["月", "周", "时", "天"]
     };
   },
   computed: {
-    Salary() {
-      if (this.choselei == "委托") {
-        return this.job.salary + "/次";
-      } else {
-        return this.job.salary + "/" + this.chosetime;
-      }
-    },
     txtclass() {
       if (this.job.details) {
         return "value";
       } else return "";
     }
   },
-  onShow() {},
-
+  onUnload() {
+    Object.assign(this.$data, this.$options.data());
+  },
+  onLoad() {},
   methods: {
     nextstep() {
       this.step0 = "animated fadeOutLeft";
       setTimeout(() => {
         this.step += 1;
-      }, 90);
+      }, 200);
     },
     async chosemap() {
       let loca = await this.$WX.chooseLocation();
@@ -155,12 +154,12 @@ export default {
     },
     // 选择职位类别
     LeiChange(e) {
-      this.choselei = this.leidata[e.mp.detail.value];
+      this.job.choselei = this.leidata[e.mp.detail.value];
       this.index = e.mp.detail.value;
     },
     // 选择薪资单位
     TimeChange(e) {
-      this.chosetime = this.timedata[e.mp.detail.value];
+      this.job.chosetime = this.timedata[e.mp.detail.value];
       this.index2 = e.mp.detail.value;
     },
     //表单数据验证
@@ -213,8 +212,8 @@ export default {
         this.$WX.navigateBack(1);
       }
     },
+    //提交表单
     async commit() {
-      this.job.salary = this.Salary;
       let res = await this.$request.request("/addjob", {
         data: { data: this.job }
       });
@@ -222,6 +221,9 @@ export default {
         content: res.data.msg,
         type: "success"
       });
+      setTimeout(() => {
+        this.$WX.navigateBack(1);
+      }, 1000);
     },
     //保存用户信息
     async saveuser() {

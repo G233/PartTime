@@ -3,25 +3,13 @@
         <view class="i-swipeout-content">
             <slot name="content"></slot>
         </view>
-        <view class="i-swipeout-button-right-group" 
-            wx:if="{{actions.length > 0}}" 
-            catchtouchend="loop" >
-            <view class="i-swipeout-button-right-item" 
-                wx:for="{{actions}}" 
-                style="{{parse.setStyle(item)}};width:{{item.width}}px;" 
-                wx:key="{{index}}" 
-                data-index="{{index}}" 
-                bind:tap="handlerButton">
-                <i-icon 
-                    wx:if="{{item.icon}}" 
-                    type="{{item.icon}}" 
-                    size="{{item.fontsize}}"
-                    color="{{item.color}}">
-                </i-icon>
+        <view class="i-swipeout-button-right-group" wx:if="{{actions.length > 0}}" catchtouchend="loop">
+            <view class="i-swipeout-button-right-item" wx:for="{{actions}}" style="{{parse.setStyle(item)}};width:{{item.width}}px;" wx:key="{{index}}" data-index="{{index}}" bind:tap="handlerButton">
+                <i-icon wx:if="{{item.icon}}" type="{{item.icon}}" size="{{item.fontsize}}" color="{{item.color}}"></i-icon>
                 {{item.name}}
             </view>
         </view>
-        <view class="i-swipeout-button-right-group" catchtouchend="loop" bind:tap="handlerParentButton"  wx:if="{{actions.length === 0}}" style="width:{{operateWidth}}px;right:-{{operateWidth}}px;">
+        <view class="i-swipeout-button-right-group" catchtouchend="loop" bind:tap="handlerParentButton" wx:if="{{actions.length === 0}}" style="width:{{operateWidth}}px;right:-{{operateWidth}}px;">
             <slot name="button"></slot>
         </view>
     </view>

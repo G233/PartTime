@@ -1,23 +1,14 @@
 <view class="i-index i-class">
-    <scroll-view 
-        scroll-y 
-        style="{{parse.setScrollStyle(height)}}" 
-        bindscroll="handlerScroll"
-        scroll-top="{{scrollTop}}">
-        <slot></slot>  
-        <view class="i-index-fixed" 
-            catchtouchstart="handlerTouchMove" 
-            catchtouchmove="handlerTouchMove" 
-            catchtouchend="handlerTouchEnd">
-            <view class="i-index-fixed-item" 
-                wx:for="{{fixedData}}" 
-                wx:key="{{index}}" 
-                data-index="{{index}}" 
-                catchtap="handlerFixedTap">
+    <scroll-view scroll-y style="{{parse.setScrollStyle(height)}}" bindscroll="handlerScroll" scroll-top="{{scrollTop}}">
+        <slot></slot>
+        <view class="i-index-fixed" catchtouchstart="handlerTouchMove" catchtouchmove="handlerTouchMove" catchtouchend="handlerTouchEnd">
+            <view class="i-index-fixed-item" wx:for="{{fixedData}}" wx:key="{{index}}" data-index="{{index}}" catchtap="handlerFixedTap">
                 {{item}}
             </view>
-        </view>  
-        <view class="i-index-tooltip" style="{{ isTouches ? 'display:block' : 'display:none' }}">{{currentName}}</view>
+        </view>
+        <view class="i-index-tooltip" style="{{ isTouches ? 'display:block' : 'display:none' }}">
+            {{currentName}}
+        </view>
     </scroll-view>
 </view>
 <wxs module="parse">
