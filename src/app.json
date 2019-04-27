@@ -1,9 +1,10 @@
 {
   "pages": [
     "pages/list/main",
+    "pages/detail/main",
+  
     "pages/mine/main",
     "pages/enshrine/main",
-    "pages/detail/main",
     "pages/addjob/main"
   ],
   "permission": {
