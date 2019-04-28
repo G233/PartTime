@@ -77,8 +77,6 @@ export default {
     topath(e){
       const path=e.currentTarget.id
       this.$WX.navigateTo(path)
-
-
     }
   },
 
