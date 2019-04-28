@@ -2,10 +2,9 @@
 
 <template>
   <div>
- 
-
     <i-message id="message"/>
     <div class="tapbg">
+      <div @click="tomsg" class="icon-mail msg"><div :class="dot" ></div></div>
       <div class="wlctxt">
         你好：
         <open-data type="userNickName"></open-data>
@@ -56,23 +55,35 @@ export default {
     };
   },
   computed: {
-    //全局登录状态
-    haslogin() {
-      return this.$store.default.state.haslogin;
-    }
+ dot(){
+   if(this.$store.default.state.resume.hassee){
+     console.log('有未读消息')
+     return 'dotshow'
+   }
+   else{
+      console.log('无未读消息')
+     return 'dothide'
+   }
+ }
+   
   },
 
   methods: {
+    tomsg(){
+      this.$WX.navigateTo('../message/main')
+       
+    },
     //跳转
     topath(e){
       const path=e.currentTarget.id
       this.$WX.navigateTo(path)
-
-
     }
   },
 
-  created() {}
+  onShow() {
+    this.$store.default.commit("setresume");
+
+  }
 };
 </script>
 
@@ -105,5 +116,26 @@ export default {
   z-index: 2;
   top: 190rpx;
   left: 300rpx;
+}
+.msg{
+  color: aliceblue;
+  font-size:60rpx;
+  text-align: right;
+  margin-right: 60rpx;
+  padding-top: 40rpx;
+  position: relative;
+}
+.dotshow{
+  display:block;
+  background:#f00;
+  border-radius:50%;
+  width:20rpx;
+  height:20rpx;
+  top:45rpx;
+  right:0px;
+  position:absolute;
+}
+.dothide{
+ 
 }
 </style>

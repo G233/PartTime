@@ -1,0 +1,10 @@
+{
+
+  "usingComponents": {
+    "i-button": "../../static/iview/button/index",
+    "i-load-more": "../../static/iview/load-more/index"
+
+
+  }
+
+}

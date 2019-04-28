@@ -1,44 +1,34 @@
+//全局变量vuex
 import Vue from 'vue'
 import Vuex from 'vuex'
-import createPersistedState from "vuex-persistedstate" //持久化vuex
 Vue.use(Vuex)
+//为了使用挂载在vue上的方法，在这里也搞一个
+let vm = new Vue();
 
 const store = new Vuex.Store({
   state: {
-    openId: 0, //用户唯一识别码
-    SystemInfo: {
-      StatusBar: '',
-      Custom: '',
-      CustomBar: ''
+    resume: {
+      hassee: '', //是否有未读消息
+      hasresume: false, //用户是否填写过详细信息
+      _id: "",
+      openId: "",
+      __v: '0',
+      name: '"刘固"',
+      phone: '18974963705',
+      sex: ''
     }
   },
   mutations: {
-    //登录
-    login: (state, data) => {
-
-      state.openId = data
-
+    //  保存简历信息
+    setresume: (state) => {
+      vm.$request
+        .request("/getresume", {
+          data: {}
+        }).then(res => {
+          state.resume = res.data.data
+        })
     },
-    // 获取系统顶栏信息，实现自定义顶栏
-    setSystemInfo: (state, data) => {
-      state.SystemInfo = data
-      console.log(state.SystemInfo)
-    }
-
-
   },
-  plugins: [createPersistedState({
-      storage: {
-        getItem: key => wx.getStorageSync(key),
-        setItem: (key, value) => wx.setStorageSync(key, value),
-        removeItem: key => {},
-        reducer: state => ({
-          openId: state.openId
-        }),
-      }
-    }
-
-  )]
 })
 
 export default store

@@ -4,11 +4,9 @@
 <script>
 export default {
   onLaunch: function() {
-    this.getSystemInfo();
-
     //用户登录流程处理
-
     this.checklogin();
+    this.getSystemInfo();
   },
 
   //判断是否授权，获取用户信息
@@ -26,21 +24,21 @@ export default {
       SystemInfo.Custom = custom;
       SystemInfo.CustomBar = custom.bottom + custom.top - e.statusBarHeight;
       //调用commit存入vuex
-      this.$store.default.commit("setSystemInfo", SystemInfo);
+      this.$storage.default.commit("setSystemInfo", SystemInfo);
     },
     async checklogin() {
-      if (this.$store.default.state.openId) {
+      if (this.$storage.default.state.openId) {
         //是否为新用户
         console.log("老东西");
       } else {
         //新用户，启动登录流程
         console.log("新用户");
         let res = await this.$WX.login();
-        let openid = await this.$request.postRequest("/login", {
+        let openid = await this.$request.request("/login", {
           data: { code: res.code }
         });
 
-        this.$store.default.commit("login", openid.data.data.openId);
+        this.$storage.default.commit("login", openid.data.data.openId);
       }
     }
   }

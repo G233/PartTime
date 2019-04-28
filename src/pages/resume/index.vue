@@ -1,40 +1,53 @@
 <template>
   <div>
     <i-message id="message"/>
-
-    <div class="title">请填写个人信息吧</div>
-    <lg-input
-      placeholderlg="请输入姓名"
-      titlelg="姓名"
-      typelg="text"
-      confirm-type="next"
-      v-model="user.name"
-    />
-    <lg-input
-      placeholderlg="请填写手机号码"
-      titlelg="手机"
-      typelg="number"
-      confirm-type="next"
-      v-model="user.phone"
-    />
-
-    <lg-input
-      placeholderlg="请填写微信号"
-      titlelg="微信号"
-      typelg="text"
-      confirm-type="done"
-      v-model="user.wx"
-    />
-
-    <div class="flex solid-bottom padding justify-between">
-      <div style="font-size: 15px;">性别</div>
-      <switch class="switch-sex sex" checked @change="onChange"></switch>
+    <!-- 个人信息展示页面 -->
+    <div v-if="resume.hasresume" :class="part1">
+      <div class="card shadow-blur bg-gradual-blue">
+        <div class="write icon-writefill" @click="changepart"></div>
+        <div class="padding-sm">姓名：{{resume.name}}</div>
+        <div class="padding-sm">性别：{{resume.sex==0?'女':'男'}}</div>
+        <div class="padding-sm">手机号码：{{resume.phone}}</div>
+        <div class="padding-sm">微信号：{{resume.wx}}</div>
+      </div>
     </div>
 
-    <text class="text-gray padding" style="font-size: 13px;">本页信息不会公开，联系方式仅特定条件下展示</text>
+    <!-- 填写表单部分 -->
+    <div v-else :class="part2">
+      <div class="title">请填写个人信息吧</div>
+      <lg-input
+        placeholderlg="请输入姓名"
+        titlelg="姓名"
+        typelg="text"
+        confirm-type="next"
+        v-model="user.name"
+      />
+      <lg-input
+        placeholderlg="请填写手机号码"
+        titlelg="手机"
+        typelg="number"
+        confirm-type="next"
+        v-model="user.phone"
+      />
 
-    <div class="flex padding justify-center">
-      <button class="cu-btn bg-blue round lg shadow commitbtn" @click="formSubmit">保存</button>
+      <lg-input
+        placeholderlg="请填写微信号"
+        titlelg="微信号"
+        typelg="text"
+        confirm-type="done"
+        v-model="user.wx"
+      />
+
+      <div class="flex solid-bottom padding justify-between">
+        <div style="font-size: 15px;">性别</div>
+        <switch class="switch-sex sex" checked @change="onChange"></switch>
+      </div>
+
+      <text class="text-gray padding" style="font-size: 13px;">本页信息不会公开，联系方式仅特定条件下展示</text>
+
+      <div class="flex padding justify-center">
+        <button class="cu-btn bg-blue round lg shadow commitbtn" @click="formSubmit">保存</button>
+      </div>
     </div>
   </div>
 </template>
@@ -53,6 +66,8 @@ export default {
   components: { LgInput },
   data() {
     return {
+      part1: "",
+      part2: "",
       user: {
         name: "awsdawd",
         phone: "",
@@ -61,13 +76,24 @@ export default {
       }
     };
   },
-  computed: {},
+  computed: {
+    resume() {
+      return this.$store.default.state.resume;
+    }
+  },
   onShow() {},
   onUnload() {
     Object.assign(this.$data, this.$options.data());
   },
 
   methods: {
+    changepart() {
+      this.part1 = "animated  fadeOutUp";
+      this.part2 = "animated  fadeInUp";
+      setTimeout(() => {
+        this.$store.default.state.resume.hasresume = false;
+      }, 500);
+    },
     onChange(e) {
       if (e.mp.detail.value) {
         this.user.sex = 1;
@@ -164,6 +190,22 @@ export default {
 }
 .sex {
   margin-left: 30rpx;
+}
+.card {
+  position: relative;
+  border-radius: 20rpx;
+  margin: auto;
+  height: 300rpx;
+  width: 85%;
+
+  margin-top: 150rpx;
+  color: white;
+}
+.write {
+  color: white;
+  position: absolute;
+  right: 20rpx;
+  top: 20rpx;
 }
 </style>
 

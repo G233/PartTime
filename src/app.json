@@ -3,6 +3,7 @@
     "pages/list/main",
     "pages/detail/main",
   
+    "pages/message/main",
     "pages/mine/main",
     "pages/enshrine/main",
     "pages/addjob/main"

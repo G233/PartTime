@@ -20,8 +20,8 @@ export default {
   data() {
     return {
       // 从vuex里面拿数据
-      StatusBar: this.$store.default.state.SystemInfo.StatusBar,
-      CustomBar: this.$store.default.state.SystemInfo.CustomBar
+      StatusBar: this.$storage.default.state.SystemInfo.StatusBar,
+      CustomBar: this.$storage.default.state.SystemInfo.CustomBar
     };
   },
   name: "cu-custom",

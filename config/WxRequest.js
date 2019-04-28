@@ -1,5 +1,5 @@
 import WxRequest from '../src/utils/wx-request/index'
-const store = require("../src/stores/globalStore");
+const store = require("../src/stores/storage");
 const Request = new WxRequest({
   baseURL: 'http://api.liuxiaogu.com/',
   method: 'POST',
