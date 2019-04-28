@@ -1,8 +1,10 @@
 {
   "pages": [
+    "pages/list/main",
+    "pages/detail/main",
+  
     "pages/message/main",
     "pages/mine/main",
-    "pages/list/main",
     "pages/enshrine/main",
     "pages/addjob/main"
   ],

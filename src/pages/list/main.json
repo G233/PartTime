@@ -1,13 +1,10 @@
 {
-
+  "navigationBarTitleText":"工大课兼",
   "usingComponents": {
-    "i-button": "../../static/iview/button/index",
-    "i-row": "../../static/iview/row/index",
-    "i-col": "../../static/iview/col/index",
-    "i-message": "../../static/iview/message/index",
-    "i-switch": "../../static/iview/switch/index",
     "i-tabs": "../../static/iview/tabs/index",
-    "i-tab": "../../static/iview/tab/index"
+    "i-tab": "../../static/iview/tab/index",
+    "i-card": "../../static/iview/card/index",
+    "i-icon": "../../static/iview/icon/index"
 
   }
 
