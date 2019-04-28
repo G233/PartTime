@@ -2,10 +2,8 @@
 
   "usingComponents": {
     "i-button": "../../static/iview/button/index",
-    "i-row": "../../static/iview/row/index",
-    "i-col": "../../static/iview/col/index",
-    "i-message": "../../static/iview/message/index",
-    "i-switch": "../../static/iview/switch/index"
+    "i-load-more": "../../static/iview/load-more/index"
+
 
   }
 

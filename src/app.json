@@ -1,6 +1,6 @@
 {
   "pages": [
-
+    "pages/message/main",
     "pages/mine/main",
     "pages/list/main",
     "pages/enshrine/main",
