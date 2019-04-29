@@ -1,6 +1,6 @@
 <template>
     <div>
-        <view style="padding:30rpx"><image :src="collection" class="collection" @click="collection"/></view>
+        <view style="padding:30rpx"><image :src="collection" class="collection" @click="collection1"/></view>
         <view class="title padding">{{list[0].name}} | {{list[0].choselei}}</view>
         <view class="pubtime1 padding">发布于 {{list[0].creatdate}}</view>
         <view class="money padding">{{list[0].salary}}/{{list[0].chosetime}}</view>
@@ -61,7 +61,7 @@ export default {
         want(){
             console.log('想要');
         },
-        collection(){
+        collection1(){
             console.log("soucang")
         }
     }

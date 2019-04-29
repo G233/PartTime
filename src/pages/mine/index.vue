@@ -50,7 +50,8 @@ export default {
         },
         {
           img: "../../static/images/add.png",
-          text: "关于我们"
+          text: "关于我们",
+          path:'../about/main'
         }
       ]
     };
