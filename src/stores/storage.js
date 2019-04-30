@@ -13,7 +13,8 @@ const store = new Vuex.Store({
     SystemInfo: {
       StatusBar: '',
       Custom: '',
-      CustomBar: ''
+      CustomBar: '',
+      windowHeight: ''
     },
   },
   mutations: {

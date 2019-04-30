@@ -14,11 +14,14 @@ export default {
     // 获取机型信息，将状态栏高度信息存入vuex
     async getSystemInfo() {
       const e = await this.$WX.getSystemInfo();
+      console.log(e);
       let SystemInfo = {
         StatusBar: "",
         Custom: "",
-        CustomBar: ""
+        CustomBar: "",
+        windowHeight: ""
       };
+      SystemInfo.windowHeight = e.windowHeight;
       SystemInfo.StatusBar = e.statusBarHeight;
       let custom = wx.getMenuButtonBoundingClientRect();
       SystemInfo.Custom = custom;

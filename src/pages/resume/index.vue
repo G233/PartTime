@@ -69,7 +69,7 @@ export default {
       part1: "",
       part2: "",
       user: {
-        name: "awsdawd",
+        name: "",
         phone: "",
         sex: 1,
         wx: ""
@@ -131,7 +131,7 @@ export default {
 
         wx: {
           required: "请填写微信号",
-          tel: "请填写正确的微信号"
+          minlength: "请填写正确的微信号"
         }
       };
 
