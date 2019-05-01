@@ -21,15 +21,15 @@
     <swiper :duration="duration" :current='current_scroll' @change="swiperchange"  style="height:990rpx;">
       <block v-for="item in tabs" :key="item.id" >
         <swiper-item>
-          <scroll-view scroll-y='true' @scroll="bindscroll" style="height:990rpx;">
-            <div v-for="(i,index_) in list" :key="index_" style="margin:30rpx 0;">
-              <i-card :title="works.title" :extra="works.money+'元'" @click="gotodetail">
+          <scroll-view scroll-y='true' @scroll="bindscroll" @scrolltolower="bindscrolltolower" style="height:990rpx;">
+            <div v-for="(item,index_) in list" :key="index_" style="margin:30rpx 0;">
+              <i-card :title="item.name" :extra="item.salary+'元'" @click="gotodetail(item._id)">
                 <view slot="content">
-                  {{works.time}} 
+                  {{item.details}} 
                 </view>
-                <view slot="footer">发布于：{{works.pubtime}}</view>
+                <view slot="footer">发布于：{{item.creatdate}}</view>
               </i-card>
-              <i-icon :type="type" size=25 :color="works.Collection?'blue':''" class="soucang" @click="changeCollection" />
+              <i-icon :type="type" size=25 :color="item.done?'blue':''" class="soucang" @click="changeCollection(item._id)" />
             </div>
           </scroll-view>
         </swiper-item>
@@ -46,14 +46,15 @@ export default {
   components: {},
   data() {
     return {
-      sortiron:'unfold',
-      sort:'顺序',
-      type:'collection',
-      flag:true,
-      list:[0,1,2,3,4,5,6,7,8,9],
-      current_scroll:'0',
-      color:'#03a9f4',
-      tabs:[
+      page:1,                     //加载job列表数量
+      list:[],                    //job信息列表
+      sortiron:'unfold',          //顺序倒序的iron
+      sort:'顺序',                //顺序倒序切换
+      type:'collection',          //收藏图片切换
+      flag:true,                  //添加job图标出现与消失切换
+      current_scroll:'0',         //导航栏、swiper切换
+      color:'#03a9f4',             //收藏图标收藏时颜色
+      tabs:[                      //导航栏列表
         {
           id:'0',
           name:'家教'
@@ -71,20 +72,12 @@ export default {
           name:'委托'
         }
       ],
-      works:{
-          title:'小学家教',
-          money:'1000',
-          time:'10点-11点',
-          openid:'111111',
-          Collection:false,
-          pubtime:'2019-04-24 13:50'
-        },
-      images:[
+      images:[                     //图片数组
         '../../static/images/add.png'
       ],
-      array: ['一天内', '一周内', '一月内', '半年内','全部'],
-      index: 4,
-      duration: 400
+      array: ['一天内', '一周内', '一月内', '半年内','全部'],//时间范围
+      index: 4,                    //按时间查找的范围选项0-4
+      duration: 400                //swiper配置属性
     };
   },
   computed: {
@@ -92,14 +85,17 @@ export default {
   },
 
   methods: {
+    //导航栏切换
     handleChangeScroll(e){
       //console.log(e)
       this.current_scroll= e;
     },
+    //swiper页面切换
     swiperchange(e){
       console.log(e.mp.detail.current);
       this.current_scroll=e.mp.detail.current;
     },
+    //add图标的消失与出现
     bindscroll(res){
       console.log(res.mp.detail.deltaY);
       if(res.mp.detail.deltaY<0){
@@ -113,35 +109,56 @@ export default {
         console.log('我出现了！')
       }
     },
+    //点击收藏事件
     changeCollection (){
-      this.works.Collection= !this.works.Collection;
+      this.getjobs();
     },
+    //按时间筛选事件
     bindPickerChange(res){
       console.log(res.mp.detail.value);
       this.index= res.mp.detail.value;
     },
+    //顺序倒序查找事件
     changesort(){
-      this.sort= this.sort=="顺序"?'倒叙':'顺序';
+      this.sort= this.sort=="顺序"?'倒序':'顺序';
       this.sortiron= this.sortiron=="unfold"?'packup':'unfold';
+      this.list.reverse();
     },
-    gotodetail(){
+    //跳转详情页
+    gotodetail(e){
       wx.navigateTo({
-        url: '../detail/main?id=1'
+        url: '../detail/main?id='+e
       })
     },
+    //跳转发布兼职页
     addjob(){
       wx.navigateTo({
         url: '../addjob/main'
       })
-    }
+    },
+    //获取职位列表
+    async getjobs(){
+      if(this.list.length!=0){ this.page++; }
+      let jobs = await this.$request.postRequest("/getjoblist", {
+          data: { page: this.page }
+        });
+      if(jobs.data.code==200){
+        this.list.push.apply(this.list,jobs.data.data.list);//新旧数据合并
+        console.log(this.list);
+      }else{
+        console.log("没有了")
+      }
+    },
+    //触底加载
+    bindscrolltolower(){
+      console.log("触底了");
+      this.getjobs();
+      }
   },
 
   created() {
-    
-  },
-  //onPageScroll(event) {
-  //  console.log(event.scrollTop);
-  //},
+    this.getjobs();
+  }
 };
 </script>
 

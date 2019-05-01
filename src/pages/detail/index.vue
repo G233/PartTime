@@ -32,6 +32,7 @@
 export default {
     data() {
         return {
+            job_id:'',
             collection:"../../static/images/collection.png",
             list:[
                 {
@@ -56,7 +57,11 @@ export default {
     },
      computed: {
   },
-    created(){},
+    onLoad(){
+        //console.log(this.$root.$mp.query.id);
+        this.job_id= this.$root.$mp.query.id;
+        console.log("跳转过来了",this.job_id)
+    },
     methods:{
         want(){
             console.log('想要');
