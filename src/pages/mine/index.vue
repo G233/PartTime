@@ -46,7 +46,8 @@ export default {
         },
         {
           img: "../../static/images/add.png",
-          text: "意见与反馈"
+          text: "意见与反馈",
+          path:"../suggestion/main"
         },
         {
           img: "../../static/images/add.png",

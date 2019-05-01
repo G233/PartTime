@@ -136,7 +136,9 @@ export default {
     }
   },
 
-  created() {},
+  created() {
+    
+  },
   //onPageScroll(event) {
   //  console.log(event.scrollTop);
   //},
