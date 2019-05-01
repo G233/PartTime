@@ -8,7 +8,7 @@
           <div class="text-df padding">{{item.details}}</div>
         </div>
       </div>
-      <i-load-more :loading="loding"/>
+      <i-load-more tip="我是有底线的" :loading="loding"/>
     </div>
   </div>
 </template>
