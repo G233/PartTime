@@ -16,17 +16,21 @@ const store = new Vuex.Store({
       CustomBar: '',
       windowHeight: ''
     },
+    tabs: ''
   },
   mutations: {
     //登录
     login: (state, data) => {
       state.openId = data
     },
-    // 获取系统顶栏信息，实现自定义顶栏
+    // 获取系统信息
     setSystemInfo: (state, data) => {
       state.SystemInfo = data
-      console.log(state.SystemInfo)
+
     },
+    gettabs: (state, data) => {
+      state.tabs = data
+    }
   },
   plugins: [createPersistedState({
       storage: {

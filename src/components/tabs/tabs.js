@@ -10,7 +10,7 @@ Component({
   properties: {
     items: {
       type: Array,
-      value: ['item1', 'item2', 'item3', 'item4'],
+      value: ['item1', 'item2', 'item3', 'item4', 'a', 'ad', 'ads'],
       observer: function (newVal) {
         if (newVal && newVal.length < 5) {
           this.setData({
