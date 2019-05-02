@@ -1,19 +1,16 @@
 <template>
   <div>
-    <!-- <div style=" width: 100%;">
+    <div style=" width: 100%;">
       <e-tabs selectColor="#3c87cc" theme="smallBar"></e-tabs>
-    </div> -->
+    </div>
     <!--导航栏-->
-    <i-tabs :current="current_scroll" :color="color">
-      <i-tab
-        v-for="item in tabs"
-        :key="item.id"
-        :title="item.name"
-        @click="handleChangeScroll(item.id)"
-      ></i-tab>
+    <i-tabs :current="current_scroll" :color="color" i-class="shadow">
+      <div v-for="(item, index) in tabs" :key="index">
+        <i-tab :title="item.name" :key="index" @click="handleChangeScroll(index)"></i-tab>
+      </div>
     </i-tabs>
-    <!--筛选-->
-    <div class="choose">
+
+    <!-- <div class="choose">
       <view>
         <picker @change="bindPickerChange" :value="index" :range="array">
           <view>
@@ -26,8 +23,8 @@
         {{sort}}
         <i-icon size="20" :type="sortiron"/>
       </view>
-    </div>
-    <!--内容-->
+    </div>-->
+
     <swiper
       :duration="duration"
       :current="current_scroll"
@@ -54,7 +51,7 @@
         </swiper-item>
       </block>
     </swiper>
-    <div :class="addA">    <image v-if="flag" class="image1" :src="images[0]" @click="addjob"></image></div>
+    <img :class="addimg" :src="images[0]" @click="addjob">
   </div>
 </template>
 
@@ -66,32 +63,15 @@ export default {
   data() {
     return {
       taplist: ["aa", "aa", "aa", "asa", "adaws"],
-      addA: "", //添加按钮动画控制
+      addimg: ["image1", "shadow-lg", ""], //添加按钮动画控制
       sortiron: "unfold",
       sort: "顺序",
       type: "collection",
       flag: true,
-      list: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9,10,11,12,13,14,15],
-      current_scroll: "0",
+      list: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15],
+      current_scroll: 0,
       color: "#03a9f4",
-      tabs: [
-        {
-          id: "0",
-          name: "家教"
-        },
-        {
-          id: "1",
-          name: "服务"
-        },
-        {
-          id: "2",
-          name: "跑腿"
-        },
-        {
-          id: "3",
-          name: "委托"
-        }
-      ],
+
       works: {
         title: "小学家教",
         money: "1000",
@@ -107,34 +87,45 @@ export default {
     };
   },
   computed: {
+    tabs() {
+      return this.$storage.default.state.tabs;
+    },
     listheight() {
-            console.log(this.$storage.default.state.SystemInfo.windowHeight);
-      return 'height:'+(this.$storage.default.state.SystemInfo.windowHeight-65)+'px'
-
+      return (
+        "height:" +
+        (this.$storage.default.state.SystemInfo.windowHeight - 65) +
+        "px"
+      );
     }
   },
 
   methods: {
     handleChangeScroll(e) {
-      //console.log(e)
+      console.log(e);
       this.current_scroll = e;
     },
     swiperchange(e) {
-      console.log("这是aw");
       this.current_scroll = e.mp.detail.current;
     },
     bindscroll(res) {
-      console.log(res.mp.detail.deltaY);
       if (res.mp.detail.deltaY < 0) {
         //上拉
         if (this.flag) {
-          this.addA = "animated fadeOutRightBig";
+          console.log("上拉");
+          this.addimg[2] = "donghuaH";
+          console.log(this.addimg);
+
           this.flag = false;
         }
       } else {
         // 下拉
-        this.addA = "animated fadeInRightBig";
-        if (!this.flag) this.flag = true;
+
+        if (!this.flag) {
+          this.addimg[2] = "donghuaS";
+          console.log("下滑");
+          console.log(this.addimg);
+          this.flag = true;
+        }
       }
     },
     changeCollection() {
@@ -157,26 +148,30 @@ export default {
         url: "../addjob/main"
       });
     }
-  },
-
-  created() {}
-  //onPageScroll(event) {
-  //  console.log(event.scrollTop);
-  //},
+  }
+  //  onLoad()
 };
 </script>
 
 <style scoped>
-body {
-  background: #3e5a92;
-}
 .image1 {
-  width: 80rpx;
-  height: 80rpx;
-  position: fixed;
-  right: 40rpx;
-  bottom: 40rpx;
+  width: 100rpx;
+  height: 100rpx;
+  border-radius: 50%;
+  background-color: rgb(255, 255, 255);
+  position: absolute;
+  transition: right 0.5s;
+  right: 50rpx;
+  bottom: 50rpx;
   z-index: 1000;
+}
+.donghuaS {
+  animation: addB 0.5s;
+  animation-fill-mode: forwards;
+}
+.donghuaH {
+  animation: addA 0.5s;
+  animation-fill-mode: forwards;
 }
 .choose {
   color: #000;
@@ -190,7 +185,20 @@ body {
   top: 110rpx;
   z-index: 10;
 }
-page {
-  height: 100%;
+@keyframes addA {
+  from {
+    transform: translateX(0px);
+  }
+  to {
+    transform: translateX(100px);
+  }
+}
+@keyframes addB {
+  from {
+    transform: translateX(100px);
+  }
+  to {
+    transform: translateX(0px);
+  }
 }
 </style>

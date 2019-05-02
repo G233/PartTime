@@ -1,7 +1,8 @@
 {
   "pages": [
-    "pages/detail/main",
     "pages/list/main",
+    "pages/detail/main",
+
     "pages/mine/main",
     "pages/enshrine/main",
     "pages/addjob/main"
@@ -16,14 +17,14 @@
     "navigationBarBackgroundColor": "#03a9f4",
     "navigationBarTitleText": "工大课兼",
     "navigationBarTextStyle": "white"
-
   },
   "tabBar": {
     "color": "#838383",
     "selectedColor": "#3c87cc",
     "position": "bottom",
     "borderStyle": "white",
-    "list": [{
+    "list": [
+      {
         "pagePath": "pages/list/main",
         "text": "招人",
         "iconPath": "./static/images/home.png",
@@ -41,10 +42,6 @@
         "iconPath": "./static/images/user.png",
         "selectedIconPath": "./static/images/user1.png"
       }
-
     ]
   }
-
-
-
 }

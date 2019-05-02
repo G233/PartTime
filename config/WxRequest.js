@@ -17,8 +17,9 @@ Request.interceptors.use({
   // 请求数据
   request(request) {
     //给每个请求附上openId
-    request.data.openId = store.default.state.openId
-    console.log(request.data)
+    if (request.data) {
+      request.data.openId = store.default.state.openId
+    }
     return request
   },
   // 请求失败

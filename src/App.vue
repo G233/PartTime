@@ -6,15 +6,18 @@ export default {
   onLaunch: function() {
     //用户登录流程处理
     this.checklogin();
+    //获取机型信息适配首页高度
     this.getSystemInfo();
+    // 获取首页分类信息
+    this.gettabs();
   },
 
   //判断是否授权，获取用户信息
   methods: {
-    // 获取机型信息，将状态栏高度信息存入vuex
+    // 获取机型信息，将信息存入vuex
     async getSystemInfo() {
       const e = await this.$WX.getSystemInfo();
-      console.log(e);
+
       let SystemInfo = {
         StatusBar: "",
         Custom: "",
@@ -40,9 +43,18 @@ export default {
         let openid = await this.$request.request("/login", {
           data: { code: res.code }
         });
-
         this.$storage.default.commit("login", openid.data.data.openId);
       }
+    },
+    async gettabs() {
+      this.$request
+        .request("/getlei")
+        .then(res => {
+          this.$storage.default.commit("gettabs", res.data.data);
+        })
+        .catch(res => {});
+
+      //  this.$storage.default.commit("gettabs", openid.data.data.openId);
     }
   }
 };

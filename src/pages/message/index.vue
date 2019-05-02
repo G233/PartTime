@@ -25,9 +25,7 @@ export default {
       page: 0
     };
   },
-  computed: {
-    time() {}
-  },
+  computed: {},
   //监听上拉触底，加载新数据
   onReachBottom() {
     this.page += 1;
@@ -55,7 +53,7 @@ export default {
 };
 </script>
 
-<style s >
+<style  >
 .msgc {
   background-color: white;
   border-radius: 10rpx;
