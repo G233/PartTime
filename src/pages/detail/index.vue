@@ -1,6 +1,6 @@
 <template>
     <div>
-        <view style="padding:30rpx"><image :src="collection" class="collection" @click="collection"/></view>
+        <view style="padding:30rpx"><image :src="collection" class="collection" @click="collection1"/></view>
         <view class="title padding">{{list[0].name}} | {{list[0].choselei}}</view>
         <view class="pubtime1 padding">发布于 {{list[0].creatdate}}</view>
         <view class="money padding">{{list[0].salary}}/{{list[0].chosetime}}</view>
@@ -11,20 +11,7 @@
         <i-row class="margin">
             <i-col span=4 offset=10 ><view class="wantit" @click="want">想要</view></i-col>
         </i-row>
-
-        <!--<i-card i-class="card" :title="list[0].name" :extra="list[0].choselei">
-            <view slot="content">
-                <view class="pubtime">发布于 {{list[0].creatdate}}</view>
-                <view class="margin">薪资: {{list[0].salary}}/{{list[0].chosetime}}</view>
-                <view class="margin">地点: {{list[0].site.address}}</view>
-                <view >附注：</view>
-                <view >{{list[0].details}}</view>
-            </view>
-        </i-card>
-        <i-row class="margin">
-            <i-col span="12" ><i-button @click="want">想要</i-button></i-col>
-            <i-col span="12" ><i-button @click="collection">收藏</i-button></i-col>
-        </i-row>-->
+        <i-toast id="toast" />
     </div>
 </template>
 
@@ -32,6 +19,7 @@
 export default {
     data() {
         return {
+            job_id:'',
             collection:"../../static/images/collection.png",
             list:[
                 {
@@ -56,13 +44,33 @@ export default {
     },
      computed: {
   },
-    created(){},
+    onLoad(){
+        //console.log(this.$root.$mp.query.id);
+        this.job_id= this.$root.$mp.query.id;
+        console.log("跳转过来了",this.job_id)
+    },
     methods:{
-        want(){
+        async want(){
             console.log('想要');
+            
         },
-        collection(){
-            console.log("soucang")
+        async collection1(){
+            console.log("soucang");
+            let msg= await this.$request.postRequest("/addenshrine", {
+            data: { jobId: this.job_id }
+            });
+            console.log(msg.data.code);
+            if(msg.data.code==200){
+                $Toast({
+                    content: '收藏成功！',
+                    type: 'success'
+                });
+            }else{
+                $Toast({
+                    content: '收藏失败，等等再试吧!',
+                    type: 'error'
+                });
+            }
         }
     }
 }

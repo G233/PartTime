@@ -1,9 +1,12 @@
 {
   "pages": [
+    "pages/suggestion/main",
     "pages/list/main",
     "pages/detail/main",
 
     "pages/mine/main",
+    "pages/about/main",
+    "pages/detail/main",
     "pages/enshrine/main",
     "pages/addjob/main"
   ],
