@@ -31,6 +31,8 @@
               </i-card>
               <i-icon :type="type" size=25 :color="item.done?'blue':''" class="soucang" @click="changeCollection(item._id)" />
             </div>
+            <i-load-more v-if="tipflag" :tip="tip[1].tip" :loading="tip[1].loading" />
+            <i-load-more v-if="!tipflag" :tip="tip[0].tip" :loading="tip[0].loading" />
           </scroll-view>
         </swiper-item>
       </block>
@@ -46,7 +48,18 @@ export default {
   components: {},
   data() {
     return {
-      page:1,                     //加载job列表数量
+      tipflag:false,
+      tip:[
+        {
+          tip:'加载中',
+          loading:true
+        },
+        {
+          tip:'没有了',
+          loading:false
+        }
+      ],
+      page:0,                     //加载job列表数量
       list:[],                    //job信息列表
       sortiron:'unfold',          //顺序倒序的iron
       sort:'顺序',                //顺序倒序切换
@@ -140,14 +153,24 @@ export default {
     async getjobs(){
       if(this.list.length!=0){ this.page++; }
       let jobs = await this.$request.postRequest("/getjoblist", {
-          data: { page: this.page }
+          data: { page: this.page,
+                  lei:"家教"
+          }
         });
       if(jobs.data.code==200){
         this.list.push.apply(this.list,jobs.data.data.list);//新旧数据合并
         console.log(this.list);
       }else{
-        console.log("没有了")
+        console.log("没有了");
+        this.tipflag= true;
       }
+    },
+    //获取职位分类
+    async getlei(){
+      let lei= await this.$request.postRequest("/getlei",{data:{}});
+      console.log('获取类');
+      //this.tabs= lei.data.data
+      console.log(lei.data)
     },
     //触底加载
     bindscrolltolower(){
@@ -156,7 +179,8 @@ export default {
       }
   },
 
-  created() {
+  onLoad() {
+    this.getlei();
     this.getjobs();
   }
 };
@@ -169,10 +193,29 @@ body{
 .image1{
   width: 80rpx;
   height: 80rpx;
+  border: 1rpx solid #000;
+  border-radius: 50%;
   position: fixed;
   right: 40rpx;
   bottom: 40rpx;
   z-index: 1000;
+}
+.images2{
+  width: 80rpx;
+  height: 80rpx;
+  border: 1rpx solid #000;
+  border-radius: 50%;
+  position: fixed;
+  right: 40rpx;
+  bottom: 40rpx;
+  z-index: 1000;
+  animation: myfirst 2s;
+  animation-fill-mode : forwards;
+}
+@keyframes myfirst
+{
+from {opacity: 1;}
+to {opacity: 0;right:-3rpx;}
 }
 .choose{
   color: #000;
