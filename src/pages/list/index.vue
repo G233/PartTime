@@ -47,6 +47,8 @@
                 @click="changeCollection"
               />
             </div>
+            <i-load-more v-if="tipflag" :tip="tip[1].tip" :loading="tip[1].loading" />
+            <i-load-more v-if="!tipflag" :tip="tip[0].tip" :loading="tip[0].loading" />
           </scroll-view>
         </swiper-item>
       </block>
