@@ -38,7 +38,8 @@ export default {
         },
         {
           img: "../../static/images/add.png",
-          text: "我的发布"
+          text: "我的发布",
+          path:'../myadd/main'
         },
         {
           img: "../../static/images/add.png",

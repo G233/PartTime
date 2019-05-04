@@ -1,8 +1,9 @@
 {
   "pages": [
+    "pages/myadd/main",
+    "pages/mine/main",
     "pages/suggestion/main",
     "pages/list/main",
-    "pages/mine/main",
     "pages/about/main",
     "pages/detail/main",
     "pages/enshrine/main",
@@ -17,7 +18,8 @@
     "backgroundTextStyle": "light",
     "navigationBarBackgroundColor": "#03a9f4",
     "navigationBarTitleText": "工大课兼",
-    "navigationBarTextStyle": "white"
+    "navigationBarTextStyle": "white",
+    "backgroundColor":"#f8f8f9"
 
   },
   "tabBar": {

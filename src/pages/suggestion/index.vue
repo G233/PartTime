@@ -1,14 +1,14 @@
 <template >
-    <div style="margin-top:50rpx;">
+    <div style="padding:50rpx 30rpx;">
         <view class="tip">请将您的意见反馈给我们，谢谢！</view>
         <view class="cu-form-group margin-top">
-            <textarea maxlength="-1" v-model="suggestion" placeholder="......" style="height:400rpx;"></textarea>
+            <textarea maxlength="-1" v-model="suggestion" placeholder="......" class="textarea"></textarea>
         </view>
+        <view style="height:50rpx;"></view>
         <i-row>
-            <i-col span="4" offset="6"><button class="cu-btn round button" @click="qingchu">重置</button></i-col>
-            <i-col span="4"  offset="4"><button class="cu-btn round button" @click="tijiao">提交</button></i-col>
+            <i-col span="4" offset="6"><button class="cu-btn round sm shadow line-blue" @click="qingchu">重置</button></i-col>
+            <i-col span="4" offset="4"><button class="cu-btn round sm shadow line-blue" @click="tijiao">提交</button></i-col>
         </i-row>
-        <i-toast id="toast" />
     </div>
 </template>
 <script>
@@ -45,20 +45,18 @@ export default {
 </script>
 
 <style scoped>
-.button{
-    background: white;
-    color: #03a9f4;
-    border: 1rpx solid #03a9f4;
-    
-}
 .tip{
     font-size: 20rpx;
     color: #03a9f4;
     margin-left: 40rpx;
 }
-page {
+div{
 width: 100%;
-height: 100%;
+height: 1204rpx;
 background-color: #f8f8f9;
+}
+.textarea{
+    border-radius: 5rpx;
+    height: 400rpx;
 }
 </style>

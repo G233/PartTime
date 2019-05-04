@@ -1,5 +1,5 @@
 {
-    "navigationBarTitleText":"关于",
+    "navigationBarTitleText":"意见反馈",
     "usingComponents": {
         "i-row": "../../static/iview/row/index",
         "i-col": "../../static/iview/col/index",
