@@ -29,7 +29,7 @@ Request.interceptors.use({
   },
   // 响应数据
   response(response) {
-    console.log(response.data)
+
 
     return response
   },

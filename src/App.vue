@@ -4,12 +4,21 @@
 <script>
 export default {
   onLaunch: function() {
+    //初始化职位列表数据结构
+
     //用户登录流程处理
     this.checklogin();
     //获取机型信息适配首页高度
     this.getSystemInfo();
     // 获取首页分类信息
     this.gettabs();
+    for (let x of this.$storage.default.state.tabs) {
+      this.$store.default.state.joblist[x.name] = [];
+    }
+    this.$store.default.dispatch(
+      "getjoblist",
+      this.$storage.default.state.tabs
+    );
   },
 
   //判断是否授权，获取用户信息
@@ -46,15 +55,11 @@ export default {
         this.$storage.default.commit("login", openid.data.data.openId);
       }
     },
+    // 获取tab栏分类信息
     async gettabs() {
-      this.$request
-        .request("/getlei")
-        .then(res => {
-          this.$storage.default.commit("gettabs", res.data.data);
-        })
-        .catch(res => {});
-
-      //  this.$storage.default.commit("gettabs", openid.data.data.openId);
+      this.$request.request("/getlei").then(res => {
+        this.$storage.default.commit("gettabs", res.data.data);
+      });
     }
   }
 };
