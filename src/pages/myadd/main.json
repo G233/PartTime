@@ -1,6 +1,11 @@
 {
     "navigationBarTitleText":"我的发布",
     "usingComponents": {
-        "i-swipeout": "../../static/iview/swipeout/index"
+        "i-card": "../../static/iview/card/index",
+        "i-modal": "../../static/iview/modal/index",
+        "i-message": "../../static/iview/message/index",
+        "i-swipeout": "../../static/iview/swipeout/index",
+        "i-cell":"../../static/iview/cell/index",
+        "i-action-sheet": "../../static/iview/action-sheet/index"
     }
 }

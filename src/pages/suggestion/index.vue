@@ -9,9 +9,12 @@
             <i-col span="4" offset="6"><button class="cu-btn round sm shadow line-blue" @click="qingchu">重置</button></i-col>
             <i-col span="4" offset="4"><button class="cu-btn round sm shadow line-blue" @click="tijiao">提交</button></i-col>
         </i-row>
+        <i-message id="message" />
     </div>
 </template>
 <script>
+const { $Message } = require("../../../static/iview/base/index");
+
 export default {
     data(){
         return{
@@ -25,18 +28,21 @@ export default {
             this.suggestion= '';
             console.log('清除了！');
         },
-        async tijiao(){
+        tijiao(){
             if(this.suggestion==''){
                 console.log('无效的提交');
+                $Message({
+                    content: '内容不能为空哦',
+                    type: 'warning'
+                });
             }else{
             //let res= await this.$request.postRequest("");
             //console.log(res.data.code);
                 console.log('提交成功');
-                wx.showToast({
-                title: '成功',
-                icon: 'success',
-                duration: 2000
-                })
+                $Message({
+                    content: '提交成功了哦！',
+                    type: 'success'
+                });
                 this.qingchu();
            }
         }
