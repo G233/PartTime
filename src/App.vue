@@ -10,10 +10,21 @@ export default {
     this.getSystemInfo();
     // 获取首页分类信息
     this.gettabs();
+    // 加载首页初始数据
+    this.lodinglist();
   },
 
   //判断是否授权，获取用户信息
   methods: {
+    lodinglist() {
+      for (let x of this.$storage.default.state.tabs) {
+        this.$store.default.state.joblist[x.name] = [];
+      }
+      this.$store.default.dispatch(
+        "getjoblist",
+        this.$storage.default.state.tabs
+      );
+    },
     // 获取机型信息，将信息存入vuex
     async getSystemInfo() {
       const e = await this.$WX.getSystemInfo();
@@ -46,15 +57,11 @@ export default {
         this.$storage.default.commit("login", openid.data.data.openId);
       }
     },
+    // 获取tab栏分类信息
     async gettabs() {
-      this.$request
-        .request("/getlei")
-        .then(res => {
-          this.$storage.default.commit("gettabs", res.data.data);
-        })
-        .catch(res => {});
-
-      //  this.$storage.default.commit("gettabs", openid.data.data.openId);
+      this.$request.request("/getlei").then(res => {
+        this.$storage.default.commit("gettabs", res.data.data);
+      });
     }
   }
 };

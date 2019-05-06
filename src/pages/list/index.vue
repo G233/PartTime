@@ -1,8 +1,7 @@
 <template>
   <div>
-    <div style=" width: 100%;">
-      <e-tabs selectColor="#3c87cc" theme="smallBar"></e-tabs>
-    </div>
+    <!-- <e-tabs selectColor="#3c87cc" theme="smallBar"></e-tabs> -->
+
     <!--导航栏-->
     <i-tabs :current="current_scroll" :color="color" i-class="shadow">
       <div v-for="(item, index) in tabs" :key="index">
@@ -31,24 +30,26 @@
       @change="swiperchange"
       :style="listheight"
     >
-      <block v-for="item in tabs" :key="item.id">
+      <block v-for="item1 in tabs" :key="item1._id">
         <swiper-item>
-          <scroll-view scroll-y="true" @scroll="bindscroll" :style="listheight">
-            <div v-for="(i,index_) in list" :key="index_" style="margin:30rpx 0;">
-              <i-card :title="works.title" :extra="works.money+'元'" @click="gotodetail">
-                <view slot="content">{{works.time}}</view>
-                <view slot="footer">发布于：{{works.pubtime}}</view>
+          <scroll-view
+            lower-threshold="30"
+            scroll-y="true"
+            @scroll="bindscroll"
+            @scrolltolower="loaderjob(item1.name)"
+            :style="listheight"
+          >
+            <div v-for="(item, _index) in job[item1.name]" :key="_index" style="margin:30rpx 0;">
+              <i-card
+                :title="item.name"
+                :extra="item.salary+'/'+item.chosetime"
+                @click="gotodetail(item)"
+              >
+                <view slot="content">{{item.site.name}}</view>
+                <view slot="footer">发布于：{{item.creatdate}}</view>
               </i-card>
-              <i-icon
-                :type="type"
-                size="25"
-                :color="works.Collection?'blue':''"
-                class="soucang"
-                @click="changeCollection"
-              />
             </div>
-            <i-load-more v-if="tipflag" :tip="tip[1].tip" :loading="tip[1].loading" />
-            <i-load-more v-if="!tipflag" :tip="tip[0].tip" :loading="tip[0].loading" />
+            <i-load-more tip="真没了" :loading="loding"/>
           </scroll-view>
         </swiper-item>
       </block>
@@ -64,24 +65,15 @@ export default {
   components: {},
   data() {
     return {
-      taplist: ["aa", "aa", "aa", "asa", "adaws"],
+      fenglei: "",
       addimg: ["image1", "shadow-lg", ""], //添加按钮动画控制
       sortiron: "unfold",
       sort: "顺序",
       type: "collection",
       flag: true,
-      list: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15],
       current_scroll: 0,
       color: "#03a9f4",
 
-      works: {
-        title: "小学家教",
-        money: "1000",
-        time: "10点-11点",
-        openid: "111111",
-        Collection: false,
-        pubtime: "2019-04-24 13:50"
-      },
       images: ["../../static/images/add.png"],
       array: ["一天内", "一周内", "一月内", "半年内", "全部"],
       index: 4,
@@ -89,9 +81,16 @@ export default {
     };
   },
   computed: {
+    loding() {
+      return this.$store.default.state.joblistld;
+    },
     tabs() {
       return this.$storage.default.state.tabs;
     },
+    job() {
+      return this.$store.default.state.joblist;
+    },
+    //列表长度自适应
     listheight() {
       return (
         "height:" +
@@ -100,10 +99,10 @@ export default {
       );
     }
   },
+  watch: {},
 
   methods: {
     handleChangeScroll(e) {
-      console.log(e);
       this.current_scroll = e;
     },
     swiperchange(e) {
@@ -113,10 +112,7 @@ export default {
       if (res.mp.detail.deltaY < 0) {
         //上拉
         if (this.flag) {
-          console.log("上拉");
           this.addimg[2] = "donghuaH";
-          console.log(this.addimg);
-
           this.flag = false;
         }
       } else {
@@ -124,8 +120,6 @@ export default {
 
         if (!this.flag) {
           this.addimg[2] = "donghuaS";
-          console.log("下滑");
-          console.log(this.addimg);
           this.flag = true;
         }
       }
@@ -140,18 +134,41 @@ export default {
       this.sort = this.sort == "顺序" ? "倒叙" : "顺序";
       this.sortiron = this.sortiron == "unfold" ? "packup" : "unfold";
     },
-    gotodetail() {
-      wx.navigateTo({
-        url: "../detail/main?id=1"
-      });
+    //跳转详情页
+    gotodetail(e) {
+      this.$store.default.commit("changedetail", e);
+      this.$WX.navigateTo("../detail/main");
     },
     addjob() {
-      wx.navigateTo({
-        url: "../addjob/main"
-      });
+      this.$WX.navigateTo("../addjob/main");
+    },
+    // 加载函数
+    loaderjob(e) {
+      let data = {
+        name: e,
+        page: 0
+      };
+      for (let x of this.fenglei) {
+        if (x.name == e) {
+          data.page = x.page;
+        }
+      }
+
+      this.$store.default.commit("getjoblist", data);
+      for (let x of this.fenglei) {
+        if (x.name == e) {
+          x.page += 1;
+        }
+      }
+    }
+  },
+  onLoad() {
+    // 初始化一遍page
+    this.fenglei = this.tabs;
+    for (let x of this.fenglei) {
+      x.page = 1;
     }
   }
-  //  onLoad()
 };
 </script>
 
@@ -167,12 +184,14 @@ export default {
   bottom: 50rpx;
   z-index: 1000;
 }
+/* 按钮出现动画 */
 .donghuaS {
-  animation: addB 0.5s;
+  animation: addS 0.5s;
   animation-fill-mode: forwards;
 }
+/* 按钮隐藏动画 */
 .donghuaH {
-  animation: addA 0.5s;
+  animation: addH 0.5s;
   animation-fill-mode: forwards;
 }
 .choose {
@@ -187,7 +206,7 @@ export default {
   top: 110rpx;
   z-index: 10;
 }
-@keyframes addA {
+@keyframes addH {
   from {
     transform: translateX(0px);
   }
@@ -195,7 +214,7 @@ export default {
     transform: translateX(100px);
   }
 }
-@keyframes addB {
+@keyframes addS {
   from {
     transform: translateX(100px);
   }

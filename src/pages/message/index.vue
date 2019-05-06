@@ -35,7 +35,7 @@ export default {
     async getmsg() {
       this.loding = true;
       let msglist = await this.$request.request("/getmsg", {
-        data: { page: this.page }
+        data: {}
       });
       this.loding = false;
       for (let x of msglist.data.data.msglist) {

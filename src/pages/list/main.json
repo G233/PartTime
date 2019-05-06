@@ -5,7 +5,8 @@
     "i-tab": "../../static/iview/tab/index",
     "i-card": "../../static/iview/card/index",
     "i-icon": "../../static/iview/icon/index",
-    "e-tabs": "../../components/tabs/tabs"
+    "e-tabs": "../../components/tabs/tabs",
+    "i-load-more": "../../static/iview/load-more/index"
 
   }
 

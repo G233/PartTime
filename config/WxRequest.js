@@ -20,6 +20,7 @@ Request.interceptors.use({
     if (request.data) {
       request.data.openId = store.default.state.openId
     }
+    console.log(request.data)
     return request
   },
   // 请求失败
@@ -29,7 +30,7 @@ Request.interceptors.use({
   },
   // 响应数据
   response(response) {
-    console.log(response.data)
+
 
     return response
   },

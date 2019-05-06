@@ -16,6 +16,7 @@ const store = new Vuex.Store({
       CustomBar: '',
       windowHeight: ''
     },
+    // 分类栏
     tabs: ''
   },
   mutations: {
@@ -28,6 +29,7 @@ const store = new Vuex.Store({
       state.SystemInfo = data
 
     },
+    // 设置分类栏
     gettabs: (state, data) => {
       state.tabs = data
     }

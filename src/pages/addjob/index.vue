@@ -14,8 +14,8 @@
       />
       <div class="cu-form-group solid-bottom">
         <div class="title">类别</div>
-        <picker @change="LeiChange" :value="index" :range="leidata">
-          <div class="picker">{{index?leidata[index]:'请选择职位类别'}}</div>
+        <picker @change="LeiChange" :value="index" :range="tabs" range-key="name">
+          <div class="picker">{{index?tabs[index].name:'请选择职位类别'}}</div>
         </picker>
       </div>
 
@@ -101,7 +101,6 @@ export default {
       },
 
       //类别相关
-      leidata: ["家教", "服务", "跑腿", "委托"],
 
       index: "",
       //薪资相关
@@ -111,6 +110,9 @@ export default {
   },
   computed: {
     //详情栏样式控制
+    tabs() {
+      return this.$storage.default.state.tabs;
+    },
     txtclass() {
       if (this.job.details) {
         return "value";
@@ -138,14 +140,14 @@ export default {
     },
     // 选择职位类别
     LeiChange(e) {
-      this.job.choselei = this.leidata[e.mp.detail.value];
+      this.job.choselei = this.tabs[e.mp.detail.value].name;
+      if (this.tabs[e.mp.detail.value].name == "委托") {
+        this.job.chosetime = "次";
+      }
       this.index = e.mp.detail.value;
     },
     // 选择薪资单位
     TimeChange(e) {
-      if (this.timedata[e.mp.detail.value] == "委托") {
-        this.job.chosetime = "次";
-      }
       this.job.chosetime = this.timedata[e.mp.detail.value];
       this.index2 = e.mp.detail.value;
     },

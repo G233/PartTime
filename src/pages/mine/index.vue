@@ -1,5 +1,3 @@
-
-
 <template>
   <div>
     <i-message id="message"/>
@@ -37,7 +35,8 @@ export default {
         },
         {
           img: "../../static/images/add.png",
-          text: "我的发布"
+          text: "我的发布",
+          path:'../test/main'
         },
         {
           img: "../../static/images/add.png",
@@ -101,6 +100,7 @@ export default {
   z-index: 1;
 }
 .userimg {
+      overflow:hidden;  
   position: absolute;
   height: 160rpx;
   width: 160rpx;
@@ -137,7 +137,5 @@ export default {
   right:0px;
   position:absolute;
 }
-.dothide{
- 
-}
+
 </style>

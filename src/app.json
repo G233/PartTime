@@ -1,11 +1,10 @@
 {
   "pages": [
-    "pages/suggestion/main",
-    "pages/list/main",
-    "pages/detail/main",
 
+    "pages/list/main",
     "pages/mine/main",
     "pages/about/main",
+    "pages/suggestion/main",
     "pages/detail/main",
     "pages/enshrine/main",
     "pages/addjob/main"
@@ -26,8 +25,7 @@
     "selectedColor": "#3c87cc",
     "position": "bottom",
     "borderStyle": "white",
-    "list": [
-      {
+    "list": [{
         "pagePath": "pages/list/main",
         "text": "招人",
         "iconPath": "./static/images/home.png",
