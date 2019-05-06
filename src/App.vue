@@ -4,25 +4,27 @@
 <script>
 export default {
   onLaunch: function() {
-    //初始化职位列表数据结构
-
     //用户登录流程处理
     this.checklogin();
     //获取机型信息适配首页高度
     this.getSystemInfo();
     // 获取首页分类信息
     this.gettabs();
-    for (let x of this.$storage.default.state.tabs) {
-      this.$store.default.state.joblist[x.name] = [];
-    }
-    this.$store.default.dispatch(
-      "getjoblist",
-      this.$storage.default.state.tabs
-    );
+    // 加载首页初始数据
+    this.lodinglist();
   },
 
   //判断是否授权，获取用户信息
   methods: {
+    lodinglist() {
+      for (let x of this.$storage.default.state.tabs) {
+        this.$store.default.state.joblist[x.name] = [];
+      }
+      this.$store.default.dispatch(
+        "getjoblist",
+        this.$storage.default.state.tabs
+      );
+    },
     // 获取机型信息，将信息存入vuex
     async getSystemInfo() {
       const e = await this.$WX.getSystemInfo();

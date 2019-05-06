@@ -59,12 +59,14 @@ export default {
   },
   methods: {
     async want() {
-      console.log("想要");
+      let msg = await this.$request.postRequest("/addwant", {
+        data: { jobId: this.job._id }
+      });
+      console.log(this.job);
     },
     async collection1() {
-      console.log("soucang");
       let msg = await this.$request.postRequest("/addenshrine", {
-        data: { jobId: this.job_id }
+        data: { jobId: this.job._id }
       });
       console.log(msg.data.code);
       if (msg.data.code == 200) {

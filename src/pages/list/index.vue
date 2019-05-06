@@ -112,10 +112,7 @@ export default {
       if (res.mp.detail.deltaY < 0) {
         //上拉
         if (this.flag) {
-          console.log("上拉");
           this.addimg[2] = "donghuaH";
-          console.log(this.addimg);
-
           this.flag = false;
         }
       } else {
@@ -123,8 +120,6 @@ export default {
 
         if (!this.flag) {
           this.addimg[2] = "donghuaS";
-          console.log("下滑");
-          console.log(this.addimg);
           this.flag = true;
         }
       }
@@ -139,6 +134,7 @@ export default {
       this.sort = this.sort == "顺序" ? "倒叙" : "顺序";
       this.sortiron = this.sortiron == "unfold" ? "packup" : "unfold";
     },
+    //跳转详情页
     gotodetail(e) {
       this.$store.default.commit("changedetail", e);
       this.$WX.navigateTo("../detail/main");
@@ -146,6 +142,7 @@ export default {
     addjob() {
       this.$WX.navigateTo("../addjob/main");
     },
+    // 加载函数
     loaderjob(e) {
       let data = {
         name: e,
@@ -171,7 +168,6 @@ export default {
     for (let x of this.fenglei) {
       x.page = 1;
     }
-    //初始加载首页数据
   }
 };
 </script>

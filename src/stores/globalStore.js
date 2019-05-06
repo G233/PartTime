@@ -17,8 +17,11 @@ const store = new Vuex.Store({
       phone: '',
       sex: ''
     },
+    // 首页职位列表
     joblist: {},
+    // 详情页数据
     detail: '',
+    // 首页加载状态
     joblistld: false
   },
   mutations: {
@@ -33,7 +36,7 @@ const store = new Vuex.Store({
     },
     //获取首页职位列表
     getjoblist: async (state, data) => {
-      state.joblistld = !state.joblistld
+      state.joblistld = true
       let res = await vm.$request
         .request("/getjoblist", {
           data: {
@@ -45,7 +48,7 @@ const store = new Vuex.Store({
 
       state.joblist[data.name].push.apply(state.joblist[data.name], res.data.data);
       // state.joblist[data.name].push(res.data.data)
-      state.joblistld = !state.joblistld
+      state.joblistld = false
 
 
 
