@@ -28,15 +28,15 @@ export default {
   computed: {},
   //监听上拉触底，加载新数据
   onReachBottom() {
-    this.page += 1;
     this.getmsg();
   },
   methods: {
     async getmsg() {
       this.loding = true;
       let msglist = await this.$request.request("/getmsg", {
-        data: {}
-      });
+        data: {page:this.page}
+      }); 
+    this.page += 1;
       this.loding = false;
       for (let x of msglist.data.data.msglist) {
         x.date = x.date.split("T")[0];

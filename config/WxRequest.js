@@ -19,6 +19,10 @@ Request.interceptors.use({
     //给每个请求附上openId
     if (request.data) {
       request.data.openId = store.default.state.openId
+    }else{
+      request.data = {
+        openId: store.default.state.openId
+      }
     }
     console.log(request.data)
     return request

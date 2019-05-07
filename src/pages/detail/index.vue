@@ -1,7 +1,8 @@
 <template>
   <div>
     <view style="padding:30rpx">
-      <image :src="collection" class="collection" @click="collection1"></image>
+      <image v-if="!flagcollection" :src="collectionimages[0]" class="collection" @click="collectionadd"></image>
+      <image v-if="flagcollection" :src="collectionimages[1]" class="collection" @click="collectioncancel"></image>
     </view>
     <view class="title padding">{{job.name}} | {{job.choselei}}</view>
     <view class="pubtime1 padding">发布于 {{job.creatdate}}</view>
@@ -15,8 +16,9 @@
       <view class="money" style="padding-left: 40rpx;">{{job.details}}</view>
     </div>
     <i-row class="margin">
-      <i-col span="4" offset="10">
-        <view class="wantit" @click="want">想要</view>
+      <i-col span="5" offset="10">
+        <view v-if="!flagwant" class="wantit" @click="addwant">想要</view>
+        <view v-if="flagwant" class="wantit" @click="cancelwant" >已想要</view>
       </i-col>
     </i-row>
     <i-toast id="toast"/>
@@ -24,11 +26,17 @@
 </template>
 
 <script>
+const { $Toast } = require('../../../static/iview/base/index');
 export default {
   data() {
     return {
+      flagcollection:false,
+      flagwant:false,
       job_id: "",
-      collection: "../../static/images/collection.png",
+      collectionimages: [
+        "../../static/images/collection.png",
+        "../../static/images/star1.png"
+      ],
       list: [
         {
           site: {
@@ -53,35 +61,116 @@ export default {
   computed: {
       job(){
            return this.$store.default.state.detail;
-      }
+      },
+      // collection(){
+      //   if(this.flagcollection){
+      //     return this.collectionimages[1];
+      //   }else{
+      //     return this.collectionimages[0];
+      //   }
+      // }
   },
-  onLoad() {
+  onUnload() {
+    Object.assign(this.$data, this.$options.data());
+  },
+  async onLoad() {
+    let info = await this.$request.postRequest("/getDstatus", {
+      data:{ jobId : this.job._id}
+    });
+    console.log(info.data.code);
+    if(info.data.code==500){        //都有
+      this.flagcollection=this.flagwant= true;
+    }
+    if(info.data.code==400){      //已想要
+      this.flagwant= true;
+    }
+    if(info.data.code==300){       //已收藏
+      this.flagcollection= true;
+    }                    
+    console.log(this.flagcollection,this.flagwant);
   },
   methods: {
-    async want() {
+    //想要函数
+    async addwant() {
       let msg = await this.$request.postRequest("/addwant", {
         data: { jobId: this.job._id }
       });
+      console.log(msg.data.code,"addwant");
       console.log(this.job);
+      if (msg.data.code == 200) {
+        this.flagwant= true;
+          $Toast({
+            content: "想要已提交！",
+            type: "success"
+          });
+        } else {
+          $Toast({
+            content: "想要提交失败，等等再试吧!",
+            type: "error"
+          });
+        }
     },
-    async collection1() {
-      let msg = await this.$request.postRequest("/addenshrine", {
+    //取消想要函数
+    async cancelwant(){
+      let msg = await this.$request.postRequest("/deletewant", {
         data: { jobId: this.job._id }
       });
-      console.log(msg.data.code);
+      console.log(msg.data.code,"deletewant");
+      console.log(this.job);
       if (msg.data.code == 200) {
-        $Toast({
-          content: "收藏成功！",
-          type: "success"
+        this.flagwant= false;
+          $Toast({
+            content: "取消想要已提交！",
+            type: "success"
+          });
+        } else {
+          $Toast({
+            content: "取消想要提交失败，等等再试吧!",
+            type: "error"
+          });
+        }
+    },
+    //收藏函数
+    async collectionadd() {
+      if(!this.flagcollection){         //点击收藏
+        let msg = await this.$request.postRequest("/addenshrine", {
+          data: { jobId: this.job._id }
         });
-      } else {
-        $Toast({
-          content: "收藏失败，等等再试吧!",
-          type: "error"
+        console.log(msg.data.code,"addenshrine");
+        if (msg.data.code == 200) {
+          this.flagcollection= true;
+          $Toast({
+            content: "收藏成功！",
+            type: "success"
+          });
+        } else {
+          $Toast({
+            content: "收藏失败，等等再试吧!",
+            type: "error"
+          });
+        }
+      }
+      }, 
+      async collectioncancel() {                                 //取消收藏
+        console.log("gocancel")
+        let msg = await this.$request.postRequest("/deleteenshrine",{
+          data: {jobId: this.job._id }
         });
+        console.log(msg.data.code,"deleteenshrine");
+        if (msg.data.code == 200) {
+          this.flagcollection=false;
+            $Toast({
+              content: "取消收藏成功！",
+              type: "success"
+            });
+          } else {
+            $Toast({
+              content: "取消收藏失败，等等再试吧!",
+              type: "error"
+            });
+          }
       }
     }
-  }
 };
 </script>
 

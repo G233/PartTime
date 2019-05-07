@@ -1,13 +1,15 @@
 {
   "pages": [
     "pages/list/main",
+    "pages/enshrine/main",
     "pages/myadd/main",
     "pages/mine/main",
     "pages/about/main",
     "pages/suggestion/main",
     "pages/detail/main",
-    "pages/enshrine/main",
-    "pages/addjob/main"
+    "pages/addjob/main",
+    "pages/message/main",
+    "pages/resume/main"
   ],
   "permission": {
     "scope.userLocation": {
