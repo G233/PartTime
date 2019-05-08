@@ -21,6 +21,22 @@
         <view v-if="flagwant" class="wantit" @click="cancelwant" >已想要</view>
       </i-col>
     </i-row>
+
+    <view :class="show">
+      <view class="cu-dialog">
+          <view class="cu-bar bg-white justify-end">
+          <view class="content">提示</view>
+          </view>
+          <view class="padding-xl">
+          填写个人信息后即可提交申请
+          </view>
+          <view class="cu-bar bg-white">
+          <view class="action margin-0 flex-sub text-green solid-left" @click="hideModalcancel">取消</view>
+          <view class="action margin-0 flex-sub  solid-left" @click="hideModal">前往</view>
+          </view>
+      </view>
+      </view>
+
     <i-toast id="toast"/>
   </div>
 </template>
@@ -30,31 +46,13 @@ const { $Toast } = require('../../../static/iview/base/index');
 export default {
   data() {
     return {
+      visible: false,
       flagcollection:false,
       flagwant:false,
       job_id: "",
       collectionimages: [
         "../../static/images/collection.png",
         "../../static/images/star1.png"
-      ],
-      list: [
-        {
-          site: {
-            name: "天元区政府",
-            address: "湖南省株洲市天元区株洲大道北1",
-            latitude: "27.82681",
-            longitude: "113.08231"
-          },
-          creatdate: "2019-04-25T01:32:51.574Z",
-          _id: "5cc10ecd2e90310640c967fe",
-          details: "1232132武器",
-          name: "三年级家教",
-          salary: "123",
-          chosetime: "天",
-          choselei: "家教",
-          openId: "o1xKm5Ext9ZXfB1unuBtN3liTqBk",
-          __v: 0
-        }
       ]
     };
   },
@@ -62,6 +60,11 @@ export default {
       job(){
            return this.$store.default.state.detail;
       },
+      show() {
+            if(this.visible){
+                return 'cu-modal show';
+            }else return 'cu-modal';
+        }
       // collection(){
       //   if(this.flagcollection){
       //     return this.collectionimages[1];
@@ -74,6 +77,7 @@ export default {
     Object.assign(this.$data, this.$options.data());
   },
   async onLoad() {
+    //console.log(!this.$store.default.state.resume.hasresume);
     let info = await this.$request.postRequest("/getDstatus", {
       data:{ jobId : this.job._id}
     });
@@ -92,6 +96,12 @@ export default {
   methods: {
     //想要函数
     async addwant() {
+      console.log(this.$store.default.state.resume.hasresume)
+      if(this.$store.default.state.resume.hasresume){
+        console.log("你还没填资料啊");
+        this.visible= true;
+        return;
+      }
       let msg = await this.$request.postRequest("/addwant", {
         data: { jobId: this.job._id }
       });
@@ -169,7 +179,17 @@ export default {
               type: "error"
             });
           }
-      }
+      },
+      //取消提示
+      hideModalcancel(){
+            this.visible= false;
+            console.log("取消");
+        },
+      hideModal(){
+            this.visible= false;
+            console.log("前往");
+            this.$WX.navigateTo("../resume/main");
+        },
     }
 };
 </script>

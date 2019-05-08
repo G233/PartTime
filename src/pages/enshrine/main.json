@@ -3,6 +3,8 @@
   "usingComponents": {
       "i-cell":"../../static/iview/cell/index",
       "i-message": "../../static/iview/message/index",
-      "i-tag": "../../static/iview/tag/index"
+      "i-tag": "../../static/iview/tag/index",
+      "i-row": "../../static/iview/row/index",
+      "i-col": "../../static/iview/col/index"
   }
 }

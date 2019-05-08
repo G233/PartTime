@@ -1,33 +1,28 @@
 <template>
     <div>
-        <view class="tip">tip:长按可删除 
+        <view class="tip">tip:长按可删除或取消删除 
             <i-tag class="i-tags" name="标签一" color="blue"@click="refresh" style="float:right;padding-right:40rpx;">刷新</i-tag>
         </view>
         <i-cell v-if="list.length==0" title="你还没有收藏工作呀！"></i-cell>
-        <view class="list" v-for="item in list" :key="index">
+        <view class="list" v-for="item in list" :key="index" :class="item.jobId.delete?'delete':''">
             <i-cell :id='[item.jobId._id,index]'
-                @longpress="longpress" 
+                @longpress="longpress"
+                @click="gotodetail(item.jobId)" 
                 i-class="i-cell-padding" 
                 :title="item.jobId.name" 
                 :label="item.jobId.choselei+'------------'+item.jobId.salary+'元/'+item.jobId.chosetime">
             </i-cell>
         </view>
-        <view :class="show">
-            <view class="cu-dialog">
-                <view class="cu-bar bg-white justify-end">
-                <view class="content">删除</view>
-                </view>
-                <view class="padding-xl">
-                {{title}}
-                </view>
-                <view class="cu-bar bg-white">
-                <view class="action margin-0 flex-sub text-green solid-left" @click="hideModalcancel">取消</view>
-                <view class="action margin-0 flex-sub  solid-left" @click="hideModal">删除</view>
-                </view>
+
+        <view v-if="visible" class="chexiao">
+            <view>{{title}}</view>
+            <view style="font-size:25rpx;padding-top:5rpx">已取消收藏!</view>
+            <view style="font-size:40rpx;padding-top:5rpx">{{number}}</view>
+            <view>
+                <i-tag class="i-tags" name="标签一" color="blue" @click="canceljob" style="padding-top:5rpx">撤销</i-tag>
             </view>
         </view>
 
-        <i-message id="message" />
     </div>
 </template>
 
@@ -36,23 +31,25 @@ const { $Message } = require('../../../static/iview/base/index');
 export default {
     data(){
         return{
+            //deleteJob:[],
             title:'',
+            number:5,
+            visible:false,
             jobid:'',
             index:'',
-            visible: false,
             list:[]
         }
     },
     computed:{
-        show() {
-            if(this.visible){
-                return 'cu-modal show';
-            }else return 'cu-modal';
-        }
     },
     onShow(){
         this.refresh();
+        //this.deleteJob=[];
     },
+    // onHide(){
+    //     this.deletejobs();
+    //     console.log("隐藏了");
+    // },
     methods: {
         longpress(e){
             //console.log("aaa",e.currentTarget.id);
@@ -62,40 +59,67 @@ export default {
             this.index= this.jobid.substr(25,10);
             this.jobid= this.jobid.substr(0,24);
             this.title= this.list[this.index].jobId.name;
-            console.log(this.index,this.jobid);
+            var time = setInterval(()=>{
+                this.number-=1;
+                console.log(this.number);
+                if(this.number<=0&&this.visible){
+                    this.visible= false;
+                    this.deletejobs();
+                    clearInterval(time);
+                    this.number=5;
+                } else if(!this.visible){
+                    clearInterval(time);
+                    this.number=5;
+                } else return;
+            },1000);
+            //console.log(this.index,this.jobid);
+            //console.log(this.list[this.index].jobId["delete"]);
+            // if(this.list[this.index].jobId["delete"]==true){
+            //     for(let i=0;i<this.deleteJob.length;i++){
+            //         if(this.jobid==this.deleteJob[i]){
+            //             this.deleteJob.splice(i,1);
+            //             this.list[this.index].jobId["delete"]=false;
+            //         }
+            //     }
+            // } else {
+            //     this.list[this.index].jobId["delete"]=true;
+            //     this.deleteJob.push(this.jobid);
+            // }
+            // console.log(this.deleteJob);
         },
-        hideModalcancel(){
+        canceljob(){
             this.visible= false;
-            console.log("取消");
+            console.log("撤销");
         },
-        async hideModal(){
-            console.log('开始删除');
+        async deletejobs () {
             let msg = await this.$request.postRequest("/deleteenshrine",{
-          data: { jobId: this.jobid }
-        });
-            this.visible= false;
-            console.log(msg.data.code);
-            if(msg.data.code==200){
-                $Message({
-                    content: '删除成功！',
-                    type: 'success'
+                    data: { jobId: this.jobid }
                 });
-                //console.log(Number(this.index)+1,typeof(Number(this.index)+1))
-                this.list.splice(Number(this.index),1);
-                console.log(this.list);
-            } else {
-                $Message({
-                    content: '删除失败或已删除，等等再试或者刷新一下吧！',
-                    type: 'error'
-                });
-            }
+                if(msg.data.code==200){
+                    this.list.splice(Number(this.index),1);
+                    console.log(this.list);
+                    $Message({
+                        content: '删除成功！',
+                        type: 'success'
+                    });
+                } else {
+                    $Message({
+                        content: '删除失败，等等再试试吧！',
+                        type: 'error'
+                    });
+                }
         },
         async refresh(){
             let list = await this.$request.postRequest("/getenshrine");
             //console.log(list.data.data);
             this.list = list.data.data;
             console.log(this.list);
-        }
+        },
+        //跳转详情页
+        gotodetail(e) {
+            this.$store.default.commit("changedetail", e);
+            this.$WX.navigateTo("../detail/main");
+        },
     },
 }
 </script>
@@ -109,5 +133,38 @@ export default {
     color: #2b85e4;
     font-size:20rpx;
     padding: 30rpx 0 30rpx 40rpx;
+}
+.cancel{
+    font-size: 30rpx;
+    color: #2b85e4;
+}
+.weizhi{
+    height: 80rpx;
+    background: #bbbec4;
+    opacity: 0.5;
+    position: fixed;
+    bottom: 0;
+    right: 0;
+}
+.delete{
+    text-decoration:line-through;
+}
+.chexiao{
+    margin: 0 30rpx;
+    border-radius: 15rpx;
+    text-align: center;
+    padding: 40rpx 0 40rpx 0;
+    background: #f8f8f9;
+    opacity: 0.5;
+    position: fixed;
+    right: 0;
+    left: 0;
+    bottom: 0;
+    animation: cancel1 0.1s;
+
+}
+@keyframes cancel1{
+    from{height:0;background: white}
+    to{}
 }
 </style>

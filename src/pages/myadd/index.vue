@@ -7,6 +7,8 @@
                 title="猛虫过江" 
                 label="侏罗纪世界主题公园及豪华度假村被失控的恐龙们摧毁已有四年">
         </i-cell>
+        <button @click="clickme">daiwo</button>
+        <button @click="lll">来来来</button>
         <view :class="show">
             <view class="cu-dialog">
                 <view class="cu-bar bg-white justify-end">
@@ -52,6 +54,15 @@ export default {
         hideModal(){
             console.log('关闭');
             this.visible= false;
+        },
+        clickme(){
+            setTimeout(function (){
+                console.log("只想着")
+            },5000);
+            console.log("结束");
+        },
+        lll(){
+            console.log("重点");
         }
     },
 }
