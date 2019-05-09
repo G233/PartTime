@@ -6,8 +6,9 @@
     "pages/about/main",
     "pages/suggestion/main",
     "pages/detail/main",
-    "pages/enshrine/main",
-    "pages/addjob/main"
+    "pages/addjob/main",
+    "pages/message/main",
+    "pages/resume/main"
   ],
   "permission": {
     "scope.userLocation": {
