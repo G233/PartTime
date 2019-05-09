@@ -1,12 +1,10 @@
 {
-
+  "navigationBarTitleText":"收藏",
   "usingComponents": {
-    "i-button": "../../static/iview/button/index",
-    "i-row": "../../static/iview/row/index",
-    "i-col": "../../static/iview/col/index",
-    "i-message": "../../static/iview/message/index",
-    "i-switch": "../../static/iview/switch/index"
-
+      "i-cell":"../../static/iview/cell/index",
+      "i-message": "../../static/iview/message/index",
+      "i-tag": "../../static/iview/tag/index",
+      "i-row": "../../static/iview/row/index",
+      "i-col": "../../static/iview/col/index"
   }
-
 }

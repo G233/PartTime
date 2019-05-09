@@ -11,7 +11,6 @@ export default {
     // 获取首页分类信息
     this.gettabs();
     // 加载首页初始数据
-    this.lodinglist();
   },
 
   //判断是否授权，获取用户信息
@@ -56,6 +55,7 @@ export default {
         });
         this.$storage.default.commit("login", openid.data.data.openId);
       }
+      this.lodinglist();
     },
     // 获取tab栏分类信息
     async gettabs() {

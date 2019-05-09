@@ -1,7 +1,8 @@
 <template>
   <div>
     <view style="padding:30rpx">
-      <image :src="collection" class="collection" @click="collection1"></image>
+      <image v-if="!flagcollection" :src="collectionimages[0]" class="collection" @click="collectionadd"></image>
+      <image v-if="flagcollection" :src="collectionimages[1]" class="collection" @click="collectioncancel"></image>
     </view>
     <view class="title padding">{{job.name}} | {{job.choselei}}</view>
     <view class="pubtime1 padding">发布于 {{job.creatdate}}</view>
@@ -15,73 +16,181 @@
       <view class="money" style="padding-left: 40rpx;">{{job.details}}</view>
     </div>
     <i-row class="margin">
-      <i-col span="4" offset="10">
-        <view class="wantit" @click="want">想要</view>
+      <i-col span="5" offset="10">
+        <view v-if="!flagwant" class="wantit" @click="addwant">想要</view>
+        <view v-if="flagwant" class="wantit" @click="cancelwant" >已想要</view>
       </i-col>
     </i-row>
+
+    <view :class="show">
+      <view class="cu-dialog">
+          <view class="cu-bar bg-white justify-end">
+          <view class="content">提示</view>
+          </view>
+          <view class="padding-xl">
+          填写个人信息后即可提交申请
+          </view>
+          <view class="cu-bar bg-white">
+          <view class="action margin-0 flex-sub text-green solid-left" @click="hideModalcancel">取消</view>
+          <view class="action margin-0 flex-sub  solid-left" @click="hideModal">前往</view>
+          </view>
+      </view>
+      </view>
+
     <i-toast id="toast"/>
   </div>
 </template>
 
 <script>
+const { $Toast } = require('../../../static/iview/base/index');
 export default {
   data() {
     return {
+      visible: false,
+      flagcollection:false,
+      flagwant:false,
       job_id: "",
-      collection: "../../static/images/collection.png",
-      list: [
-        {
-          site: {
-            name: "天元区政府",
-            address: "湖南省株洲市天元区株洲大道北1",
-            latitude: "27.82681",
-            longitude: "113.08231"
-          },
-          creatdate: "2019-04-25T01:32:51.574Z",
-          _id: "5cc10ecd2e90310640c967fe",
-          details: "1232132武器",
-          name: "三年级家教",
-          salary: "123",
-          chosetime: "天",
-          choselei: "家教",
-          openId: "o1xKm5Ext9ZXfB1unuBtN3liTqBk",
-          __v: 0
-        }
+      collectionimages: [
+        "../../static/images/collection.png",
+        "../../static/images/star1.png"
       ]
     };
   },
   computed: {
       job(){
            return this.$store.default.state.detail;
-      }
+      },
+      show() {
+            if(this.visible){
+                return 'cu-modal show';
+            }else return 'cu-modal';
+        }
+      // collection(){
+      //   if(this.flagcollection){
+      //     return this.collectionimages[1];
+      //   }else{
+      //     return this.collectionimages[0];
+      //   }
+      // }
   },
-  onLoad() {
+  onUnload() {
+    Object.assign(this.$data, this.$options.data());
+  },
+  async onLoad() {
+    //console.log(!this.$store.default.state.resume.hasresume);
+    let info = await this.$request.postRequest("/getDstatus", {
+      data:{ jobId : this.job._id}
+    });
+    console.log(info.data.code);
+    if(info.data.code==500){        //都有
+      this.flagcollection=this.flagwant= true;
+    }
+    if(info.data.code==400){      //已想要
+      this.flagwant= true;
+    }
+    if(info.data.code==300){       //已收藏
+      this.flagcollection= true;
+    }                    
+    console.log(this.flagcollection,this.flagwant);
   },
   methods: {
-    async want() {
+    //想要函数
+    async addwant() {
+      console.log(this.$store.default.state.resume.hasresume)
+      if(this.$store.default.state.resume.hasresume){
+        console.log("你还没填资料啊");
+        this.visible= true;
+        return;
+      }
       let msg = await this.$request.postRequest("/addwant", {
         data: { jobId: this.job._id }
       });
+      console.log(msg.data.code,"addwant");
       console.log(this.job);
+      if (msg.data.code == 200) {
+        this.flagwant= true;
+          $Toast({
+            content: "想要已提交！",
+            type: "success"
+          });
+        } else {
+          $Toast({
+            content: "想要提交失败，等等再试吧!",
+            type: "error"
+          });
+        }
     },
-    async collection1() {
-      let msg = await this.$request.postRequest("/addenshrine", {
+    //取消想要函数
+    async cancelwant(){
+      let msg = await this.$request.postRequest("/deletewant", {
         data: { jobId: this.job._id }
       });
-      console.log(msg.data.code);
+      console.log(msg.data.code,"deletewant");
+      console.log(this.job);
       if (msg.data.code == 200) {
-        $Toast({
-          content: "收藏成功！",
-          type: "success"
+        this.flagwant= false;
+          $Toast({
+            content: "取消想要已提交！",
+            type: "success"
+          });
+        } else {
+          $Toast({
+            content: "取消想要提交失败，等等再试吧!",
+            type: "error"
+          });
+        }
+    },
+    //收藏函数
+    async collectionadd() {
+      if(!this.flagcollection){         //点击收藏
+        let msg = await this.$request.postRequest("/addenshrine", {
+          data: { jobId: this.job._id }
         });
-      } else {
-        $Toast({
-          content: "收藏失败，等等再试吧!",
-          type: "error"
-        });
+        console.log(msg.data.code,"addenshrine");
+        if (msg.data.code == 200) {
+          this.flagcollection= true;
+          $Toast({
+            content: "收藏成功！",
+            type: "success"
+          });
+        } else {
+          $Toast({
+            content: "收藏失败，等等再试吧!",
+            type: "error"
+          });
+        }
       }
+      }, 
+      async collectioncancel() {                                 //取消收藏
+        console.log("gocancel")
+        let msg = await this.$request.postRequest("/deleteenshrine",{
+          data: {jobId: this.job._id }
+        });
+        console.log(msg.data.code,"deleteenshrine");
+        if (msg.data.code == 200) {
+          this.flagcollection=false;
+            $Toast({
+              content: "取消收藏成功！",
+              type: "success"
+            });
+          } else {
+            $Toast({
+              content: "取消收藏失败，等等再试吧!",
+              type: "error"
+            });
+          }
+      },
+      //取消提示
+      hideModalcancel(){
+            this.visible= false;
+            console.log("取消");
+        },
+      hideModal(){
+            this.visible= false;
+            console.log("前往");
+            this.$WX.navigateTo("../resume/main");
+        },
     }
-  }
 };
 </script>
 
