@@ -1,5 +1,6 @@
 {
   "pages": [
+    
     "pages/mywant/main",
     "pages/list/main",
     "pages/myadd/main",

@@ -75,6 +75,10 @@ export default {
     };
   },
   computed: {
+    hasresume(){
+      console.log(this.$store.default.state.resume.hasresume)
+return this.$store.default.state.resume.hasresume
+    },
       job(){
            return this.$store.default.state.detail;
       }
@@ -83,11 +87,11 @@ export default {
     Object.assign(this.$data, this.$options.data());
   },
   async onLoad() {
-    //console.log(!this.$store.default.state.resume.hasresume);
+  
     let info = await this.$request.postRequest("/getDstatus", {
       data:{ jobId : this.job._id}
     });
-    console.log(info.data.code);
+
     if(info.data.code==500){        //都有
       this.flagcollection=this.flagwant= true;
     }
@@ -97,7 +101,7 @@ export default {
     if(info.data.code==300){       //已收藏
       this.flagcollection= true;
     }                    
-    console.log(this.flagcollection,this.flagwant);
+  
   },
   methods: {
     pushdata () {
@@ -108,9 +112,16 @@ export default {
     },
     handlecancel(){
       this.addinfo= false;
+      this.message= '';
     },
     async postmsg (address) {
-      let msg = await this.$request.postRequest(address, {data: {jobId: this.job._id }});
+      if(address=="/addwant"){
+        dat={
+          jobId: this.job._id,
+          message:this.message
+        }
+      }
+      let msg = await this.$request.postRequest(address, {data: dat});
       console.log(msg.data,address);
       //console.log(this.job);
       if (msg.data.code == 200) {
@@ -134,8 +145,7 @@ export default {
     },
     //想要函数 
     async addwant() {
-      console.log(this.$store.default.state.resume.hasresume)
-      if(this.$store.default.state.resume.hasresume){
+      if(this.hasresume){
         console.log("你还没填资料啊");
         this.visible= true;
         return;
@@ -156,11 +166,11 @@ export default {
       //取消提示
       hideModalcancel(){
             this.visible= false;
-            console.log("取消");
+           
         },
       hideModal(){
             this.visible= false;
-            console.log("前往");
+         
             this.$WX.navigateTo("../resume/main");
         },
     }
