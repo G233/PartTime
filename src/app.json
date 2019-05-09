@@ -2,6 +2,7 @@
   "pages": [
     "pages/list/main",
     "pages/myadd/main",
+    "pages/enshrine/main",
     "pages/mine/main",
     "pages/about/main",
     "pages/suggestion/main",

@@ -9,6 +9,7 @@ const store = new Vuex.Store({
   state: {
     //用户唯一识别码
     openId: 0,
+    userId: 0,
     //   系统信息
     SystemInfo: {
       StatusBar: '',
@@ -22,7 +23,8 @@ const store = new Vuex.Store({
   mutations: {
     //登录
     login: (state, data) => {
-      state.openId = data
+      state.openId = data.openId,
+        state.userId = data.userId
     },
     // 获取系统信息
     setSystemInfo: (state, data) => {

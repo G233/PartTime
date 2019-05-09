@@ -50,10 +50,22 @@ export default {
         //新用户，启动登录流程
         console.log("新用户");
         let res = await this.$WX.login();
-        let openid = await this.$request.request("/login", {
+        let ress = await this.$request.request("/login", {
           data: { code: res.code }
         });
-        this.$storage.default.commit("login", openid.data.data.openId);
+        // this.$request
+        //   .request("/login", {
+        //     data: { code: res.code }
+        //   })
+        //   .then(res => {
+        //     console.log(res);
+        //   })
+        //   .catch(res => {
+        //     console.log(res);
+        //   });
+
+        console.log(ress.data.data);
+        this.$storage.default.commit("login", ress.data.data);
       }
       this.lodinglist();
     },
