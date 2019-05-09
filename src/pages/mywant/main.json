@@ -1,0 +1,7 @@
+{
+    "navigationBarTitleText":"我的申请",
+    "usingComponents": {
+        "i-card": "../../static/iview/card/index"
+    }
+    
+}
