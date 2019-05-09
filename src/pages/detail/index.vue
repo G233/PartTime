@@ -57,6 +57,10 @@ export default {
     };
   },
   computed: {
+    hasresume(){
+      console.log(this.$store.default.state.resume.hasresume)
+return this.$store.default.state.resume.hasresume
+    },
       job(){
            return this.$store.default.state.detail;
       },
@@ -77,11 +81,11 @@ export default {
     Object.assign(this.$data, this.$options.data());
   },
   async onLoad() {
-    //console.log(!this.$store.default.state.resume.hasresume);
+  
     let info = await this.$request.postRequest("/getDstatus", {
       data:{ jobId : this.job._id}
     });
-    console.log(info.data.code);
+
     if(info.data.code==500){        //都有
       this.flagcollection=this.flagwant= true;
     }
@@ -91,22 +95,22 @@ export default {
     if(info.data.code==300){       //已收藏
       this.flagcollection= true;
     }                    
-    console.log(this.flagcollection,this.flagwant);
+  
   },
   methods: {
     //想要函数
     async addwant() {
-      console.log(this.$store.default.state.resume.hasresume)
-      if(this.$store.default.state.resume.hasresume){
-        console.log("你还没填资料啊");
+      console.log('adawsd')
+      console.log(this.hasresume)
+      if(this.hasresume){
+       
         this.visible= true;
         return;
       }
       let msg = await this.$request.postRequest("/addwant", {
         data: { jobId: this.job._id }
       });
-      console.log(msg.data.code,"addwant");
-      console.log(this.job);
+     
       if (msg.data.code == 200) {
         this.flagwant= true;
           $Toast({
@@ -125,8 +129,7 @@ export default {
       let msg = await this.$request.postRequest("/deletewant", {
         data: { jobId: this.job._id }
       });
-      console.log(msg.data.code,"deletewant");
-      console.log(this.job);
+     
       if (msg.data.code == 200) {
         this.flagwant= false;
           $Toast({
@@ -146,7 +149,7 @@ export default {
         let msg = await this.$request.postRequest("/addenshrine", {
           data: { jobId: this.job._id }
         });
-        console.log(msg.data.code,"addenshrine");
+        
         if (msg.data.code == 200) {
           this.flagcollection= true;
           $Toast({
@@ -162,11 +165,11 @@ export default {
       }
       }, 
       async collectioncancel() {                                 //取消收藏
-        console.log("gocancel")
+       
         let msg = await this.$request.postRequest("/deleteenshrine",{
           data: {jobId: this.job._id }
         });
-        console.log(msg.data.code,"deleteenshrine");
+   
         if (msg.data.code == 200) {
           this.flagcollection=false;
             $Toast({
@@ -183,11 +186,11 @@ export default {
       //取消提示
       hideModalcancel(){
             this.visible= false;
-            console.log("取消");
+           
         },
       hideModal(){
             this.visible= false;
-            console.log("前往");
+         
             this.$WX.navigateTo("../resume/main");
         },
     }

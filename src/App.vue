@@ -11,7 +11,6 @@ export default {
     // 获取首页分类信息
     this.gettabs();
     // 加载首页初始数据
-    this.lodinglist();
   },
 
   //判断是否授权，获取用户信息
@@ -51,11 +50,24 @@ export default {
         //新用户，启动登录流程
         console.log("新用户");
         let res = await this.$WX.login();
-        let openid = await this.$request.request("/login", {
+        let ress = await this.$request.request("/login", {
           data: { code: res.code }
         });
-        this.$storage.default.commit("login", openid.data.data.openId);
+        // this.$request
+        //   .request("/login", {
+        //     data: { code: res.code }
+        //   })
+        //   .then(res => {
+        //     console.log(res);
+        //   })
+        //   .catch(res => {
+        //     console.log(res);
+        //   });
+
+        console.log(ress.data.data);
+        this.$storage.default.commit("login", ress.data.data);
       }
+      this.lodinglist();
     },
     // 获取tab栏分类信息
     async gettabs() {

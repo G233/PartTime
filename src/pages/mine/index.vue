@@ -2,17 +2,25 @@
   <div>
     <i-message id="message"/>
     <div class="tapbg">
-      <div @click="tomsg" class="icon-mail msg"><div :class="dot" ></div></div>
-      <div class="wlctxt">
+      <div @click="tomsg" class="icon-mail msg">
+        <div :class="dot"></div>
+      </div>
+      <div @click="test" class="wlctxt">
         你好：
         <open-data type="userNickName"></open-data>
       </div>
       <open-data class="userimg shadow-blur bg-img" type="userAvatarUrl"></open-data>
     </div>
-    <div class="cu-list menu sm-border " style="margin-top: 100rpx;">
-      <div v-for="(item, index) in listdata" :key="index" class=" cu-item " :id='item.path' @click="topath">
-        <div class="content ">
-             <image :src='item.img' class="png" mode="aspectFit"></image>
+    <div class="cu-list menu sm-border" style="margin-top: 100rpx;">
+      <div
+        v-for="(item, index) in listdata"
+        :key="index"
+        class="cu-item"
+        :id="item.path"
+        @click="topath"
+      >
+        <div class="content">
+          <image :src='item.img' class="png" mode="aspectFit"></image>
           <text class="text-grey">{{item.text}}</text>
         </div>
       </div>
@@ -31,12 +39,12 @@ export default {
         {
           img: "../../static/images/add.png",
           text: "我的信息",
-          path:'../resume/main'
+          path: "../resume/main"
         },
         {
           img: "../../static/images/add.png",
           text: "我的发布",
-          path:'../myadd/main'
+          path: "../myadd/main"
         },
         {
           img: "../../static/images/add.png",
@@ -45,45 +53,44 @@ export default {
         {
           img: "../../static/images/add.png",
           text: "意见与反馈",
-          path:"../suggestion/main"
+          path: "../suggestion/main"
         },
         {
           img: "../../static/images/add.png",
           text: "关于我们",
-          path:'../about/main'
+          path: "../about/main"
         }
       ]
     };
   },
   computed: {
- dot(){
-   if(this.$store.default.state.resume.hassee){
-     console.log('有未读消息')
-     return 'dotshow'
-   }
-   else{
-      console.log('无未读消息')
-     return 'dothide'
-   }
- }
-   
+    dot() {
+      if (this.$store.default.state.resume.hassee) {
+        console.log("有未读消息");
+        return "dotshow";
+      } else {
+        console.log("无未读消息");
+        return "dothide";
+      }
+    }
   },
 
   methods: {
-    tomsg(){
-      this.$WX.navigateTo('../message/main')
-       
+    async test() {
+      await this.$request.request("/test");
+    },
+    tomsg() {
+      this.$WX.navigateTo("../message/main");
     },
     //跳转
-    topath(e){
-      const path=e.currentTarget.id
-      this.$WX.navigateTo(path)
+    topath(e) {
+      const path = e.currentTarget.id;
+      this.$WX.navigateTo(path);
     }
   },
 
   onShow() {
     this.$store.default.commit("setresume");
-
   }
 };
 </script>
@@ -100,7 +107,7 @@ export default {
   z-index: 1;
 }
 .userimg {
-      overflow:hidden;  
+  overflow: hidden;
   position: absolute;
   height: 160rpx;
   width: 160rpx;
@@ -119,23 +126,22 @@ export default {
   top: 190rpx;
   left: 300rpx;
 }
-.msg{
+.msg {
   color: aliceblue;
-  font-size:60rpx;
+  font-size: 60rpx;
   text-align: right;
   margin-right: 60rpx;
   padding-top: 40rpx;
   position: relative;
 }
-.dotshow{
-  display:block;
-  background:#f00;
-  border-radius:50%;
-  width:20rpx;
-  height:20rpx;
-  top:45rpx;
-  right:0px;
-  position:absolute;
+.dotshow {
+  display: block;
+  background: #f00;
+  border-radius: 50%;
+  width: 20rpx;
+  height: 20rpx;
+  top: 45rpx;
+  right: 0px;
+  position: absolute;
 }
-
 </style>
