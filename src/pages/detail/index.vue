@@ -58,8 +58,8 @@ export default {
   },
   computed: {
     hasresume(){
-      console.log(this.$store.default.state.resume.hasresume)
-return this.$store.default.state.resume.hasresume
+      return this.$store.default.state.resume.hasresume
+
     },
       job(){
            return this.$store.default.state.detail;
@@ -81,7 +81,7 @@ return this.$store.default.state.resume.hasresume
     Object.assign(this.$data, this.$options.data());
   },
   async onLoad() {
-  
+    
     let info = await this.$request.postRequest("/getDstatus", {
       data:{ jobId : this.job._id}
     });
@@ -100,9 +100,8 @@ return this.$store.default.state.resume.hasresume
   methods: {
     //想要函数
     async addwant() {
-      console.log('adawsd')
-      console.log(this.hasresume)
-      if(this.hasresume){
+      
+      if(!this.hasresume){
        
         this.visible= true;
         return;

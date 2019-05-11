@@ -81,7 +81,9 @@ export default {
       return this.$store.default.state.resume;
     }
   },
-  onShow() {},
+  onShow() {
+    console.log("aa" + this.resume.hasresume);
+  },
   onUnload() {
     Object.assign(this.$data, this.$options.data());
   },

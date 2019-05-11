@@ -1,73 +1,42 @@
 <template>
-    <div>
-        <view style="font-size:20rpx;">Tip:长按可删除</view>
-        <i-cell :id='bbb'
-                @longpress="aaa" 
-                i-class="i-cell-padding" 
-                title="猛虫过江" 
-                label="侏罗纪世界主题公园及豪华度假村被失控的恐龙们摧毁已有四年">
-        </i-cell>
-        <button @click="clickme">daiwo</button>
-        <button @click="lll">来来来</button>
-        <view :class="show">
-            <view class="cu-dialog">
-                <view class="cu-bar bg-white justify-end">
-                <view class="content">删除</view>
-                </view>
-                <view class="padding-xl">
-                删除后无法恢复哦
-                </view>
-                <view class="cu-bar bg-white">
-                <view class="action margin-0 flex-sub text-green solid-left" @click="hideModal">取消</view>
-                <view class="action margin-0 flex-sub  solid-left" @click="hideModal">删除</view>
-                </view>
-            </view>
-        </view>
-
+  <div>
+    <div v-for="(item, index) in list" :key="index">
+      <div class="jobcard shadow">
+        <div>{{item.job.name}}</div>
+        <div v-for="(item2, index2) in item.item" :key="index2">{{item2[0].name}}</div>
+      </div>
     </div>
+  </div>
 </template>
 
 <script>
-const { $Message } = require('../../../static/iview/base/index');
+const { $Message } = require("../../../static/iview/base/index");
 export default {
-    data(){
-        return{
-            bbb:"10086",
-            jobid:'',
-            visible: false,
-        }
-    },
-    computed:{
-        show() {
-            if(this.visible){
-                return 'cu-modal show';
-            }else return 'cu-modal';
-        }
-    },
-    methods: {
-        aaa(e){
-            //console.log("aaa",e);
-            this.jobid= e.currentTarget.id
-            this.visible= true;
-            console.log(this.jobid);
-        },
-        hideModal(){
-            console.log('关闭');
-            this.visible= false;
-        },
-        clickme(){
-            setTimeout(function (){
-                console.log("只想着")
-            },5000);
-            console.log("结束");
-        },
-        lll(){
-            console.log("重点");
-        }
-    },
-}
+  data() {
+    return {
+      list: ""
+    };
+  },
+  computed: {},
+  methods: {},
+  async onShow() {
+    let res = await this.$request.request("/getmyjob");
+    console.log(res.data.data);
+    this.list = res.data.data;
+  }
+};
 </script>
 
-<style scoped>
-
+<style >
+.jobcard {
+  background-color: white;
+  margin: auto;
+  width: 90%;
+  padding: 30rpx;
+  margin-top: 30rpx;
+  border-radius: 6rpx;
+}
+page {
+  background-color: #f1f1f1;
+}
 </style>

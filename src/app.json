@@ -1,7 +1,8 @@
 {
   "pages": [
-    "pages/list/main",
     "pages/myadd/main",
+    "pages/list/main",
+
     "pages/enshrine/main",
     "pages/mine/main",
     "pages/about/main",
