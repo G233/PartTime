@@ -33,7 +33,7 @@ export default {
         return{
             //deleteJob:[],
             title:'',
-            number:5,
+            number:2,
             visible:false,
             jobid:'',
             index:'',
@@ -66,26 +66,12 @@ export default {
                     this.visible= false;
                     this.deletejobs();
                     clearInterval(time);
-                    this.number=5;
+                    this.number=2;
                 } else if(!this.visible){
                     clearInterval(time);
-                    this.number=5;
+                    this.number=2;
                 } else return;
             },1000);
-            //console.log(this.index,this.jobid);
-            //console.log(this.list[this.index].jobId["delete"]);
-            // if(this.list[this.index].jobId["delete"]==true){
-            //     for(let i=0;i<this.deleteJob.length;i++){
-            //         if(this.jobid==this.deleteJob[i]){
-            //             this.deleteJob.splice(i,1);
-            //             this.list[this.index].jobId["delete"]=false;
-            //         }
-            //     }
-            // } else {
-            //     this.list[this.index].jobId["delete"]=true;
-            //     this.deleteJob.push(this.jobid);
-            // }
-            // console.log(this.deleteJob);
         },
         canceljob(){
             this.visible= false;

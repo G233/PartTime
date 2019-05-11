@@ -53,12 +53,12 @@
       </view>
     </view>
 
-    <i-toast id="toast"/>
+    <i-message id="message"/>
   </div>
 </template>
 
 <script>
-const { $Toast } = require('../../../static/iview/base/index');
+const { $Message } = require('../../../static/iview/base/index');
 export default {
   data() {
     return {
@@ -108,6 +108,7 @@ return this.$store.default.state.resume.hasresume
       //console.log("lll");
       this.postmsg("/addwant",{ jobId: this.job._id });
       this.addinfo= false;
+      console.log(this.message);
       this.message= '';
     },
     handlecancel(){
@@ -115,12 +116,16 @@ return this.$store.default.state.resume.hasresume
       this.message= '';
     },
     async postmsg (address) {
+      let dat;
       if(address=="/addwant"){
         dat={
           jobId: this.job._id,
           message:this.message
         }
+      } else {
+        dat= { jobId: this.job._id }
       }
+      console.log(dat);
       let msg = await this.$request.postRequest(address, {data: dat});
       console.log(msg.data,address);
       //console.log(this.job);
@@ -132,12 +137,12 @@ return this.$store.default.state.resume.hasresume
           this.flagcollection= !this.flagcollection;
           console.log(this.flagcollection,"flagcollection");
         }
-          $Toast({
+          $Message({
             content: msg.data.msg,
             type: "success"
           });
         } else {
-          $Toast({
+          $Message({
             content: msg.data.msg,
             type: "error"
           });
@@ -145,6 +150,14 @@ return this.$store.default.state.resume.hasresume
     },
     //想要函数 
     async addwant() {
+      console.log(this.job.openId,this.$store.default.state.resume.openId)
+      if(this.job.openId==this.$store.default.state.resume.openId){
+        $Message({
+            content: "不能申请自己发布的职位哦",
+            type: "error"
+          });
+        return;
+      }
       if(this.hasresume){
         console.log("你还没填资料啊");
         this.visible= true;
@@ -157,7 +170,15 @@ return this.$store.default.state.resume.hasresume
       this.postmsg("/deletewant");
     },
     //收藏函数
-    async collectionadd() {        //点击收藏
+    async collectionadd() {  
+      console.log("点了");      //点击收藏
+      if(this.job.openId==this.$store.default.state.resume.openId){
+        $Message({
+            content: "无需收藏自己发布的职位哦",
+            type: "error"
+          });
+        return;
+      }
       this.postmsg("/addenshrine");
     }, 
       async collectioncancel() {                                 //取消收藏

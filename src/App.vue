@@ -10,6 +10,7 @@ export default {
     this.getSystemInfo();
     // 获取首页分类信息
     this.gettabs();
+    this.$store.default.commit("setresume");
     // 加载首页初始数据
   },
 
