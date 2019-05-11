@@ -48,7 +48,8 @@ export default {
         },
         {
           img: "../../static/images/add.png",
-          text: "我的想去"
+          text: "我的想去",
+          path: "../mywant/main"
         },
         {
           img: "../../static/images/add.png",
