@@ -1,7 +1,7 @@
 {
   "pages": [
-    
     "pages/list/main",
+    "pages/showmap/main",
     "pages/mywant/main",
     "pages/myadd/main",
     "pages/enshrine/main",
