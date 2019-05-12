@@ -158,7 +158,8 @@ export default {
           });
         return;
       }
-      if(this.hasresume){
+      console.log(this.hasresume)
+      if(!this.hasresume){
         console.log("你还没填资料啊");
         this.visible= true;
         return;
