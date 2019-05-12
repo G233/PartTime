@@ -1,92 +1,116 @@
 <template>
-    <div>
-        <view class="tipmyadd">Tip:点击进入选择求职者 
-            <i-tag class="i-tags" name="标签一" color="blue" @click="refresh" style="float:right;padding-right:40rpx;">刷新</i-tag>
-        </view>
-        <view v-for="item in [1,2,3,4,5,6,7,8,9]" :key="index" style="margin-bottom:20rpx;" @click="gotochose">
-            <view class="padding-xl radius shadow-warp bg-white margin-top">
-            <i-card :title="list.name" :extra="list.salary+'元/'+list.chosetime">
-                <view slot="content">
-                    <view>{{list.choselei}}</view>
-                    <view>{{list.details}}</view>
-                </view>
-                <view slot="footer">发布于：{{list.creatdate}}</view>
-            </i-card>
-        </view>
-        </view>
-
-        <i-message id="message" />
-
+  <div>
+    <div v-for="(item, index) in list" :key="index">
+      <div class="jobcard shadow">
+        <div class="solid-bottom">
+          <i-row i-class="jobtxt">
+            <i-col span="12">
+              <div>{{item.job.name}}</div>
+            </i-col>
+            <i-col span="12" i-class="salarytxt">
+              <div>{{item.job.salary+" "+"/" +" "+item.job.chosetime}}</div>
+            </i-col>
+          </i-row>
+          <div class="padding-tb">地址： {{item.job.site.name}}</div>
+        </div>
+        <div>
+          <div v-for="(item2, index2) in item.item" :key="index2">
+            <div
+              @click="chose1(index,index2)"
+              :class="item2.status?chose:unchose"
+            >{{item2.userInfor[0].name}}</div>
+          </div>
+          <div>
+            <div class="flex padding-top justify-center">
+              <button @click="commit(index)" class="cu-btn round bg-blue shadow lg">确认</button>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
+  </div>
 </template>
 
 <script>
-const { $Message } = require('../../../static/iview/base/index');
+const { $Message } = require("../../../static/iview/base/index");
 export default {
-    data(){
-        return{ 
-            list: {
-                "site": {
-                "name": "高新大厦",
-                "address": "湖南省株洲市天元区株洲大道北1号",
-                "latitude": "27.82681",
-                "longitude": "113.08231"
-                },
-                "creatdate": "2019-04-25T01:32:51.532Z",
-                "done": false,
-                "_id": "5cc10e76829375063ea196ca",
-                "details": "代打高本部落战，不三星不要钱！",
-                "name": "部落冲突代打",
-                "salary": "12",
-                "chosetime": "次",
-                "choselei": "委托",
-                "openId": "o1xKm5Ext9ZXfB1unuBtN3liTqBk",
-                "__v": 0
-            }
-        }
+  data() {
+    return {
+      list: "",
+      // usertab: ["padding-tb solid-bottom", "chose"],
+      chose: ["padding-tb solid-bottom usertab", "chose"],
+      unchose: ["padding-tb solid-bottom usertab", "unchose"]
+    };
+  },
+  computed: {},
+  methods: {
+    async commit(e) {
+      console.log(this.list[e]);
+      let res = await this.$request.postRequest("/cmoffice", {
+        data: { data: this.list[e] }
+      });
     },
-    computed:{
-    },
-    onShow(){
-        this.refresh();
-    },
-    methods: {
-         async refresh(){
-             console.log("点了");
-             let flag=false;
-             if(this.list.length!=0) return flag=true;
-            let msg = await this.$request.postRequest("/");
-            if(msg.data.code==200){
-                this.list= msg.data.list;
-                if(flag){
-                    $Message({
-                        content: '刷新成功',
-                        type: 'success'
-                    });
-                }
-            } else {
-                if(flag){
-                    $Message({
-                        content: '刷新失败',
-                        type: 'error'
-                    });
-                }
-            }
-        },
-        gotochose(){
-            console.log("go");
-        }
-    },
-}
+    chose1(index, index2) {
+      console.log(index, index2);
+      this.list[index].item[index2].status = !this.list[index].item[index2]
+        .status;
+      console.log(this.list);
+    }
+  },
+  async onShow() {
+    let res = await this.$request.request("/getmyjob");
+    console.log(res.data.data);
+    this.list = res.data.data;
+  }
+};
 </script>
 
-<style>
-.tipmyadd{
-    font-size:20rpx;
-    color: #2b85e4;
-    padding: 40rpx 40rpx;
+<style >
+.jobcard {
+  background-color: white;
+  margin: auto;
+  width: 90%;
+  padding: 30rpx;
+  margin-top: 30rpx;
+  border-radius: 16rpx;
 }
-page{
-    background: #f8f8f9;
+
+.salarytxt {
+  padding-left: 30rpx;
+  text-align: center;
+}
+.anniu {
+  margin: auto;
+  margin-top: 30rpx;
+}
+.usertab {
+  transition: all 0.5s;
+}
+.chose {
+  color: rgb(67, 167, 250);
+  padding-left: 10rpx;
+}
+.unchose {
+}
+@keyframes chose {
+  from {
+    background-color: white;
+  }
+  to {
+    background-color: rgb(67, 167, 250);
+    color: white;
+  }
+}
+@keyframes unchose {
+  from {
+    background-color: rgb(67, 167, 250);
+    color: white;
+  }
+  to {
+    background-color: white;
+  }
+}
+page {
+  background-color: #f1f1f1;
 }
 </style>

@@ -69,6 +69,7 @@ export default {
         this.$storage.default.commit("login", ress.data.data);
       }
       this.lodinglist();
+      this.$store.default.commit("setresume");
     },
     // 获取tab栏分类信息
     async gettabs() {

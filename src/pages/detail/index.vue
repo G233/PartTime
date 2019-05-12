@@ -80,8 +80,8 @@ export default {
   },
   computed: {
     hasresume(){
-      console.log(this.$store.default.state.resume.hasresume)
-return this.$store.default.state.resume.hasresume
+      return this.$store.default.state.resume.hasresume
+
     },
       job(){
            return this.$store.default.state.detail;
@@ -163,7 +163,8 @@ return this.$store.default.state.resume.hasresume
           });
         return;
       }
-      if(this.hasresume){
+      console.log(this.hasresume)
+      if(!this.hasresume){
         console.log("你还没填资料啊");
         this.visible= true;
         return;
