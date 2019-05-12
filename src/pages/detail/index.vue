@@ -11,6 +11,10 @@
       <view style="padding-bottom:20rpx;">工作地点：</view>
       <text class="money">{{job.site.address}}</text>
     </view>
+    <view class="clickmap">
+        <view style="font-size:25rpx;">点击查看地图</view>
+        <image src="../../static/images/zhishi.png" style="width:50rpx;height:50rpx" @click="gotomap"></image>
+    </view>
     <div>
       <view class="padding">附注：</view>
       <view class="money" style="padding-left: 40rpx;">{{job.details}}</view>
@@ -87,7 +91,6 @@ export default {
     Object.assign(this.$data, this.$options.data());
   },
   async onLoad() {
-    
     let info = await this.$request.postRequest("/getDstatus", {
       data:{ jobId : this.job._id}
     });
@@ -100,8 +103,10 @@ export default {
     }
     if(info.data.code==300){       //已收藏
       this.flagcollection= true;
-    }                    
-  
+    }
+    console.log(this.job.site);
+    this.markers[0].latitude= this.job.site.latitude;
+    this.markers[0].longitude= this.job.site.longitude;
   },
   methods: {
     pushdata () {
@@ -195,6 +200,9 @@ export default {
          
             this.$WX.navigateTo("../resume/main");
         },
+        gotomap(){
+          this.$WX.navigateTo("../showmap/main");
+        }
     }
 };
 </script>
@@ -262,5 +270,11 @@ export default {
 @keyframes addmsgmove{
     from{height:0;background: white}
     to{}
+}
+.clickmap{
+  display: flex;
+  justify-content: start;
+  padding-left: 40rpx;
+  align-items: center;
 }
 </style>
