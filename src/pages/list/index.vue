@@ -1,28 +1,11 @@
 <template>
   <div>
-    <!-- <e-tabs selectColor="#3c87cc" theme="smallBar"></e-tabs> -->
-
     <!--导航栏-->
     <i-tabs :current="current_scroll" :color="color" i-class="shadow">
-      <div v-for="(item, index) in tabs" :key="index">
+      <div v-for="(item, index) in jobs" :key="index">
         <i-tab :title="item.name" :key="index" @click="handleChangeScroll(index)"></i-tab>
       </div>
     </i-tabs>
-
-    <!-- <div class="choose">
-      <view>
-        <picker @change="bindPickerChange" :value="index" :range="array">
-          <view>
-            {{array[index]}}
-            <i-icon size="20" type="unfold"/>
-          </view>
-        </picker>
-      </view>
-      <view @click="changesort">
-        {{sort}}
-        <i-icon size="20" :type="sortiron"/>
-      </view>
-    </div>-->
 
     <swiper
       :duration="duration"
@@ -30,16 +13,16 @@
       @change="swiperchange"
       :style="listheight"
     >
-      <block v-for="item1 in tabs" :key="item1._id">
+      <block v-for="(item1,index) in jobs" :key="item1._id">
         <swiper-item>
           <scroll-view
             lower-threshold="30"
             scroll-y="true"
             @scroll="bindscroll"
-            @scrolltolower="loaderjob(item1.name)"
+            @scrolltolower="loaderjob(index)"
             :style="listheight"
           >
-            <div v-for="(item, _index) in job[item1.name]" :key="_index" style="margin:30rpx 0;">
+            <div v-for="(item, _index) in item1.jobs" :key="_index" style="margin:30rpx 0;">
               <i-card
                 :title="item.name"
                 :extra="item.salary+'/'+item.chosetime"
@@ -84,17 +67,14 @@ export default {
     loding() {
       return this.$store.default.state.joblistld;
     },
-    tabs() {
-      return this.$storage.default.state.tabs;
-    },
-    job() {
+    jobs() {
       return this.$store.default.state.joblist;
     },
     //列表长度自适应
     listheight() {
       return (
         "height:" +
-        (this.$storage.default.state.SystemInfo.windowHeight - 65) +
+        (this.$storage.default.state.SystemInfo.windowHeight - 45) +
         "px"
       );
     }
@@ -130,10 +110,10 @@ export default {
     bindPickerChange(res) {
       this.index = res.mp.detail.value;
     },
-    changesort() {
-      this.sort = this.sort == "顺序" ? "倒叙" : "顺序";
-      this.sortiron = this.sortiron == "unfold" ? "packup" : "unfold";
-    },
+    // changesort() {
+    //   this.sort = this.sort == "顺序" ? "倒叙" : "顺序";
+    //   this.sortiron = this.sortiron == "unfold" ? "packup" : "unfold";
+    // },
     //跳转详情页
     gotodetail(e) {
       this.$store.default.commit("changedetail", e);
@@ -144,31 +124,28 @@ export default {
     },
     // 加载函数
     loaderjob(e) {
-      let data = {
-        name: e,
-        page: 0
-      };
-      for (let x of this.fenglei) {
-        if (x.name == e) {
-          data.page = x.page;
-        }
-      }
-
-      this.$store.default.commit("getjoblist", data);
-      for (let x of this.fenglei) {
-        if (x.name == e) {
-          x.page += 1;
-        }
-      }
-    }
-  },
-  onLoad() {
-    // 初始化一遍page
-    this.fenglei = this.tabs;
-    for (let x of this.fenglei) {
-      x.page = 1;
+      this.$store.default.commit("loadermore", e);
     }
   }
+  // onLoad() {
+  //   // 初始化一遍page
+  //   setTimeout(() => {
+  //     this.fenglei = this.tabs;
+  //     for (let x of this.fenglei) {
+  //       x.page = 1;
+  //     }
+  //   }, 1000);
+  // },
+  // onShow() {
+  //   for (let x of this.fenglei) {
+  //     let data = {
+  //       name: x.name,
+  //       page: x.page
+  //     };
+
+  //     this.$store.default.commit("getjoblist", data);
+  //   }
+  // }
 };
 </script>
 

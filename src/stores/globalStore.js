@@ -35,22 +35,48 @@ const store = new Vuex.Store({
         })
     },
     //获取首页职位列表
-    getjoblist: async (state, data) => {
+    getjoblist: async (state) => {
       state.joblistld = true
       let res = await vm.$request
-        .request("/getjoblist", {
+        .request("/getjoblist")
+      // 合并职位数组
+      state.joblist = res.data.data
+      console.log(state.joblist)
+      state.joblistld = false
+      // state.joblistld = true
+      // let res = await vm.$request
+      //   .request("/getjoblist", {
+      //     data: {
+      //       page: data.page,
+      //       lei: data.name
+      //     }
+      //   })
+      // // 合并职位数组
+
+      // state.joblist[data.name].push.apply(state.joblist[data.name], res.data.data);
+      // // state.joblist[data.name].push(res.data.data)
+      // state.joblistld = false
+    },
+    loadermore: async (state, data) => {
+      console.log(data)
+      state.joblistld = true
+      let res = await vm.$request
+        .request("/loadermore", {
           data: {
-            page: data.page,
-            lei: data.name
+            page: state.joblist[data].page,
+            lei: state.joblist[data].name
           }
         })
-      // 合并职位数组
+      console.log('sss')
+      if (res.data.code == 200) {
+        state.joblist[data].jobs.push.apply(state.joblist[data].jobs, res.data.data);
+        state.joblist[data].page += 1
 
-      state.joblist[data.name].push.apply(state.joblist[data.name], res.data.data);
-      // state.joblist[data.name].push(res.data.data)
+      }
       state.joblistld = false
 
 
+      console.log(res.data)
 
     },
     //更改详情页数据
@@ -58,21 +84,21 @@ const store = new Vuex.Store({
       state.detail = data
     }
   },
-  actions: {
-    getjoblist({
-      commit
-    }, data) {
-      // commit('increment')
+  // actions: {
+  //   getjoblist({
+  //     commit
+  //   }, data) {
+  //     // commit('increment')
 
-      for (let x of data) {
-        commit('getjoblist', {
-          page: 0,
-          name: x.name
-        })
-      }
+  //     for (let x of data) {
+  //       commit('getjoblist', {
+  //         page: 0,
+  //         name: x.name
+  //       })
+  //     }
 
-    }
-  }
+  //   }
+  // }
 })
 
 export default store

@@ -21,8 +21,8 @@
     </div>
     <i-row class="margin">
       <i-col span="5" offset="10">
-        <view v-if="!flagwant" class="wantit" @click="addwant">想要</view>
-        <view v-if="flagwant" class="wantit" @click="cancelwant" >已想要</view>
+        <view v-if="!flagwant" class="wantit" @click="addwant">申请</view>
+        <view v-if="flagwant" class="wantit" @click="cancelwant" >已申请</view>
       </i-col>
     </i-row>
 
@@ -98,7 +98,7 @@ export default {
     if(info.data.code==500){        //都有
       this.flagcollection=this.flagwant= true;
     }
-    if(info.data.code==400){      //已想要
+    if(info.data.code==400){      //已申请
       this.flagwant= true;
     }
     if(info.data.code==300){       //已收藏
@@ -153,7 +153,7 @@ export default {
           });
         }
     },
-    //想要函数 
+    //申请函数 
     async addwant() {
       console.log(this.job.openId,this.$store.default.state.resume.openId)
       if(this.job.openId==this.$store.default.state.resume.openId){
@@ -171,7 +171,7 @@ export default {
       }
       this.addinfo= true;
     },
-    //取消想要函数
+    //取消申请函数
     async cancelwant(){
       this.postmsg("/deletewant");
     },
