@@ -11,7 +11,7 @@
       <view style="padding-bottom:20rpx;">工作地点：</view>
       <text class="money">{{job.site.address}}</text>
     </view>
-    <view class="clickmap">
+    <view v-if="showmap" class="clickmap">
         <view style="font-size:25rpx;">点击查看地图</view>
         <image src="../../static/images/zhishi.png" style="width:50rpx;height:50rpx" @click="gotomap"></image>
     </view>
@@ -85,6 +85,13 @@ export default {
     },
       job(){
            return this.$store.default.state.detail;
+      },
+      showmap(){
+        if(this.$store.default.state.detail.site.latitude==''){
+          return false;
+        } else {
+          return true;
+        }
       }
   },
   onUnload() {
@@ -163,7 +170,6 @@ export default {
           });
         return;
       }
-      console.log(this.hasresume)
       if(!this.hasresume){
         console.log("你还没填资料啊");
         this.visible= true;
