@@ -111,7 +111,7 @@ export default {
   computed: {
     //详情栏样式控制
     tabs() {
-      return this.$storage.default.state.tabs;
+      return this.$store.default.state.joblist;
     },
     txtclass() {
       if (this.job.details) {
@@ -121,6 +121,7 @@ export default {
   },
   //初始化数据
   onUnload() {
+    this.$store.default.commit("getjoblist");
     Object.assign(this.$data, this.$options.data());
   },
   onLoad() {},
@@ -242,13 +243,13 @@ export default {
   width: 50%;
 
   margin: auto;
-  padding-top: 160rpx;
-  padding-bottom: 160rpx;
+  padding-top: 140rpx;
+  padding-bottom: 140rpx;
   text-align: center;
 }
 .commitbtn {
   position: absolute;
-  top: 1430rpx;
+  bottom: 40rpx;
   left: 20%;
   width: 60%;
 }

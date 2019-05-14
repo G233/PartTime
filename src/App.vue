@@ -4,26 +4,23 @@
 <script>
 export default {
   onLaunch: function() {
+    //获取首页初始数据
+    this.lodinglist();
+    // 获取首页分类信息
     //用户登录流程处理
     this.checklogin();
     //获取机型信息适配首页高度
     this.getSystemInfo();
-    // 获取首页分类信息
-    this.gettabs();
+
+    //  获取用户信息
     this.$store.default.commit("setresume");
-    // 加载首页初始数据
   },
 
   //判断是否授权，获取用户信息
   methods: {
+    //加载首页数据
     lodinglist() {
-      for (let x of this.$storage.default.state.tabs) {
-        this.$store.default.state.joblist[x.name] = [];
-      }
-      this.$store.default.dispatch(
-        "getjoblist",
-        this.$storage.default.state.tabs
-      );
+      this.$store.default.commit("getjoblist");
     },
     // 获取机型信息，将信息存入vuex
     async getSystemInfo() {
@@ -54,29 +51,18 @@ export default {
         let ress = await this.$request.request("/login", {
           data: { code: res.code }
         });
-        // this.$request
-        //   .request("/login", {
-        //     data: { code: res.code }
-        //   })
-        //   .then(res => {
-        //     console.log(res);
-        //   })
-        //   .catch(res => {
-        //     console.log(res);
-        //   });
-
         console.log(ress.data.data);
         this.$storage.default.commit("login", ress.data.data);
       }
-      this.lodinglist();
-      this.$store.default.commit("setresume");
-    },
-    // 获取tab栏分类信息
-    async gettabs() {
-      this.$request.request("/getlei").then(res => {
-        this.$storage.default.commit("gettabs", res.data.data);
-      });
     }
+    // 获取tab栏分类信息
+    // async gettabs() {
+    //   this.$request.request("/getlei").then(res => {
+    //     this.$storage.default.commit("gettabs", res.data.data);
+    //     // 加载首页初始数据
+
+    //   });
+    // }
   }
 };
 </script>

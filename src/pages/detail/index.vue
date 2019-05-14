@@ -11,7 +11,7 @@
       <view style="padding-bottom:20rpx;">工作地点：</view>
       <text class="money">{{job.site.address}}</text>
     </view>
-    <view class="clickmap">
+    <view v-if="showmap" class="clickmap">
         <view style="font-size:25rpx;">点击查看地图</view>
         <image src="../../static/images/zhishi.png" style="width:50rpx;height:50rpx" @click="gotomap"></image>
     </view>
@@ -21,8 +21,8 @@
     </div>
     <i-row class="margin">
       <i-col span="5" offset="10">
-        <view v-if="!flagwant" class="wantit" @click="addwant">想要</view>
-        <view v-if="flagwant" class="wantit" @click="cancelwant" >已想要</view>
+        <view v-if="!flagwant" class="wantit" @click="addwant">申请</view>
+        <view v-if="flagwant" class="wantit" @click="cancelwant" >已申请</view>
       </i-col>
     </i-row>
 
@@ -85,6 +85,13 @@ export default {
     },
       job(){
            return this.$store.default.state.detail;
+      },
+      showmap(){
+        if(this.$store.default.state.detail.site.latitude==''){
+          return false;
+        } else {
+          return true;
+        }
       }
   },
   onUnload() {
@@ -98,7 +105,7 @@ export default {
     if(info.data.code==500){        //都有
       this.flagcollection=this.flagwant= true;
     }
-    if(info.data.code==400){      //已想要
+    if(info.data.code==400){      //已申请
       this.flagwant= true;
     }
     if(info.data.code==300){       //已收藏
@@ -153,7 +160,7 @@ export default {
           });
         }
     },
-    //想要函数 
+    //申请函数 
     async addwant() {
       console.log(this.job.openId,this.$store.default.state.resume.openId)
       if(this.job.openId==this.$store.default.state.resume.openId){
@@ -163,7 +170,6 @@ export default {
           });
         return;
       }
-      console.log(this.hasresume)
       if(!this.hasresume){
         console.log("你还没填资料啊");
         this.visible= true;
@@ -171,7 +177,7 @@ export default {
       }
       this.addinfo= true;
     },
-    //取消想要函数
+    //取消申请函数
     async cancelwant(){
       this.postmsg("/deletewant");
     },
