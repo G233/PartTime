@@ -34,9 +34,9 @@ export default {
     async getmsg() {
       this.loding = true;
       let msglist = await this.$request.request("/getmsg", {
-        data: {page:this.page}
-      }); 
-    this.page += 1;
+        data: { page: this.page }
+      });
+      this.page += 1;
       this.loding = false;
       for (let x of msglist.data.data.msglist) {
         x.date = x.date.split("T")[0];
@@ -46,7 +46,9 @@ export default {
     }
   },
   async created() {},
-
+  onUnload() {
+    Object.assign(this.$data, this.$options.data());
+  },
   async onShow() {
     this.getmsg();
   }
