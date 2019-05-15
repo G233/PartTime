@@ -85,6 +85,9 @@ export default {
     console.log("aa" + this.resume.hasresume);
   },
   onUnload() {
+      
+    this.$store.default.commit("setresume");
+ 
     Object.assign(this.$data, this.$options.data());
   },
 
@@ -113,10 +116,6 @@ export default {
         phone: {
           required: true,
           tel: true
-        },
-        wx: {
-          required: true,
-          minlength: 5
         }
       };
 
@@ -129,11 +128,6 @@ export default {
         phone: {
           required: "请填写手机号",
           tel: "请填写正确的手机号"
-        },
-
-        wx: {
-          required: "请填写微信号",
-          minlength: "请填写正确的微信号"
         }
       };
 
