@@ -20,9 +20,15 @@
             scroll-y="true"
             @scroll="bindscroll"
             @scrolltolower="loaderjob(index)"
+            class="joblist"
             :style="listheight"
           >
-            <div v-for="(item, _index) in item1.jobs" :key="_index" style="margin:30rpx 0;">
+            <div
+              v-for="(item, _index) in item1.jobs"
+              v-if="!item.done"
+              :key="_index"
+              style="margin:30rpx 0;"
+            >
               <i-card
                 :title="item.name"
                 :extra="item.salary+'/'+item.chosetime"
@@ -55,7 +61,7 @@ export default {
       type: "collection",
       flag: true,
       current_scroll: 0,
-      color: "#03a9f4",
+      color: "#fff",
 
       images: ["../../static/images/add.png"],
       array: ["一天内", "一周内", "一月内", "半年内", "全部"],
@@ -79,8 +85,6 @@ export default {
       );
     }
   },
-  watch: {},
-
   methods: {
     handleChangeScroll(e) {
       this.current_scroll = e;
@@ -127,29 +131,13 @@ export default {
       this.$store.default.commit("loadermore", e);
     }
   }
-  // onLoad() {
-  //   // 初始化一遍page
-  //   setTimeout(() => {
-  //     this.fenglei = this.tabs;
-  //     for (let x of this.fenglei) {
-  //       x.page = 1;
-  //     }
-  //   }, 1000);
-  // },
-  // onShow() {
-  //   for (let x of this.fenglei) {
-  //     let data = {
-  //       name: x.name,
-  //       page: x.page
-  //     };
-
-  //     this.$store.default.commit("getjoblist", data);
-  //   }
-  // }
 };
 </script>
 
 <style scoped>
+.joblist {
+  background-color: #f1f1f1;
+}
 .image1 {
   width: 100rpx;
   height: 100rpx;

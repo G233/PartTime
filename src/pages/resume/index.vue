@@ -85,9 +85,8 @@ export default {
     console.log("aa" + this.resume.hasresume);
   },
   onUnload() {
-      
     this.$store.default.commit("setresume");
- 
+
     Object.assign(this.$data, this.$options.data());
   },
 
