@@ -17,6 +17,7 @@ const store = new Vuex.Store({
       CustomBar: '',
       windowHeight: ''
     },
+    cardheight: false
   },
   mutations: {
     //登录
@@ -27,8 +28,10 @@ const store = new Vuex.Store({
     // 获取系统信息
     setSystemInfo: (state, data) => {
       state.SystemInfo = data
-
     },
+    setcardheight: (state, data) => {
+      state.cardheight = data
+    }
 
   },
   plugins: [createPersistedState({

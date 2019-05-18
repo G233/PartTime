@@ -1,11 +1,14 @@
 <template>
   <div>
     <!--导航栏-->
-    <i-tabs :current="current_scroll" :color="color" i-class="shadow">
-      <div v-for="(item, index) in jobs" :key="index">
-        <i-tab :title="item.name" :key="index" @click="handleChangeScroll(index)"></i-tab>
-      </div>
-    </i-tabs>
+    <div class="tabs">
+      <i-tabs :current="current_scroll" :color="color">
+        <div v-for="(item, index) in jobs" :key="index">
+          <i-tab :title="item.name" :key="index" @click="handleChangeScroll(index)"></i-tab>
+        </div>
+      </i-tabs>
+    </div>
+    <div class="padding"></div>
 
     <swiper
       :duration="duration"
@@ -14,32 +17,32 @@
       :style="listheight"
     >
       <block v-for="(item1,index) in jobs" :key="item1._id">
-        <swiper-item>
-          <scroll-view
-            lower-threshold="30"
-            scroll-y="true"
-            @scroll="bindscroll"
-            @scrolltolower="loaderjob(index)"
-            class="joblist"
-            :style="listheight"
-          >
-            <div
-              v-for="(item, _index) in item1.jobs"
-              v-if="!item.done"
-              :key="_index"
-              style="margin:30rpx 0;"
-            >
-              <i-card
+        <swiper-item id="test">
+          <div v-for="(item, _index) in item1.jobs" v-if="!item.done" :key="_index">
+            <!-- <i-card
                 :title="item.name"
                 :extra="item.salary+'/'+item.chosetime"
                 @click="gotodetail(item)"
               >
                 <view slot="content">{{item.site.name}}</view>
-                <view slot="footer">发布于：{{item.creatdate}}</view>
-              </i-card>
+                <view slot="footer">发布于：{{item.creatdate.split('T')}}</view>
+            </i-card>-->
+            <div id="card" @click="gotodetail(item)" class="padding-xl solid-bottom">
+              <view class="flex padding-bottom justify-between align-center">
+                <div class="jobname">{{item.name}}</div>
+                <div class="jobsa flex justify-between align-end">
+                  <div class="jobsa2">{{item.salary}}</div>
+                  <div>{{"/" +" "+item.chosetime}}</div>
+                </div>
+              </view>
+
+              <div class="jobsite text-grey">地点：{{item.site.name}}</div>
+              <div>{{item.creatdate}}</div>
             </div>
-            <i-load-more tip="真没了" :loading="loding"/>
-          </scroll-view>
+          </div>
+
+          <i-load-more id="bt" tip="真没了" :loading="loding"/>
+          <!-- <div class="bg-blue">-----------------------------------------------</div> -->
         </swiper-item>
       </block>
     </swiper>
@@ -54,6 +57,9 @@ export default {
   components: {},
   data() {
     return {
+      isindex: true,
+      height: 150,
+      scrollTop: 0,
       fenglei: "",
       addimg: ["image1", "shadow-lg", ""], //添加按钮动画控制
       sortiron: "unfold",
@@ -78,35 +84,87 @@ export default {
     },
     //列表长度自适应
     listheight() {
-      return (
-        "height:" +
-        (this.$storage.default.state.SystemInfo.windowHeight - 45) +
-        "px"
-      );
+      let x;
+      if (this.jobs[this.current_scroll].jobs.length < 6) {
+        x =
+          "height:" +
+          (this.$storage.default.state.SystemInfo.windowHeight - 65) +
+          "px";
+      } else {
+        let y = this.jobs[this.current_scroll].jobs.length * this.height + 64;
+        x = "height:" + y + "px";
+      }
+      return x;
     }
   },
+  onShow() {
+    setTimeout(() => {
+      this.$store.default.state.isindex = true;
+    }, 200);
+  },
+  onHide() {
+    this.$store.default.state.isindex = false;
+  },
+  onLoad() {
+    setTimeout(() => {
+      this.getFields();
+    }, 1000);
+  },
+  onTabItemTap({ index }) {
+    console.log(this.$store.default.state.isindex);
+    if (index == 0) {
+      if (this.$store.default.state.isindex) {
+        this.shuaxin();
+      }
+    }
+  },
+  onReachBottom() {
+    this.loaderjob(this.current_scroll);
+  },
+  onPullDownRefresh() {
+    this.shuaxin();
+  },
+  onPageScroll({ scrollTop }) {
+    if (this.scrollTop > scrollTop) {
+      if (!this.flag) {
+        this.addimg[2] = "donghuaS";
+        this.flag = true;
+      }
+    } else {
+      if (this.flag) {
+        this.addimg[2] = "donghuaH";
+        this.flag = false;
+      }
+    }
+    this.scrollTop = scrollTop;
+  },
   methods: {
+    getFields() {
+      wx
+        .createSelectorQuery()
+        .select("#card")
+        .fields(
+          {
+            size: true
+          },
+          res => {
+            this.height = res.height;
+          }
+        )
+        .exec();
+    },
+    shuaxin() {
+   
+     
+        this.$store.default.commit("getjoblist");
+       
+   
+    },
     handleChangeScroll(e) {
       this.current_scroll = e;
     },
     swiperchange(e) {
       this.current_scroll = e.mp.detail.current;
-    },
-    bindscroll(res) {
-      if (res.mp.detail.deltaY < 0) {
-        //上拉
-        if (this.flag) {
-          this.addimg[2] = "donghuaH";
-          this.flag = false;
-        }
-      } else {
-        // 下拉
-
-        if (!this.flag) {
-          this.addimg[2] = "donghuaS";
-          this.flag = true;
-        }
-      }
     },
     changeCollection() {
       this.works.Collection = !this.works.Collection;
@@ -114,11 +172,6 @@ export default {
     bindPickerChange(res) {
       this.index = res.mp.detail.value;
     },
-    // changesort() {
-    //   this.sort = this.sort == "顺序" ? "倒叙" : "顺序";
-    //   this.sortiron = this.sortiron == "unfold" ? "packup" : "unfold";
-    // },
-    //跳转详情页
     gotodetail(e) {
       this.$store.default.commit("changedetail", e);
       this.$WX.navigateTo("../detail/main");
@@ -135,15 +188,43 @@ export default {
 </script>
 
 <style scoped>
+.tabs {
+  position: fixed;
+  top: 0px;
+  width: 100%;
+  z-index: 1000;
+}
+.jobscard {
+  background-color: white;
+  margin: auto;
+  width: 90%;
+  padding: 30rpx;
+  margin-top: 30rpx;
+  border-radius: 16rpx;
+}
+.jobname {
+  font-size: 17px;
+  font-weight: bold;
+}
+.jobsite {
+  font-size: 15px;
+}
+.jobsa {
+  font-size: 13px;
+}
+.jobsa2 {
+  padding-right: 10rpx;
+  font-weight: 600;
+  font-size: 18px;
+}
 .joblist {
-  background-color: #f1f1f1;
 }
 .image1 {
   width: 100rpx;
   height: 100rpx;
   border-radius: 50%;
   background-color: rgb(255, 255, 255);
-  position: absolute;
+  position: fixed;
   transition: right 0.5s;
   right: 50rpx;
   bottom: 50rpx;
@@ -157,20 +238,13 @@ export default {
 /* 按钮隐藏动画 */
 .donghuaH {
   animation: addH 0.5s;
+
   animation-fill-mode: forwards;
 }
-.choose {
-  color: #000;
-  font-size: 30rpx;
-  display: flex;
-  justify-content: space-evenly;
+swiper-item {
+  overflow: scroll;
 }
-.soucang {
-  position: absolute;
-  right: 100rpx;
-  top: 110rpx;
-  z-index: 10;
-}
+
 @keyframes addH {
   from {
     transform: translateX(0px);

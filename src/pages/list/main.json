@@ -1,4 +1,5 @@
 {
+     "enablePullDownRefresh": true,
   "navigationBarTitleText": "工大课兼",
   "usingComponents": {
     "i-tabs": "../../static/iview/tabs/index",
