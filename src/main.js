@@ -15,10 +15,12 @@ Vue.prototype.$request = Request //全局与引用 promise 风格 wx.request
 
 
 
+
+
 //后加载APP
 
 import App from './App'
-
+Vue.config._mpTrace = true
 Vue.config.productionTip = false
 App.mpType = 'app'
 

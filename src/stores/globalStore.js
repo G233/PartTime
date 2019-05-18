@@ -22,7 +22,8 @@ const store = new Vuex.Store({
     // 详情页数据
     detail: '',
     // 首页加载状态
-    joblistld: false
+    joblistld: false,
+    isindex: false,
   },
   mutations: {
     //  保存简历信息
@@ -36,26 +37,14 @@ const store = new Vuex.Store({
     },
     //获取首页职位列表
     getjoblist: async (state) => {
-      state.joblistld = true
+         wx.startPullDownRefresh();
+        
       let res = await vm.$request
         .request("/getjoblist")
       // 合并职位数组
       state.joblist = res.data.data
       console.log(state.joblist)
-      state.joblistld = false
-      // state.joblistld = true
-      // let res = await vm.$request
-      //   .request("/getjoblist", {
-      //     data: {
-      //       page: data.page,
-      //       lei: data.name
-      //     }
-      //   })
-      // // 合并职位数组
-
-      // state.joblist[data.name].push.apply(state.joblist[data.name], res.data.data);
-      // // state.joblist[data.name].push(res.data.data)
-      // state.joblistld = false
+      wx.stopPullDownRefresh();
     },
     loadermore: async (state, data) => {
       console.log(data)

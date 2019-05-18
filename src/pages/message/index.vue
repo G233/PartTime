@@ -39,13 +39,14 @@ export default {
       this.page += 1;
       this.loding = false;
       for (let x of msglist.data.data.msglist) {
+        console.log(x.date);
         x.date = x.date.split("T")[0];
       }
       //合并新来的
       this.msglist.push.apply(this.msglist, msglist.data.data.msglist);
     }
   },
-  async created() {},
+
   onUnload() {
     Object.assign(this.$data, this.$options.data());
   },
