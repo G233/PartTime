@@ -1,14 +1,14 @@
 <template>
-  <div>
+  <div > 
     <!--导航栏-->
-    <div class="tabs">
+    <div class="tabs shadow">
       <i-tabs :current="current_scroll" :color="color">
         <div v-for="(item, index) in jobs" :key="index">
           <i-tab :title="item.name" :key="index" @click="handleChangeScroll(index)"></i-tab>
         </div>
       </i-tabs>
     </div>
-    <div class="padding"></div>
+    <div style="height:42px"></div>
 
     <swiper
       :duration="duration"
@@ -19,15 +19,7 @@
       <block v-for="(item1,index) in jobs" :key="item1._id">
         <swiper-item id="test">
           <div v-for="(item, _index) in item1.jobs" v-if="!item.done" :key="_index">
-            <!-- <i-card
-                :title="item.name"
-                :extra="item.salary+'/'+item.chosetime"
-                @click="gotodetail(item)"
-              >
-                <view slot="content">{{item.site.name}}</view>
-                <view slot="footer">发布于：{{item.creatdate.split('T')}}</view>
-            </i-card>-->
-            <div id="card" @click="gotodetail(item)" class="padding-xl solid-bottom">
+            <div id="card" @click="gotodetail(item)" class="paddings solid-bottom">
               <view class="flex padding-bottom justify-between align-center">
                 <div class="jobname">{{item.name}}</div>
                 <div class="jobsa flex justify-between align-end">
@@ -35,18 +27,18 @@
                   <div>{{"/" +" "+item.chosetime}}</div>
                 </div>
               </view>
-
+              <view class="flex justify-between align-center">
               <div class="jobsite text-grey">地点：{{item.site.name}}</div>
-              <div>{{item.creatdate}}</div>
+              
+              <div else class="text-xs">{{item.dayago==0?'今天':item.dayago +'天前'}}</div>
+                </view>
             </div>
           </div>
-
+          <img :class="addimg" :src="images[0]" @click="addjob">
           <i-load-more id="bt" tip="真没了" :loading="loding"/>
-          <!-- <div class="bg-blue">-----------------------------------------------</div> -->
         </swiper-item>
       </block>
     </swiper>
-    <img :class="addimg" :src="images[0]" @click="addjob">
   </div>
 </template>
 
@@ -85,15 +77,17 @@ export default {
     //列表长度自适应
     listheight() {
       let x;
+      console.log(this.height)
       if (this.jobs[this.current_scroll].jobs.length < 6) {
         x =
           "height:" +
           (this.$storage.default.state.SystemInfo.windowHeight - 65) +
           "px";
       } else {
-        let y = this.jobs[this.current_scroll].jobs.length * this.height + 64;
+        let y = this.jobs[this.current_scroll].jobs.length * this.height +64;
         x = "height:" + y + "px";
       }
+      console.log(x)
       return x;
     }
   },
@@ -114,6 +108,7 @@ export default {
     console.log(this.$store.default.state.isindex);
     if (index == 0) {
       if (this.$store.default.state.isindex) {
+      wx.startPullDownRefresh();
         this.shuaxin();
       }
     }
@@ -188,6 +183,9 @@ export default {
 </script>
 
 <style scoped>
+.paddings{
+  padding: 50rpx 40rpx 30rpx 50rpx;
+}
 .tabs {
   position: fixed;
   top: 0px;
