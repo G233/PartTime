@@ -70,7 +70,7 @@ export default {
       ],
       isindex: true,
       height: 150,
-      scrollTop: 0,
+      scrollTop: [],
       fenglei: "",
       addimg: ["image1", "shadow-lg", ""], //添加按钮动画控制
       sortiron: "unfold",
@@ -131,6 +131,10 @@ export default {
     if (index == 0) {
       if (this.$store.default.state.isindex) {
       wx.startPullDownRefresh();
+      wx.pageScrollTo({
+        scrollTop: 0,
+        duration: 100
+      })
         this.shuaxin();
       }
     }
@@ -142,7 +146,7 @@ export default {
     this.shuaxin();
   },
   onPageScroll({ scrollTop }) {
-    if (this.scrollTop > scrollTop) {
+    if (this.scrollTop[this.current_scroll] > scrollTop) {
       if (!this.flag) {
         this.addimg[2] = "donghuaS";
         this.flag = true;
@@ -153,7 +157,8 @@ export default {
         this.flag = false;
       }
     }
-    this.scrollTop = scrollTop;
+    this.scrollTop[this.current_scroll] = scrollTop;
+    //console.log(this.scrollTop);
   },
   methods: {
     getFields() {
@@ -171,17 +176,29 @@ export default {
         .exec();
     },
     shuaxin() {
-   
-     
         this.$store.default.commit("getjoblist");
-       
-   
     },
     handleChangeScroll(e) {
       this.current_scroll = e;
+      //console.log(this.scrollTop[e],typeof(this.scrollTop[e]));
+      wx.pageScrollTo({
+        scrollTop: this.scrollTop[e],
+        duration: 0
+      })
+      console.log(e);
     },
     swiperchange(e) {
       this.current_scroll = e.mp.detail.current;
+      setTimeout(() => {
+        this.$WX.pageScrollTo({
+        scrollTop: this.scrollTop[this.current_scroll],
+        duration: 0
+      }).then(res=>{
+        console.log('eeee')
+      })
+      }, 0.5);
+      
+      console.log('eeee')
     },
     changeCollection() {
       this.works.Collection = !this.works.Collection;
