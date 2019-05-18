@@ -34,11 +34,13 @@
                 </view>
             </div>
           </div>
-          <img :class="addimg" :src="images[0]" @click="addjob">
+          
           <i-load-more id="bt" tip="真没了" :loading="loding"/>
         </swiper-item>
+       
       </block>
     </swiper>
+     <img :class="addimg" :src="images[0]" @click="addjob">
   </div>
 </template>
 
