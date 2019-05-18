@@ -2,7 +2,7 @@
   <div>
     <div class="padding-top-lg">
       <div v-for="(item, index) in msglist" :key="index">
-        <div class="msgt text-sm text-grey padding-lg">{{item.date}}</div>
+        <div class="msgt text-sm text-grey padding-lg">{{item.day}}</div>
         <div class="msgc">
           <div class="solid-bottom padding text-bold text-df text-blue">{{item.title}}</div>
           <div class="text-df padding">{{item.details}}</div>
@@ -38,14 +38,15 @@ export default {
       });
       this.page += 1;
       this.loding = false;
-      for (let x of msglist.data.data.msglist) {
+      for (let x of msglist.data.data.msglist){
+        console.log(x.date);
         x.date = x.date.split("T")[0];
       }
       //合并新来的
       this.msglist.push.apply(this.msglist, msglist.data.data.msglist);
     }
   },
-  async created() {},
+
   onUnload() {
     Object.assign(this.$data, this.$options.data());
   },

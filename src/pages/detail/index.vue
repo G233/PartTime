@@ -1,6 +1,6 @@
 <template>
   <div>
-    <view style="padding:30rpx">
+    <view v-if="!job.done" style="padding:30rpx">
       <image v-if="!flagcollection" :src="collectionimages[0]" class="collection" @click="collectionadd"></image>
       <image v-if="flagcollection" :src="collectionimages[1]" class="collection" @click="collectioncancel"></image>
     </view>
@@ -19,7 +19,7 @@
       <view class="padding">附注：</view>
       <view class="money" style="padding-left: 40rpx;">{{job.details}}</view>
     </div>
-    <i-row class="margin">
+    <i-row v-if="!job.done" class="margin">
       <i-col span="5" offset="10">
         <view v-if="!flagwant" class="wantit" @click="addwant">申请</view>
         <view v-if="flagwant" class="wantit" @click="cancelwant" >已申请</view>
