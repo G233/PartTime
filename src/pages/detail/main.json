@@ -6,6 +6,7 @@
         "i-col": "../../static/iview/col/index",
         "i-card": "../../static/iview/card/index",
         "i-button": "../../static/iview/button/index",
-        "i-message": "../../static/iview/message/index"
+        "i-message": "../../static/iview/message/index",
+        "i-modal": "../../static/iview/modal/index"
     }
 }

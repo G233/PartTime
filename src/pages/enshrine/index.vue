@@ -4,7 +4,7 @@
             <i-tag class="i-tags" name="标签一" color="blue"@click="refresh" style="float:right;padding-right:40rpx;">刷新</i-tag>
         </view>
         <i-cell v-if="list.length==0" title="你还没有收藏工作呀！"></i-cell>
-        <view class="list" v-for="item in list" :key="index" :class="item.jobId.delete?'delete':''">
+        <view class="list" v-for="item in list" :key="index">
             <i-cell :id='[item.jobId._id,index]'
                 @longpress="longpress"
                 @click="gotodetail(item.jobId)" 
@@ -52,7 +52,7 @@ export default {
     // },
     methods: {
         longpress(e){
-            //console.log("aaa",e.currentTarget.id);
+            console.log("aaa",e.currentTarget.id);
             this.jobid= e.currentTarget.id
             this.visible= true;
             //console.log(this.jobid.substr(0,24),'\n',this.jobid.substr(24,10));

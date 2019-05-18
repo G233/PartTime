@@ -20,6 +20,7 @@
             scroll-y="true"
             @scroll="bindscroll"
             @scrolltolower="loaderjob(index)"
+            @scrolltoupper="refresh"
             :style="listheight"
           >
             <div v-for="(item, _index) in item1.jobs" :key="_index" style="margin:30rpx 0;">
@@ -37,17 +38,34 @@
         </swiper-item>
       </block>
     </swiper>
+
     <img :class="addimg" :src="images[0]" @click="addjob">
+    <i-modal title="完善资料" :visible="visible" :actions="actions" @Click="handleClick">
+      <view>完善个人资料后即可发布</view>
+    </i-modal>
+
+    <i-toast id="toast" />
+
   </div>
 </template>
 
 <script>
 //登录页面
-
+const { $Toast } = require('../../../static/iview/base/index');
 export default {
   components: {},
   data() {
     return {
+      visible: false,
+      actions: [
+        {
+          name: "取消"
+        },
+        {
+          name: "前往",
+          color: "#ed3f14"
+        }
+      ],
       fenglei: "",
       addimg: ["image1", "shadow-lg", ""], //添加按钮动画控制
       sortiron: "unfold",
@@ -64,6 +82,9 @@ export default {
     };
   },
   computed: {
+    hasresume(){
+      return this.$store.default.state.resume.hasresume
+    },
     loding() {
       return this.$store.default.state.joblistld;
     },
@@ -80,7 +101,9 @@ export default {
     }
   },
   watch: {},
-
+  onPullDownRefresh(){
+    console.log("刷新");
+  },
   methods: {
     handleChangeScroll(e) {
       this.current_scroll = e;
@@ -104,9 +127,6 @@ export default {
         }
       }
     },
-    changeCollection() {
-      this.works.Collection = !this.works.Collection;
-    },
     bindPickerChange(res) {
       this.index = res.mp.detail.value;
     },
@@ -120,11 +140,32 @@ export default {
       this.$WX.navigateTo("../detail/main");
     },
     addjob() {
+      if(!this.hasresume){
+        console.log("你还没填资料啊");
+        this.visible= true;
+        return;
+      }
       this.$WX.navigateTo("../addjob/main");
+    },
+    handleClick(e){
+      console.log(e.mp.detail.index);
+      if(e.mp.detail.index==1){
+        this.$WX.navigateTo("../resume/main");
+      }
+      this.visible= false;
     },
     // 加载函数
     loaderjob(e) {
       this.$store.default.commit("loadermore", e);
+    },
+    //刷新函数
+    refresh(e){
+      console.log("刷新");
+      $Toast({
+            content: '加载中',
+            type: 'loading'
+        });
+      this.$store.default.commit("getjoblist");
     }
   }
   // onLoad() {

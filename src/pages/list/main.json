@@ -1,12 +1,14 @@
 {
   "navigationBarTitleText": "工大课兼",
+  "enablePullDownRefresh":true,
   "usingComponents": {
     "i-tabs": "../../static/iview/tabs/index",
     "i-tab": "../../static/iview/tab/index",
     "i-card": "../../static/iview/card/index",
     "i-icon": "../../static/iview/icon/index",
-    "i-load-more": "../../static/iview/load-more/index"
-
+    "i-load-more": "../../static/iview/load-more/index",
+    "i-modal": "../../static/iview/modal/index",
+    "i-toast": "../../static/iview/toast/index"
   }
 
 }
