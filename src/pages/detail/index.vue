@@ -26,7 +26,7 @@
       </i-col>
     </i-row>
 
-    <view v-if="visible" class="cu-modal show">
+    <!-- <view v-if="visible" class="cu-modal show">
       <view class="cu-dialog">
           <view class="cu-bar bg-white justify-end">
           <view class="content">提示</view>
@@ -39,7 +39,10 @@
           <view class="action margin-0 flex-sub  solid-left" @click="hideModal">前往</view>
           </view>
       </view>
-    </view>
+    </view> -->
+    <i-modal title="完善资料" :visible="visible" :actions="actions" @Click="handleClick">
+      <view>完善个人资料后即可申请</view>
+    </i-modal>
     
     <view v-if="addinfo" class="addmsg">
       <view style="height:40rpx;">
@@ -67,6 +70,15 @@ export default {
   data() {
     return {
       visible: false,
+      actions: [
+        {
+          name: "取消"
+        },
+        {
+          name: "前往",
+          color: "#ed3f14"
+        }
+      ],
       flagcollection:false,
       flagwant:false,
       addinfo:false,
@@ -81,7 +93,6 @@ export default {
   computed: {
     hasresume(){
       return this.$store.default.state.resume.hasresume
-
     },
       job(){
            return this.$store.default.state.detail;
@@ -196,19 +207,16 @@ export default {
       async collectioncancel() {                                 //取消收藏
       this.postmsg("/deleteenshrine");
       },
-      //取消提示
-      hideModalcancel(){
-            this.visible= false;
-           
-        },
-      hideModal(){
-            this.visible= false;
-         
-            this.$WX.navigateTo("../resume/main");
-        },
-        gotomap(){
-          this.$WX.navigateTo("../showmap/main");
+      handleClick(e){
+        console.log(e.mp.detail.index);
+        if(e.mp.detail.index==1){
+          this.$WX.navigateTo("../resume/main");
         }
+        this.visible= false;
+      },
+      gotomap(){
+        this.$WX.navigateTo("../showmap/main");
+      }
     }
 };
 </script>

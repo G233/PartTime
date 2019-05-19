@@ -40,20 +40,37 @@
        
       </block>
     </swiper>
-     <img :class="addimg" :src="images[0]" @click="addjob">
+
+    <img :class="addimg" :src="images[0]" @click="addjob">
+    <i-modal title="完善资料" :visible="visible" :actions="actions" @Click="handleClick">
+      <view>完善个人资料后即可发布</view>
+    </i-modal>
+
+    <i-toast id="toast" />
+
   </div>
 </template>
 
 <script>
 //登录页面
-
+const { $Toast } = require('../../../static/iview/base/index');
 export default {
   components: {},
   data() {
     return {
+      visible: false,
+      actions: [
+        {
+          name: "取消"
+        },
+        {
+          name: "前往",
+          color: "#ed3f14"
+        }
+      ],
       isindex: true,
       height: 150,
-      scrollTop: 0,
+      scrollTop: [],
       fenglei: "",
       addimg: ["image1", "shadow-lg", ""], //添加按钮动画控制
       sortiron: "unfold",
@@ -70,6 +87,9 @@ export default {
     };
   },
   computed: {
+    hasresume(){
+      return this.$store.default.state.resume.hasresume
+    },
     loding() {
       return this.$store.default.state.joblistld;
     },
@@ -111,6 +131,10 @@ export default {
     if (index == 0) {
       if (this.$store.default.state.isindex) {
       wx.startPullDownRefresh();
+      wx.pageScrollTo({
+        scrollTop: 0,
+        duration: 100
+      })
         this.shuaxin();
       }
     }
@@ -122,7 +146,7 @@ export default {
     this.shuaxin();
   },
   onPageScroll({ scrollTop }) {
-    if (this.scrollTop > scrollTop) {
+    if (this.scrollTop[this.current_scroll] > scrollTop) {
       if (!this.flag) {
         this.addimg[2] = "donghuaS";
         this.flag = true;
@@ -133,7 +157,8 @@ export default {
         this.flag = false;
       }
     }
-    this.scrollTop = scrollTop;
+    this.scrollTop[this.current_scroll] = scrollTop;
+    //console.log(this.scrollTop);
   },
   methods: {
     getFields() {
@@ -151,17 +176,29 @@ export default {
         .exec();
     },
     shuaxin() {
-   
-     
         this.$store.default.commit("getjoblist");
-       
-   
     },
     handleChangeScroll(e) {
       this.current_scroll = e;
+      //console.log(this.scrollTop[e],typeof(this.scrollTop[e]));
+      wx.pageScrollTo({
+        scrollTop: this.scrollTop[e],
+        duration: 0
+      })
+      console.log(e);
     },
     swiperchange(e) {
       this.current_scroll = e.mp.detail.current;
+      setTimeout(() => {
+        this.$WX.pageScrollTo({
+        scrollTop: this.scrollTop[this.current_scroll],
+        duration: 0
+      }).then(res=>{
+        console.log('eeee')
+      })
+      }, 0.5);
+      
+      console.log('eeee')
     },
     changeCollection() {
       this.works.Collection = !this.works.Collection;
@@ -174,11 +211,32 @@ export default {
       this.$WX.navigateTo("../detail/main");
     },
     addjob() {
+      if(!this.hasresume){
+        console.log("你还没填资料啊");
+        this.visible= true;
+        return;
+      }
       this.$WX.navigateTo("../addjob/main");
+    },
+    handleClick(e){
+      console.log(e.mp.detail.index);
+      if(e.mp.detail.index==1){
+        this.$WX.navigateTo("../resume/main");
+      }
+      this.visible= false;
     },
     // 加载函数
     loaderjob(e) {
       this.$store.default.commit("loadermore", e);
+    },
+    //刷新函数
+    refresh(e){
+      console.log("刷新");
+      $Toast({
+            content: '加载中',
+            type: 'loading'
+        });
+      this.$store.default.commit("getjoblist");
     }
   }
 };
