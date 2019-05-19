@@ -37,11 +37,20 @@
       </div>
       <div class="cu-form-group">
         <textarea
-          data-placeholder="这里可以添加详情噢"
+          data-placeholder="请填写工作内容"
           maxlength="-1"
           placeholder-class="placeholder"
           :class="txtclass"
           v-model="job.details"
+        ></textarea>
+      </div>
+      <div class="cu-form-group">
+        <textarea
+          data-placeholder="请填写工作时间"
+          maxlength="-1"
+          placeholder-class="placeholder"
+          :class="txtclass"
+          v-model="job.time"
         ></textarea>
       </div>
 
@@ -60,7 +69,7 @@
         style="text-align: center;"
       >{{hassite?job.site.name:'非必填，可直接确认'}}</div>
       <div class="flex padding justify-center">
-        <button class="cu-btn bg-blue round lg shadow commitbtn" @click="commit">确认</button>
+        <button class="cu-btn bg-blue round lg shadow commitbtn1" @click="commit">确认</button>
       </div>
     </div>
   </div>
@@ -91,7 +100,7 @@ export default {
         salary: "",
         chosetime: "",
         choselei: "",
-
+        time: "",
         site: {
           name: "",
           address: "",
@@ -157,9 +166,16 @@ export default {
       const rules = {
         name: {
           required: true,
-          minlength: 2
+          minlength: 2,
+          maxlength: 10
         },
         salary: {
+          required: true
+        },
+        details: {
+          required: true
+        },
+         time: {
           required: true
         },
         chosetime: {
@@ -174,7 +190,14 @@ export default {
       const messages = {
         name: {
           required: "请输入职位名称",
-          minlength: "职位名称不得少于两个字"
+          minlength: "职位名称不得少于两个字",
+          maxlength:'职位名称不得多于十个字'
+        },
+         details: {
+          required: '请输入工作内容'
+        },
+         time: {
+          required: '请输入工作时间'
         },
         salary: {
           required: "请输入薪酬"
@@ -248,9 +271,14 @@ export default {
   text-align: center;
 }
 .commitbtn {
-  position: absolute;
+  position:fixed;
   bottom: 40rpx;
   left: 20%;
+  width: 60%;
+}
+.commitbtn1 {
+margin-top: 500rpx;
+margin: auto;
   width: 60%;
 }
 .sex {

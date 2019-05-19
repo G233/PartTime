@@ -1,62 +1,61 @@
 <template>
-  <div>
-    <view v-if="!job.done" style="padding:30rpx">
-      <image v-if="!flagcollection" :src="collectionimages[0]" class="collection" @click="collectionadd"></image>
-      <image v-if="flagcollection" :src="collectionimages[1]" class="collection" @click="collectioncancel"></image>
-    </view>
-    <view class="title padding">{{job.name}} | {{job.choselei}}</view>
-    <view class="pubtime1 padding">发布于 {{job.creatdate}}</view>
-    <view class="money padding">{{job.salary}}/{{job.chosetime}}</view>
-    <view class="padding">
-      <view style="padding-bottom:20rpx;">工作地点：</view>
-      <text class="money">{{job.site.address}}</text>
-    </view>
-    <view v-if="showmap" class="clickmap">
-        <view style="font-size:25rpx;">点击查看地图</view>
-        <image src="../../static/images/zhishi.png" style="width:50rpx;height:50rpx" @click="gotomap"></image>
-    </view>
-    <div>
-      <view class="padding">附注：</view>
-      <view class="money" style="padding-left: 40rpx;">{{job.details}}</view>
+  <div class="margin">
+    <div class="solids-bottom ">
+    <div class="flex padding-tb-xl align-center">
+      <div class="tabshu"></div>
+      <div class="jobname padding-left">{{job.name}}</div>
+      <div class="leikuang">{{job.choselei}} </div>
+      <div v-if="job.done" class="statu1">已完成</div>
+      <div v-if="!job.done" class="statu2">申请中</div>
     </div>
-    <i-row v-if="!job.done" class="margin">
-      <i-col span="5" offset="10">
-        <view v-if="!flagwant" class="wantit" @click="addwant">申请</view>
-        <view v-if="flagwant" class="wantit" @click="cancelwant" >已申请</view>
-      </i-col>
-    </i-row>
+    <div class="flex  justify-between align-center">
+      <div class="flex padding align-end">
+        <div class="jobsa">{{job.salary}}</div>
+        <div style="font-size:15px;" class="text-grey">元 / {{job.chosetime}}</div>
+      </div>
+      <div class="flex  align-center">
+         <image  src="/static/images/fenxiang.png" class="fenxiangpng" @click="collectionclick"></image>
+         <div v-if="!job.done&&!isme" class="padding margin-tb solid-left "></div>
+         <image v-if="!job.done&&!isme"  :src="collectionimages" class="starpng" @click="collectionclick"></image>
+      </div>
+    </div>
+    </div>
+    <div class="title1 padding-top-xl" > 「工作内容」</div>
+    <div class="margin txt1 text-df">{{job.details}}</div>
+    <div class="title1 "> 「工作时间」</div>
+  <div class="margin txt1 text-df">{{job.time}}</div>
 
-    <!-- <view v-if="visible" class="cu-modal show">
-      <view class="cu-dialog">
-          <view class="cu-bar bg-white justify-end">
-          <view class="content">提示</view>
-          </view>
-          <view class="padding-xl">
-          填写个人信息后即可提交申请
-          </view>
-          <view class="cu-bar bg-white">
-          <view class="action margin-0 flex-sub text-green solid-left" @click="hideModalcancel">取消</view>
-          <view class="action margin-0 flex-sub  solid-left" @click="hideModal">前往</view>
-          </view>
-      </view>
-    </view> -->
+    <div class="title1"> 「工作地点」</div>
+    <div class="margin txt1">
+         <image  v-if="showmap" src="/static/images/map.png" class="mappng" @click="gotomap"></image>
+         <div  class="text-df" v-else>暂未提供地点信息</div>
+
+    </div>
+      <div class="title1"> 「人员」</div>
+  <div class="margin txt1 text-df">杨东升 男</div>
+    <div v-if="!job.done&&!isme" class="flex padding justify-center ">  <button :class="commit" @click="want">{{committxt}}</button></div>
+    <div  class="time padding-xl text-grey "> 发布于：{{job.day}} </div>
+    
+    <!--  -->
     <i-modal title="完善资料" :visible="visible" :actions="actions" @Click="handleClick">
       <view>完善个人资料后即可申请</view>
     </i-modal>
-    
+
     <view v-if="addinfo" class="addmsg">
       <view style="height:40rpx;">
         <view class="button" style="float:left;" @click="handlecancel">取消</view>
         <view class="button" style="float:right" @click="pushdata">提交</view>
       </view>
       <view class="cu-form-group margin-top">
-        <textarea maxlength="-1"
-                  v-model="message" 
-                  placeholder="在这里填写你想对商家说的话吧" 
-                  fixed="true" 
-                  auto-focus="true"
-                  placeholder-class="placeholderclass"
-                  class="textarea"></textarea>
+        <textarea
+          maxlength="-1"
+          v-model="message"
+          placeholder="在这里填写你想对商家说的话吧"
+          fixed="true"
+          auto-focus="true"
+          placeholder-class="placeholderclass"
+          class="textarea"
+        ></textarea>
       </view>
     </view>
 
@@ -65,7 +64,7 @@
 </template>
 
 <script>
-const { $Message } = require('../../../static/iview/base/index');
+const { $Message } = require("../../../static/iview/base/index");
 export default {
   data() {
     return {
@@ -79,149 +78,250 @@ export default {
           color: "#ed3f14"
         }
       ],
-      flagcollection:false,
-      flagwant:false,
-      addinfo:false,
-      message:'',
+      flagcollection: false,
+      flagwant: false,
+      addinfo: false,
+      message: "",
       job_id: "",
-      collectionimages: [
-        "../../static/images/collection.png",
-        "../../static/images/star1.png"
-      ]
+      isme:false
     };
   },
   computed: {
-    hasresume(){
-      return this.$store.default.state.resume.hasresume
-    },
-      job(){
-           return this.$store.default.state.detail;
-      },
-      showmap(){
-        if(this.$store.default.state.detail.site.latitude==''){
-          return false;
-        } else {
-          return true;
-        }
+    commit(){
+      if(!this.flagwant){
+        return "cu-btn round commit lg "
       }
+      else{
+        return "cu-btn round commit done lg "
+      }
+    },
+        committxt(){
+      if(!this.flagwant){
+        return '申请'
+      }
+      else{
+        return "申请中 "
+      }
+    },
+    hasresume() {
+      return this.$store.default.state.resume.hasresume;
+    },
+    job() {
+      return this.$store.default.state.detail;
+    },
+    collectionimages() {
+      if (this.flagcollection) {
+        return "/static/images/star1.png";
+      } else {
+        return "/static/images/star.png";
+      }
+    },
+    showmap() {
+      if (this.$store.default.state.detail.site.latitude == "") {
+        return false;
+      } else {
+        return true;
+      }
+    }
   },
   onUnload() {
     Object.assign(this.$data, this.$options.data());
   },
   async onLoad() {
     let info = await this.$request.postRequest("/getDstatus", {
-      data:{ jobId : this.job._id}
+      data: { jobId: this.job._id }
     });
 
-    if(info.data.code==500){        //都有
-      this.flagcollection=this.flagwant= true;
+    if (info.data.code == 500) {
+      //都有
+      this.flagcollection = this.flagwant = true;
     }
-    if(info.data.code==400){      //已申请
-      this.flagwant= true;
+    if (info.data.code == 400) {
+      //已申请
+      this.flagwant = true;
     }
-    if(info.data.code==300){       //已收藏
-      this.flagcollection= true;
+    if (info.data.code == 300) {
+      //已收藏
+      this.flagcollection = true;
     }
-    console.log(this.job.site);
-    this.markers[0].latitude= this.job.site.latitude;
-    this.markers[0].longitude= this.job.site.longitude;
+    if (this.job.openId == this.$store.default.state.resume.openId) {
+      this.isme=true
+    }
+
+   
+    this.markers[0].latitude = this.job.site.latitude;
+    this.markers[0].longitude = this.job.site.longitude;
   },
   methods: {
-    pushdata () {
-      //console.log("lll");
-      this.postmsg("/addwant",{ jobId: this.job._id });
-      this.addinfo= false;
+    pushdata() {
+      this.postmsg("/addwant", { jobId: this.job._id });
+      this.addinfo = false;
       console.log(this.message);
-      this.message= '';
+      this.message = "";
     },
-    handlecancel(){
-      this.addinfo= false;
-      this.message= '';
+    handlecancel() {
+      this.addinfo = false;
+      this.message = "";
     },
-    async postmsg (address) {
+    async postmsg(address) {
       let dat;
-      if(address=="/addwant"){
-        dat={
+      if (address == "/addwant") {
+        dat = {
           jobId: this.job._id,
-          message:this.message
-        }
+          message: this.message
+        };
       } else {
-        dat= { jobId: this.job._id }
+        dat = { jobId: this.job._id };
       }
       console.log(dat);
-      let msg = await this.$request.postRequest(address, {data: dat});
-      console.log(msg.data,address);
+      let msg = await this.$request.postRequest(address, { data: dat });
+      console.log(msg.data, address);
       //console.log(this.job);
       if (msg.data.code == 200) {
-        if(address=="/addwant"||address=="/deletewant") {
-          this.flagwant= !this.flagwant;
-          console.log(this.flagwant,"flagwant");
+        if (address == "/addwant" || address == "/deletewant") {
+          this.flagwant = !this.flagwant;
+          console.log(this.flagwant, "flagwant");
         } else {
-          this.flagcollection= !this.flagcollection;
-          console.log(this.flagcollection,"flagcollection");
+          this.flagcollection = !this.flagcollection;
+          console.log(this.flagcollection, "flagcollection");
         }
-          $Message({
-            content: msg.data.msg,
-            type: "success"
-          });
-        } else {
-          $Message({
-            content: msg.data.msg,
-            type: "error"
-          });
-        }
-    },
-    //申请函数 
-    async addwant() {
-      console.log(this.job.openId,this.$store.default.state.resume.openId)
-      if(this.job.openId==this.$store.default.state.resume.openId){
         $Message({
-            content: "不能申请自己发布的职位哦",
-            type: "error"
-          });
-        return;
+          content: msg.data.msg,
+          type: "success"
+        });
+      } else {
+        $Message({
+          content: msg.data.msg,
+          type: "error"
+        });
       }
-      if(!this.hasresume){
+    },
+    want(){
+      if(!this.flagwant){
+      if (!this.hasresume) {
         console.log("你还没填资料啊");
-        this.visible= true;
+        this.visible = true;
         return;
       }
-      this.addinfo= true;
-    },
-    //取消申请函数
-    async cancelwant(){
-      this.postmsg("/deletewant");
-    },
-    //收藏函数
-    async collectionadd() {  
-      console.log("点了");      //点击收藏
-      if(this.job.openId==this.$store.default.state.resume.openId){
-        $Message({
-            content: "无需收藏自己发布的职位哦",
-            type: "error"
-          });
-        return;
+      this.addinfo = true;
       }
-      this.postmsg("/addenshrine");
-    }, 
-      async collectioncancel() {                                 //取消收藏
-      this.postmsg("/deleteenshrine");
-      },
-      handleClick(e){
-        console.log(e.mp.detail.index);
-        if(e.mp.detail.index==1){
-          this.$WX.navigateTo("../resume/main");
-        }
-        this.visible= false;
-      },
-      gotomap(){
-        this.$WX.navigateTo("../showmap/main");
+      else{
+             this.postmsg("/deletewant");
       }
+    },
+    //申请函数
+ 
+    //收藏点击函数
+    collectionclick(){
+      if (this.flagcollection) {
+        this.postmsg("/deleteenshrine");
+      } else {
+        this.postmsg("/addenshrine");
+      }
+  
+    },
+    handleClick(e) {
+      console.log(e.mp.detail.index);
+      if (e.mp.detail.index == 1) {
+        this.$WX.navigateTo("../resume/main");
+      }
+      this.visible = false;
+    },
+    gotomap() {
+      this.$WX.navigateTo("../showmap/main");
     }
+  }
 };
 </script>
 
 <style scoped>
+.commit{
+  color: white;
+  background-color: #158bb8;
+  transition: background-color 0.5s
+}
+.done{
+   background-color: #55bb8a;
+}
+.time{
+  text-align: center;
+  font-size: 12px 
+}
+.title1{
+   font-size: 16px;
+  font-weight: bold;
+}
+.txt1{
+
+}
+.mappng{
+  width: 100%;
+  height:100rpx;
+  border-radius: 20rpx;
+}
+.leikuang{
+  margin-left: 50rpx;
+  height: 40rpx;
+  width: 80rpx;
+ border-radius: 10rpx;
+ background-color: #f09c5a;
+ color: white;
+ text-align: center;
+ line-height: 1.35;
+ font-size: 15px
+
+}
+.statu1{
+ margin-left: 50rpx;
+  height: 40rpx;
+  width: 120rpx;
+ border-radius: 10rpx;
+ background-color: #ef6f48;
+ color: white;
+ text-align: center;
+ line-height: 1.35;
+ font-size: 15px
+
+}
+.statu2{
+   margin-left: 50rpx;
+  height: 40rpx;
+  width: 120rpx;
+ border-radius: 10rpx;
+ background-color: #8cc269;
+ color: white;
+ text-align: center;
+ line-height: 1.35;
+ font-size: 15px
+}
+.starpng{
+  height: 55rpx;
+  width: 55rpx;
+  margin-right: 50rpx
+
+}
+.fenxiangpng{
+  height: 40rpx;
+  width: 40rpx;
+  margin-right: 50rpx
+}
+.tabshu {
+  border-radius: 10rpx;
+  height: 40rpx;
+  width: 10rpx;
+  background-color: #2b85e4;
+}
+.jobname {
+  font-size: 20px;
+  font-weight: bold;
+}
+.jobsa {
+  padding-right: 10rpx;
+  font-weight: 600;
+  font-size: 19px;
+}
+
+/*  */
 .margin {
   margin-top: 40rpx;
 }
@@ -257,35 +357,39 @@ export default {
   padding: 15rpx 20rpx;
   margin-top: 100rpx;
 }
-.button{
+.button {
   font-size: 30rpx;
   color: #19be6b;
   padding: 0 40rpx;
   text-align: center;
 }
-.textarea{
+.textarea {
   height: 180rpx;
-  margin:0 20rpx;
+  margin: 0 20rpx;
 }
-.placeholderclass{
+.placeholderclass {
   padding-top: 30rpx;
   font-size: 28rpx;
 }
-.addmsg{
-    background:#f8f8f9;
-    padding: 40rpx;
-    height: 330rpx;
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    animation: addmsgmove 0.1s;
+.addmsg {
+  background: #f8f8f9;
+  padding: 40rpx;
+  height: 330rpx;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  animation: addmsgmove 0.1s;
 }
-@keyframes addmsgmove{
-    from{height:0;background: white}
-    to{}
+@keyframes addmsgmove {
+  from {
+    height: 0;
+    background: white;
+  }
+  to {
+  }
 }
-.clickmap{
+.clickmap {
   display: flex;
   justify-content: start;
   padding-left: 40rpx;

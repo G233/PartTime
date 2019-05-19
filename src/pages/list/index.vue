@@ -133,7 +133,7 @@ export default {
       wx.startPullDownRefresh();
       wx.pageScrollTo({
         scrollTop: 0,
-        duration: 100
+        duration: 300
       })
         this.shuaxin();
       }
