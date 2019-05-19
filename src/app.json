@@ -40,8 +40,8 @@
       {
         "pagePath": "pages/enshrine/main",
         "text": "收藏",
-        "iconPath": "./static/images/star.png",
-        "selectedIconPath": "./static/images/star1.png"
+        "iconPath": "./static/images/star2.png",
+        "selectedIconPath": "./static/images/star3.png"
       },
       {
         "pagePath": "pages/mine/main",
