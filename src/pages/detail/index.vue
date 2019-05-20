@@ -14,7 +14,10 @@
         <div style="font-size:15px;" class="text-grey">元 / {{job.chosetime}}</div>
       </div>
       <div class="flex  align-center">
-         <button class="share" plain=true open-type="share"><image  src="/static/images/fenxiang.png" class="fenxiangpng"></image></button>
+        <button open-type='share' class="fenxiang">
+             <image  src="/static/images/fenxiang.png" class="fenxiangpng" @click="collectionclick"></image>
+        </button>
+      
          <div v-if="!job.done&&!isme" class="padding margin-tb solid-left "></div>
          <image v-if="!job.done&&!isme"  :src="collectionimages" class="starpng" @click="collectionclick"></image>
       </div>
@@ -89,6 +92,12 @@ export default {
       isme:false,
       sharejob:''
     };
+  },
+  
+  onShareAppMessage: function() {
+    return {
+      path: '/page/detail/index?'//这是一个路径
+    }
   },
   computed: {
     commit(){
@@ -275,6 +284,10 @@ export default {
   background-color: #158bb8;
   transition: background-color 0.5s
 }
+.fenxiang{
+ background-color: white;
+ width: 40rpx;
+}
 .done{
    background-color: #55bb8a;
 }
@@ -329,6 +342,11 @@ export default {
  line-height: 1.35;
  font-size: 15px
 }
+
+button::after{
+  border: none;
+}
+ 
 .starpng{
   height: 55rpx;
   width: 55rpx;
@@ -336,6 +354,7 @@ export default {
 
 }
 .fenxiangpng{
+  z-index: 1000;
   height: 40rpx;
   width: 40rpx;
   margin-right: 50rpx
