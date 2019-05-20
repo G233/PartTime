@@ -193,12 +193,8 @@ export default {
         this.$WX.pageScrollTo({
         scrollTop: this.scrollTop[this.current_scroll],
         duration: 0
-      }).then(res=>{
-        console.log('eeee')
       })
       }, 0.5);
-      
-      console.log('eeee')
     },
     changeCollection() {
       this.works.Collection = !this.works.Collection;
