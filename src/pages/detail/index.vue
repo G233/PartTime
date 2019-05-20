@@ -14,7 +14,7 @@
         <div style="font-size:15px;" class="text-grey">元 / {{job.chosetime}}</div>
       </div>
       <div class="flex  align-center">
-         <image  src="/static/images/fenxiang.png" class="fenxiangpng" @click="collectionclick"></image>
+         <button class="share" plain=true open-type="share"><image  src="/static/images/fenxiang.png" class="fenxiangpng"></image></button>
          <div v-if="!job.done&&!isme" class="padding margin-tb solid-left "></div>
          <image v-if="!job.done&&!isme"  :src="collectionimages" class="starpng" @click="collectionclick"></image>
       </div>
@@ -33,7 +33,10 @@
     </div>
       <div class="title1"> 「人员」</div>
   <div class="margin txt1 text-df">杨东升 男</div>
-    <div v-if="!job.done&&!isme" class="flex padding justify-center ">  <button :class="commit" @click="want">{{committxt}}</button></div>
+    <div v-if="!job.done&&!isme" class="flex padding justify-center "> 
+       <button :class="commit" @click="want">{{committxt}}</button>
+       <button v-if="backhome" :class="commit" @click="backtohome">去首页</button>
+    </div>
     <div  class="time padding-xl text-grey "> 发布于：{{job.day}} </div>
     
     <!--  -->
@@ -83,7 +86,8 @@ export default {
       addinfo: false,
       message: "",
       job_id: "",
-      isme:false
+      isme:false,
+      sharejob:''
     };
   },
   computed: {
@@ -122,12 +126,40 @@ export default {
       } else {
         return true;
       }
+    },
+    backhome(){
+      if(this.sharejob){
+        return true;
+      }
+      return false;
+    }
+  },
+  onShareAppMessage(res) {
+    console.log(res)
+    return {
+      title: this.job.name,
+      path: 'pages/detail/main?id='+this.job._id
     }
   },
   onUnload() {
     Object.assign(this.$data, this.$options.data());
   },
-  async onLoad() {
+  async onLoad(options) {
+    if(options.id){
+      console.log(options.id);
+      let job = await this.$request.postRequest("/getjobd", {
+      data: { jobId: options.id }
+    });
+      if(job.data.code==200){
+        this.sharejob= job.data.data;
+        console.log(this.sharejob,'job详情');
+      } else{
+        $Message({
+          content: jobs.data.msg,
+          type: "error"
+        });
+      }
+    }
     let info = await this.$request.postRequest("/getDstatus", {
       data: { jobId: this.job._id }
     });
@@ -229,6 +261,9 @@ export default {
     },
     gotomap() {
       this.$WX.navigateTo("../showmap/main");
+    },
+    backtohome(){
+      this.$WX.switchTab("../list/main");
     }
   }
 };
@@ -394,5 +429,12 @@ export default {
   justify-content: start;
   padding-left: 40rpx;
   align-items: center;
+}
+.share{
+  background: white;
+  border: 0 solid white;
+  text-align: center;
+  width: 100rpx;
+  height: 70rpx;
 }
 </style>
