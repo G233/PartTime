@@ -37,15 +37,9 @@ const store = new Vuex.Store({
     },
     //获取首页职位列表
     getjoblist: async (state) => {
+
       let res = await vm.$request
         .request("/getjoblist")
-      // for (let x of res) {
-      //   console.log(x)
-      //   // for (let y of x.jobs) {
-      //   //   y.dayago = 'a'
-
-      //   // }
-      // }
       state.joblist = res.data.data
       console.log(state.joblist)
       wx.stopPullDownRefresh();

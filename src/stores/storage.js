@@ -17,6 +17,7 @@ const store = new Vuex.Store({
       CustomBar: '',
       windowHeight: ''
     },
+    joblist:{},
     cardheight: false
   },
   mutations: {
@@ -24,6 +25,10 @@ const store = new Vuex.Store({
     login: (state, data) => {
       state.openId = data.openId,
         state.userId = data.userId
+    },
+    setjoblist: (state, data) => {
+      state.joblist = data
+      
     },
     // 获取系统信息
     setSystemInfo: (state, data) => {

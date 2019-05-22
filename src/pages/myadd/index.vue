@@ -71,8 +71,7 @@ export default {
   computed: {},
   methods: {
     tod(index){
-       this.$store.default.commit("changedetail",  this.list[index].job);
-      this.$WX.navigateTo("../detail/main");
+     this.$WX.navigateTo("../detail/main",{id:this.list[index].job._id});
      
 
     },

@@ -1,5 +1,6 @@
 <template>
   <div class="margin">
+    <div v-if="hasdone"> 
     <div class="solids-bottom ">
     <div class="flex padding-tb-xl align-center">
       <div class="tabshu"></div>
@@ -64,8 +65,12 @@
         ></textarea>
       </view>
     </view>
-
-    <i-message id="message"/>
+</div>
+<div v-else>
+   <image src="/static/images/loading.gif" mode="aspectFit" class="gif-black response" style="height:240rpx"></image>
+  </view>
+</div>
+   <i-message id="message"/>
   </div>
 </template>
 
@@ -74,6 +79,7 @@ const { $Message } = require("../../../static/iview/base/index");
 export default {
   data() {
     return {
+      hasdone:false,
       visible: false,
       actions: [
         {
@@ -90,15 +96,11 @@ export default {
       message: "",
       job_id: "",
       isme:false,
-      sharejob:''
+      sharejob:'',
+      job:'',
     };
   },
   
-  onShareAppMessage: function() {
-    return {
-      path: '/page/detail/index?'//这是一个路径
-    }
-  },
   computed: {
     commit(){
       if(!this.flagwant){
@@ -119,9 +121,9 @@ export default {
     hasresume() {
       return this.$store.default.state.resume.hasresume;
     },
-    job() {
-      return this.$store.default.state.detail;
-    },
+    // job() {
+    //   return this.$store.default.state.detail;
+    // },
     collectionimages() {
       if (this.flagcollection) {
         return "/static/images/star1.png";
@@ -130,11 +132,13 @@ export default {
       }
     },
     showmap() {
-      if (this.$store.default.state.detail.site.latitude == "") {
-        return false;
-      } else {
-        return true;
+      try{
+          return this.job.site.latitude
       }
+      catch(e){
+        return false
+      }
+    
     },
     backhome(){
       if(this.sharejob){
@@ -147,21 +151,27 @@ export default {
     console.log(res)
     return {
       title: this.job.name,
-      path: 'pages/detail/main?id='+this.job._id
+      path: 'pages/list/main?id='+this.job._id
     }
   },
   onUnload() {
     Object.assign(this.$data, this.$options.data());
   },
   async onLoad(options) {
+    wx.showNavigationBarLoading()
     if(options.id){
       console.log(options.id);
       let job = await this.$request.postRequest("/getjobd", {
       data: { jobId: options.id }
     });
       if(job.data.code==200){
-        this.sharejob= job.data.data;
-        console.log(this.sharejob,'job详情');
+        this.job= job.data.data;
+        setTimeout(() => {
+          this.hasdone=true
+          wx.hideNavigationBarLoading()
+        }, 500);
+        
+       
       } else{
         $Message({
           content: jobs.data.msg,
@@ -190,8 +200,8 @@ export default {
     }
 
    
-    this.markers[0].latitude = this.job.site.latitude;
-    this.markers[0].longitude = this.job.site.longitude;
+    // this.markers[0].latitude = this.job.site.latitude;
+    // this.markers[0].longitude = this.job.site.longitude;
   },
   methods: {
     pushdata() {
@@ -375,85 +385,4 @@ button::after{
   font-size: 19px;
 }
 
-/*  */
-.margin {
-  margin-top: 40rpx;
-}
-.pubtime {
-  font-size: 20rpx;
-}
-.button {
-  text-align: center;
-}
-.padding {
-  padding: 40rpx 0 40rpx 40rpx;
-}
-.title {
-  font-size: 45rpx;
-  color: #2b85e4;
-}
-.pubtime1 {
-  font-size: 20rpx;
-}
-.money {
-  color: #2b85e4;
-}
-.collection {
-  width: 50rpx;
-  height: 50rpx;
-  float: right;
-}
-.wantit {
-  font-size: 30rpx;
-  border: 1rpx solid #2b85e4;
-  border-radius: 20rpx;
-  text-align: center;
-  padding: 15rpx 20rpx;
-  margin-top: 100rpx;
-}
-.button {
-  font-size: 30rpx;
-  color: #19be6b;
-  padding: 0 40rpx;
-  text-align: center;
-}
-.textarea {
-  height: 180rpx;
-  margin: 0 20rpx;
-}
-.placeholderclass {
-  padding-top: 30rpx;
-  font-size: 28rpx;
-}
-.addmsg {
-  background: #f8f8f9;
-  padding: 40rpx;
-  height: 330rpx;
-  position: fixed;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  animation: addmsgmove 0.1s;
-}
-@keyframes addmsgmove {
-  from {
-    height: 0;
-    background: white;
-  }
-  to {
-  }
-}
-.clickmap {
-  display: flex;
-  justify-content: start;
-  padding-left: 40rpx;
-  align-items: center;
-}
-.share{
-  background: white;
-  border: 0 solid white;
-  text-align: center;
-  width: 100rpx;
-  height: 70rpx;
-}
 </style>

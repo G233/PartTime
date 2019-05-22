@@ -1,170 +1,90 @@
 <template>
   <div>
-    <view class="tip">
-      tip:长按可删除或取消删除
-      <i-tag
-        class="i-tags"
-        name="标签一"
-        color="blue"
-        @click="refresh"
-        style="float:right;padding-right:40rpx;"
-      >刷新</i-tag>
-    </view>
-    <i-cell v-if="list.length==0" title="你还没有收藏工作呀！"></i-cell>
-    <view class="list" v-for="item in list" :key="index" >
-      <i-cell
-        :id="[item.jobId._id,index]"
-        @longpress="longpress"
-        @click="gotodetail(item.jobId)"
-        i-class="i-cell-padding"
-        :title="item.jobId.name"
-        :label="item.jobId.choselei+'------------'+item.jobId.salary+'元/'+item.jobId.chosetime"
-      ></i-cell>
-    </view>
-
-    <view v-if="visible" class="chexiao">
-      <view>{{title}}</view>
-      <view style="font-size:25rpx;padding-top:5rpx">已取消收藏!</view>
-      <view style="font-size:40rpx;padding-top:5rpx">{{number}}</view>
-      <view>
-        <i-tag class="i-tags" name="标签一" color="blue" @click="canceljob" style="padding-top:5rpx">撤销</i-tag>
-      </view>
-    </view>
+    <view @click="longpress" class="text-grey padding text-xs">tip:长按可删除</view>
+    <i-cell v-if="lists.length==0" title="你还没有收藏工作呀！"></i-cell>
+    <div v-for="(item, index) in lists" :key="index">
+      <div v-show="!item.willd" @click="gotodetail(item.jobId)" @longpress="longpress(index)">
+        <JobCard :hasstatu="true" :job="item.jobId"></JobCard>
+      </div>
+    </div>
+    <button v-if="visible" @click="repeal" :class="btnclass">撤销</button>
+    <i-message id="message"/>
   </div>
 </template>
-
 <script>
+import JobCard from "../../components/jobcard";
 const { $Message } = require("../../../static/iview/base/index");
 export default {
+  components: { JobCard },
   data() {
     return {
-      //deleteJob:[],
-      title: "",
-      number: 2,
+      btnclass: [
+        "btn cu-btn round bg-blue shadow-lg  shadow-blur lg animated ",
+        "fadeInUpBig"
+      ],
       visible: false,
-      jobid: "",
-      index: "",
-      list: []
+      lists: [],
+      list1: []
     };
   },
-  computed: {},
+  async onHide() {
+    for (let x of this.lists) {
+      if (x.willd) {
+        let msg = await this.$request.postRequest("/deleteenshrine", {
+          data: { jobId: x.jobId._id }
+        });
+      }
+    }
+    this.list1 = [];
+    this.visible = false;
+  },
   onShow() {
     this.refresh();
-    //this.deleteJob=[];
   },
-  // onHide(){
-  //     this.deletejobs();
-  //     console.log("隐藏了");
-  // },
-    methods: {
-        longpress(e){
-            console.log("aaa",e.currentTarget.id);
-            this.jobid= e.currentTarget.id
-            this.visible= true;
-            //console.log(this.jobid.substr(0,24),'\n',this.jobid.substr(24,10));
-            this.index= this.jobid.substr(25,10);
-            this.jobid= this.jobid.substr(0,24);
-            this.title= this.list[this.index].jobId.name;
-            var time = setInterval(()=>{
-                this.number-=1;
-                console.log(this.number);
-                if(this.number<=0&&this.visible){
-                    this.visible= false;
-                    this.deletejobs();
-                    clearInterval(time);
-                    this.number=2;
-                } else if(!this.visible){
-                    clearInterval(time);
-                    this.number=2;
-                } else return;
-            },1000);
-        },
-        canceljob(){
-            this.visible= false;
-            console.log("撤销");
-        },
-        async deletejobs () {
-            let msg = await this.$request.postRequest("/deleteenshrine",{
-                    data: { jobId: this.jobid }
-                });
-                if(msg.data.code==200){
-                    this.list.splice(Number(this.index),1);
-                    console.log(this.list);
-                    $Message({
-                        content: '删除成功！',
-                        type: 'success'
-                    });
-                } else {
-                    $Message({
-                        content: '删除失败，等等再试试吧！',
-                        type: 'error'
-                    });
-                }
-        },
-        async refresh(){
-            let list = await this.$request.postRequest("/getenshrine");
-            //console.log(list.data.data);
-            this.list = list.data.data;
-            console.log(this.list);
-        },
-        //跳转详情页
-        gotodetail(e) {
-            this.$store.default.commit("changedetail", e);
-            this.$WX.navigateTo("../detail/main");
-        },
+  methods: {
+    repeal() {
+      let x = this.list1.pop();
+      this.lists[x].willd = false;
+      if (this.list1.length == 0) {
+        this.btnclass[1] = "fadeOutDownBig";
+        setTimeout(() => {
+          this.visible = false;
+        }, 1000);
+      }
+      $Message({
+        content: "撤销删除成功！",
+        type: "success"
+      });
+    },
+    longpress(index) {
+      this.lists[index].willd = true;
+      this.list1.push(index);
+      this.btnclass[1] = "fadeInUpBig";
+      this.visible = true;
+      $Message({
+        content: "删除成功！",
+        type: "success"
+      });
+    },
+
+    async refresh() {
+      let list = await this.$request.postRequest("/getenshrine");
+      this.lists = list.data.data;
     },
     //跳转详情页
     gotodetail(e) {
-      this.$store.default.commit("changedetail", e);
-      this.$WX.navigateTo("../detail/main");
+      console.log(e);
+      this.$WX.navigateTo("../detail/main", { id: e._id });
     }
+  }
 };
 </script>
 
 <style scoped>
-.list {
-  border-top: 1rpx solid #dddee1;
-  border-bottom: 1rpx solid #dddee1;
-}
-.tip {
-  color: #2b85e4;
-  font-size: 20rpx;
-  padding: 30rpx 0 30rpx 40rpx;
-}
-.cancel {
-  font-size: 30rpx;
-  color: #2b85e4;
-}
-.weizhi {
-  height: 80rpx;
-  background: #bbbec4;
-  opacity: 0.5;
-  position: fixed;
-  bottom: 0;
-  right: 0;
-}
-.delete {
-  text-decoration: line-through;
-}
-.chexiao {
-  margin: 0 30rpx;
-  border-radius: 15rpx;
-  text-align: center;
-  padding: 40rpx 0 40rpx 0;
-  background: #f8f8f9;
-  opacity: 0.5;
-  position: fixed;
-  right: 0;
-  left: 0;
-  bottom: 0;
-  animation: cancel1 0.1s;
-}
-@keyframes cancel1 {
-  from {
-    height: 0;
-    background: white;
-  }
-  to {
-  }
+.btn {
+  position: absolute;
+  bottom: 100rpx;
+  width: 60%;
+  right: 20%;
 }
 </style>

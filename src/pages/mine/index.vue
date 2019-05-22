@@ -37,27 +37,27 @@ export default {
     return {
       listdata: [
         {
-          img: "../../static/images/add.png",
+          img: "../../static/images/我的.png",
           text: "我的信息",
           path: "../resume/main"
         },
         {
-          img: "../../static/images/add.png",
+          img: "../../static/images/编辑.png",
           text: "我的发布",
           path: "../myadd/main"
         },
         {
-          img: "../../static/images/add.png",
+          img: "../../static/images/订单.png",
           text: "我的申请",
           path: "../mywant/main"
         },
         {
-          img: "../../static/images/add.png",
+          img: "../../static/images/客服.png",
           text: "意见与反馈",
           path: "../suggestion/main"
         },
         {
-          img: "../../static/images/add.png",
+          img: "../../static/images/灵感.png",
           text: "关于我们",
           path: "../about/main"
         }

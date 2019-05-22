@@ -3,7 +3,7 @@
     <i-message id="message"/>
 
     <div v-if="step==0" :class="step0">
-      <i-message id="message"/>
+    
       <div class="title1">请填写招聘信息</div>
       <lg-input
         placeholderlg="请输入职位名称"
@@ -276,7 +276,7 @@ export default {
   left: 20%;
   width: 60%;
 }
-.commitbtn1 {
+.commitbtn1{
 margin-top: 500rpx;
 margin: auto;
   width: 60%;

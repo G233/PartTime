@@ -1,125 +1,93 @@
 <template>
   <div>
-    <view class="tip">tip:长按可删除 
-      <i-tag class="i-tags" name="标签一" color="blue"@click="getlist" style="float:right;padding-right:40rpx;">刷新</i-tag>
-    </view>
-    <i-cell v-if="list.length==0" title="你还没有已申请的工作哦"></i-cell>
-    <view v-for="item in list" :key="index" 
-        :id='[item.jobId._id,index]' 
-        @longpress="longpress" 
-        @click="gotodetail(item.jobId)">
-      <i-card :title="item.jobId.name" :extra="item.jobId.salary+'元/'+item.jobId.chosetime">
-          <view slot="content">{{item.jobId.details}}</view>
-          <view slot="footer">{{item.jobId.creatdate}}</view>
-      </i-card>
-    </view>
-
-    <view v-if="visible" class="chexiao">
-      <view style="font-size:25rpx;padding-top:5rpx">已取消收藏</view>
-      <view style="font-size:40rpx;padding-top:5rpx">{{number}}</view>
-      <view>
-          <i-tag class="i-tags" name="标签一" color="blue" @click="canceljob" style="padding-top:5rpx">撤销</i-tag>
-      </view>
-      </view>
-
+    <view @click="longpress" class="text-grey padding text-xs">tip:长按可删除</view>
+    <i-cell v-if="lists.length==0" title="你还没有申请工作呀！"></i-cell>
+    <div v-for="(item, index) in lists" :key="index">
+      <div v-show="!item.willd" @click="gotodetail(item.jobId)" @longpress="longpress(index)">
+        <JobCard :hasstatu="true" :job="item.jobId"></JobCard>
+      </div>
+    </div>
+    <button v-if="visible" @click="repeal" :class="btnclass">撤销</button>
+    <i-message id="message"/>
   </div>
 </template>
-
 <script>
+import JobCard from "../../components/jobcard";
+const { $Message } = require("../../../static/iview/base/index");
 export default {
+  components: { JobCard },
   data() {
     return {
-      list:[],
-      visible:false,
-      number:2,
-      jobid:'',
-      index:'',
-    }
+      btnclass: [
+        "btn cu-btn round bg-blue shadow-lg  shadow-blur lg animated ",
+        "fadeInUpBig"
+      ],
+      visible: false,
+      lists: [],
+      list1: []
+    };
   },
-  computed:{},
-  onShow(){
-    this.getlist();
+  async onUnload() {
+    this.truedelete();
   },
-  methods:{
-    async getlist(){
-      let msg = await this.$request.postRequest("/getwant");
-      if(msg.data.code==200){
-        this.list= msg.data.data;
-      }
-      console.log(this.list);
-    },
-    longpress(e){
-      this.jobid= e.currentTarget.id
-      this.visible= true;
-      this.index= this.jobid.substr(25,10);
-      this.jobid= this.jobid.substr(0,24);
-      var time = setInterval(()=>{
-          this.number-=1;
-          if(this.number<=0&&this.visible){
-              this.visible= false;
-              this.deletejobs();
-              clearInterval(time);
-              this.number=2;
-          } else if(!this.visible){
-              clearInterval(time);
-              this.number=2;
-          } else return;
-      },1000);
-    },
-    canceljob(){
-        this.visible= false;
-        console.log("撤销");
-    },
-    async deletejobs () {
-        let msg = await this.$request.postRequest("/deletewant",{
-            data: { jobId: this.jobid }
-        });
-        if(msg.data.code==200){
-            this.list.splice(Number(this.index),1);
-            console.log(this.list);
-            $Message({
-                content: msg.data.msg,
-                type: 'success'
-            });
-        } else {
-            $Message({
-                content: msg.data.msg,
-                type: 'error'
-            });
+  onShow() {
+    this.refresh();
+  },
+  methods: {
+    async truedelete() {
+      for (let x of this.lists) {
+        if (x.willd) {
+          let msg = await this.$request.request("/deletewant", {
+            data: { jobId: x.jobId._id }
+          });
         }
+      }
+      this.list1 = [];
+      this.visible = false;
+    },
+    repeal() {
+      let x = this.list1.pop();
+      this.lists[x].willd = false;
+      if (this.list1.length == 0) {
+        this.btnclass[1] = "fadeOutDownBig";
+        setTimeout(() => {
+          this.visible = false;
+        }, 1000);
+      }
+      $Message({
+        content: "撤销删除成功！",
+        type: "success"
+      });
+    },
+    longpress(index) {
+      this.lists[index].willd = true;
+      this.list1.push(index);
+      this.btnclass[1] = "fadeInUpBig";
+      this.visible = true;
+      $Message({
+        content: "删除成功！",
+        type: "success"
+      });
+    },
+
+    async refresh() {
+      let list = await this.$request.postRequest("/getwant");
+      this.lists = list.data.data;
     },
     //跳转详情页
-    gotodetail(e) {
-        this.$store.default.commit("changedetail", e);
-        this.$WX.navigateTo("../detail/main");
-    },
+    async gotodetail(e) {
+      this.truedelete();
+      this.$WX.navigateTo("../detail/main", { id: e._id });
+    }
   }
-}
+};
 </script>
 
 <style scoped>
-.tip{
-    color: #2b85e4;
-    font-size:20rpx;
-    padding: 30rpx 0 30rpx 40rpx;
-}
-.chexiao{
-    margin: 0 30rpx;
-    border-radius: 15rpx;
-    text-align: center;
-    padding: 40rpx 0 40rpx 0;
-    background: #f8f8f9;
-    opacity: 0.5;
-    position: fixed;
-    right: 0;
-    left: 0;
-    bottom: 0;
-    animation: cancel1 0.1s;
-
-}
-@keyframes cancel1{
-    from{height:0;background: white}
-    to{}
+.btn {
+  position: absolute;
+  bottom: 100rpx;
+  width: 60%;
+  right: 20%;
 }
 </style>
-
