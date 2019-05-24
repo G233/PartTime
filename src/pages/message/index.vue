@@ -2,10 +2,10 @@
   <div>
     <div class="padding-top-lg">
       <div v-for="(item, index) in msglist" :key="index">
-        <div class="msgt text-sm text-grey padding-lg">{{item.day}}</div>
+        <div class="msgt text-sm text-grey padding-xs">{{item.day}}</div>
         <div class="msgc">
-          <div class="solid-bottom padding text-bold text-df text-blue">{{item.title}}</div>
-          <div class="text-df padding">{{item.details}}</div>
+          <div class="solid-bottom padding  msgtitle ">{{item.title}}</div>
+          <div class="text-df padding" style="white-space:pre-wrap;line-height: 150%">{{item.details}}</div>
         </div>
       </div>
       <i-load-more tip="我是有底线的" :loading="loding"/>
@@ -57,11 +57,15 @@ export default {
 </script>
 
 <style  >
+.msgtitle{
+  font-size: 17px;
+  font-weight: bold;
+  text-align: center
+}
 .msgc {
   background-color: white;
   border-radius: 10rpx;
   width: 90%;
-  height: 250rpx;
   margin: auto;
   margin-bottom: 20rpx;
   margin-top: 20rpx;

@@ -20,7 +20,12 @@ export default {
   methods: {
     //加载首页数据
     lodinglist() {
+      this.$store.default.state.joblist=this.$storage.default.state.joblist
       this.$store.default.commit("getjoblist");
+      setTimeout(() => {
+       this.$storage.default.commit("setjoblist",this.$store.default.state.joblist) 
+      }, 2000);
+      
     },
     // 获取机型信息，将信息存入vuex
     async getSystemInfo() {

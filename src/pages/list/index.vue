@@ -1,5 +1,5 @@
 <template>
-  <div > 
+  <div>
     <!--导航栏-->
     <div class="tabs shadow">
       <i-tabs :current="current_scroll" :color="color">
@@ -9,7 +9,6 @@
       </i-tabs>
     </div>
     <div style="height:42px"></div>
-
     <swiper
       :duration="duration"
       :current="current_scroll"
@@ -18,26 +17,13 @@
     >
       <block v-for="(item1,index) in jobs" :key="item1._id">
         <swiper-item id="test">
-          <div v-for="(item, _index) in item1.jobs" v-if="!item.done" :key="_index">
-            <div id="card" @click="gotodetail(item)" class="paddings solid-bottom">
-              <view class="flex padding-bottom justify-between align-center">
-                <div class="jobname">{{item.name}}</div>
-                <div class="jobsa flex justify-between align-end">
-                  <div class="jobsa2">{{item.salary}}</div>
-                  <div>{{"/" +" "+item.chosetime}}</div>
-                </div>
-              </view>
-              <view class="flex justify-between align-center">
-              <div class="jobsite text-grey">地点：{{item.site.name}}</div>
-              
-              <div else class="text-xs">{{item.dayago==0?'今天':item.dayago +'天前'}}</div>
-                </view>
+          <div v-for="(item, _index) in item1.jobs" :key="_index">
+            <div id="card" @click="gotodetail(item)">
+              <JobCard  :job="item"></JobCard>
             </div>
           </div>
-          
           <i-load-more id="bt" tip="真没了" :loading="loding"/>
         </swiper-item>
-       
       </block>
     </swiper>
 
@@ -46,16 +32,17 @@
       <view>完善个人资料后即可发布</view>
     </i-modal>
 
-    <i-toast id="toast" />
-
+    <i-toast id="toast"/>
   </div>
 </template>
 
 <script>
 //登录页面
-const { $Toast } = require('../../../static/iview/base/index');
+import JobCard from "../../components/jobcard";
+
+const { $Toast } = require("../../../static/iview/base/index");
 export default {
-  components: {},
+  components: { JobCard },
   data() {
     return {
       visible: false,
@@ -79,6 +66,7 @@ export default {
       flag: true,
       current_scroll: 0,
       color: "#fff",
+      hasjob: false,
 
       images: ["../../static/images/add.png"],
       array: ["一天内", "一周内", "一月内", "半年内", "全部"],
@@ -86,9 +74,18 @@ export default {
       duration: 400
     };
   },
+  watch: {
+    // 如果 `question` 发生改变，这个函数就会运行
+    jobs: function(newQuestion, oldQuestion) {
+      if (!this.hasjob) this.hasjob = true;
+    },
+    hasjob: function(newQuestion, oldQuestion) {
+      // this.getFields()
+    }
+  },
   computed: {
-    hasresume(){
-      return this.$store.default.state.resume.hasresume
+    hasresume() {
+      return this.$store.default.state.resume.hasresume;
     },
     loding() {
       return this.$store.default.state.joblistld;
@@ -99,17 +96,16 @@ export default {
     //列表长度自适应
     listheight() {
       let x;
-      console.log(this.height)
-      if (this.jobs[this.current_scroll].jobs.length < 6) {
+      if (this.jobs[this.current_scroll].jobs.length < 5) {
         x =
           "height:" +
           (this.$storage.default.state.SystemInfo.windowHeight - 65) +
           "px";
       } else {
-        let y = this.jobs[this.current_scroll].jobs.length * this.height +64;
+        let y = this.jobs[this.current_scroll].jobs.length * this.height + 64;
         x = "height:" + y + "px";
       }
-      console.log(x)
+      console.log(x);
       return x;
     }
   },
@@ -121,22 +117,37 @@ export default {
   onHide() {
     this.$store.default.state.isindex = false;
   },
-  onLoad() {
-    setTimeout(() => {
-      this.getFields();
-    }, 1000);
+  onLoad: function(options) {
+    // 打开首页时判断options.Id是否存在 用这个值来判断进入首页的来源是否为用户点击了分享的卡片
+    // 同时可以通过获取到的positionId的值跳转导航到对应的分享详情页
+    if (options.id) {
+      setTimeout(function() {
+        wx.navigateTo({
+          url: "../detail/main?id=" + options.id
+        });
+      }, 0);
+    }
   },
+
   onTabItemTap({ index }) {
-    console.log(this.$store.default.state.isindex);
     if (index == 0) {
       if (this.$store.default.state.isindex) {
-      wx.startPullDownRefresh();
-      wx.pageScrollTo({
-        scrollTop: 0,
-        duration: 300
-      })
+        wx.startPullDownRefresh();
+        wx.pageScrollTo({
+          scrollTop: 0,
+          duration: 300
+        });
         this.shuaxin();
       }
+    }
+  },
+  onReady() {
+    try {
+      setTimeout(() => {
+        this.getFields();
+      }, 1000);
+    } catch (e) {
+      return;
     }
   },
   onReachBottom() {
@@ -176,7 +187,7 @@ export default {
         .exec();
     },
     shuaxin() {
-        this.$store.default.commit("getjoblist");
+      this.$store.default.commit("getjoblist");
     },
     handleChangeScroll(e) {
       this.current_scroll = e;
@@ -184,16 +195,16 @@ export default {
       wx.pageScrollTo({
         scrollTop: this.scrollTop[e],
         duration: 0
-      })
+      });
       console.log(e);
     },
     swiperchange(e) {
       this.current_scroll = e.mp.detail.current;
       setTimeout(() => {
         this.$WX.pageScrollTo({
-        scrollTop: this.scrollTop[this.current_scroll],
-        duration: 0
-      })
+          scrollTop: this.scrollTop[this.current_scroll],
+          duration: 0
+        });
       }, 0.5);
     },
     changeCollection() {
@@ -203,35 +214,35 @@ export default {
       this.index = res.mp.detail.value;
     },
     gotodetail(e) {
-      this.$store.default.commit("changedetail", e);
-      this.$WX.navigateTo("../detail/main");
+      console.log(e);
+      this.$WX.navigateTo("../detail/main", { id: e._id });
     },
     addjob() {
-      if(!this.hasresume){
+      if (!this.hasresume) {
         console.log("你还没填资料啊");
-        this.visible= true;
+        this.visible = true;
         return;
       }
       this.$WX.navigateTo("../addjob/main");
     },
-    handleClick(e){
+    handleClick(e) {
       console.log(e.mp.detail.index);
-      if(e.mp.detail.index==1){
+      if (e.mp.detail.index == 1) {
         this.$WX.navigateTo("../resume/main");
       }
-      this.visible= false;
+      this.visible = false;
     },
     // 加载函数
     loaderjob(e) {
       this.$store.default.commit("loadermore", e);
     },
     //刷新函数
-    refresh(e){
+    refresh(e) {
       console.log("刷新");
       $Toast({
-            content: '加载中',
-            type: 'loading'
-        });
+        content: "加载中",
+        type: "loading"
+      });
       this.$store.default.commit("getjoblist");
     }
   }
@@ -239,39 +250,11 @@ export default {
 </script>
 
 <style scoped>
-.paddings{
-  padding: 50rpx 40rpx 30rpx 50rpx;
-}
 .tabs {
   position: fixed;
   top: 0px;
   width: 100%;
   z-index: 1000;
-}
-.jobscard {
-  background-color: white;
-  margin: auto;
-  width: 90%;
-  padding: 30rpx;
-  margin-top: 30rpx;
-  border-radius: 16rpx;
-}
-.jobname {
-  font-size: 17px;
-  font-weight: bold;
-}
-.jobsite {
-  font-size: 15px;
-}
-.jobsa {
-  font-size: 13px;
-}
-.jobsa2 {
-  padding-right: 10rpx;
-  font-weight: 600;
-  font-size: 18px;
-}
-.joblist {
 }
 .image1 {
   width: 100rpx;

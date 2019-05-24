@@ -2,14 +2,20 @@
   <div>
     <i-message id="message"/>
     <div class="tapbg">
-      <div @click="tomsg" class="icon-mail msg">
+      <div class="flex    justify-end" >
+       <image @click="tomsg"  class="msg" src='../../static/images/6.png'>
         <div :class="dot"></div>
+      </image>
       </div>
-      <div @click="test" class="wlctxt">
+      <div  class="flex justify-start align-center mycard shadow">
+        <div   class="userimg">
+           <open-data  type="userAvatarUrl"></open-data>
+        </div>
+        <div @click="test" class="wlctxt">
         你好：
         <open-data type="userNickName"></open-data>
       </div>
-      <open-data class="userimg shadow-blur bg-img" type="userAvatarUrl"></open-data>
+      </div>
     </div>
     <div class="cu-list menu sm-border" style="margin-top: 100rpx;">
       <div
@@ -19,7 +25,7 @@
         :id="item.path"
         @click="topath"
       >
-        <div class="content">
+        <div class="content flex  align-center">
           <image :src='item.img' class="png" mode="aspectFit"></image>
           <text class="text-grey">{{item.text}}</text>
         </div>
@@ -37,27 +43,27 @@ export default {
     return {
       listdata: [
         {
-          img: "../../static/images/add.png",
+          img: "../../static/images/1.png",
           text: "我的信息",
           path: "../resume/main"
         },
         {
-          img: "../../static/images/add.png",
+          img: "../../static/images/2.png",
           text: "我的发布",
           path: "../myadd/main"
         },
         {
-          img: "../../static/images/add.png",
+          img: "../../static/images/3.png",
           text: "我的申请",
           path: "../mywant/main"
         },
         {
-          img: "../../static/images/add.png",
+          img: "../../static/images/4.png",
           text: "意见与反馈",
           path: "../suggestion/main"
         },
         {
-          img: "../../static/images/add.png",
+          img: "../../static/images/5.png",
           text: "关于我们",
           path: "../about/main"
         }
@@ -81,6 +87,7 @@ export default {
       await this.$request.request("/test");
     },
     tomsg() {
+      console.log('sssssssssssss')
       this.$WX.navigateTo("../message/main");
     },
     //跳转
@@ -97,43 +104,54 @@ export default {
 </script>
 
 <style scoped>
+.mycard {
+  height: 160rpx;
+  background-color: white;
+  margin: auto;
+  width: 75%;
+  border-radius: 17rpx;
+  padding: 20rpx
+ 
+}
 .see {
   background-color: #03a9f4;
 }
 .tapbg {
+  border-radius: 0 0 50% 50%;
   background-color: #03a9f4;
-  position: relative;
   height: 260rpx;
   width: 100%;
-  z-index: 1;
 }
 .userimg {
   overflow: hidden;
-  position: absolute;
-  height: 160rpx;
-  width: 160rpx;
+  height: 120rpx;
+  width: 120rpx;
   z-index: 2;
-  top: 150rpx;
-  left: 90rpx;
   background-color: white;
   border-radius: 50%;
 }
 .wlctxt {
-  position: absolute;
+
+  /* font-weight: bold; */
+
   font-weight: bolder;
-  color: white;
+  
   font-size: 35rpx;
   z-index: 2;
-  top: 190rpx;
-  left: 300rpx;
+  padding-left: 30rpx;
+  text-align: center;
+  bottom: 0
+  
 }
 .msg {
-  color: aliceblue;
-  font-size: 60rpx;
-  text-align: right;
+  height: 50rpx;
+  width: 50rpx;
+  margin-top: 30rpx;
   margin-right: 60rpx;
-  padding-top: 40rpx;
-  position: relative;
+  margin-bottom: 50rpx;
+  top:0;
+  right: 0;
+ 
 }
 .dotshow {
   display: block;
@@ -141,7 +159,7 @@ export default {
   border-radius: 50%;
   width: 20rpx;
   height: 20rpx;
-  top: 45rpx;
+  top: 3rpx;
   right: 0px;
   position: absolute;
 }

@@ -1,5 +1,6 @@
 <template>
   <div>
+    <view class="text-grey padding text-xs">tip:点击可选择人员，联系方式确认后可在职位详情页查看</view>
     <div v-for="(item, index) in list" :key="index">
       <div class="jobcard shadow">
         <div v-if="!item.job.done" @click="deleted(item.job._id)" class="delete">
@@ -23,25 +24,31 @@
           <div v-if="item.item[0].jobId" v-for="(item2, index2) in item.item" :key="index2">
             <div @click="chose1(index,index2,item.job.done)" class="solid-bottom">
               <div class="flex padding-tb align-center">
-                <div>{{item2.userInfor[0].name}}</div>
+                <div style="width: 130rpx;">{{item2.userInfor[0].name}}</div>
                 <div class="statukuang">{{item2.userInfor[0].sex==1?'男':'女'}}</div>
                 <div :class="item2.status?'chose':'unchose'">{{item2.status?'选择':'未选择'}}</div>
               </div>
 
-              <div class="text-df">{{item2.message}}</div>
+              <div class="text-df padding-bottom">{{item2.message}}</div>
             </div>
           </div>
-          <div class="text-df padding-top" v-if="!item.item[0].jobId">暂时还未有人申请这个职位噢</div>
-          <div v-if="!item.job.done&&item.item[0].jobId">
-            <div class="flex padding-top justify-center">
-              <button @click="commit(index)" class="cu-btn round bg-blue lg">确认</button>
-            </div>
+          <div class="text-grey padding-top" v-if="!item.item[0].jobId">暂时还未有人申请这个职位噢</div>
+          <div class="flex justify-center   padding-top">   
+            <button
+              v-if="!item.job.done&&item.item[0].jobId"
+              @click="commit(index)"
+              class="cu-btn round  "
+           style="width: 50%;"
+            >确认</button>
           </div>
         </div>
       </div>
     </div>
     <i-modal title="删除确认" :visible="visible" :actions="actions" @Click="handleClick">
       <view>删除后无法恢复哦</view>
+    </i-modal>
+      <i-modal title="提醒" :visible="visible1" :actions="actions1" @Click="visible1=false">
+      <view class="padding">确认成功，我们将会通知求职者，您可点击标题进入详情页查看人员联系信息</view>
     </i-modal>
     <i-message id="message"/>
   </div>
@@ -54,6 +61,7 @@ export default {
   data() {
     return {
       visible: false,
+       visible1: false,
       actions: [
         {
           name: "取消"
@@ -64,17 +72,21 @@ export default {
           loading: false
         }
       ],
+       actions1: [
+        {
+          name: "知道了",
+          color: "#55bb8a",
+         
+        }
+      ],
       list: ""
       // usertab: ["padding-tb solid-bottom", "chose"],
     };
   },
   computed: {},
   methods: {
-    tod(index){
-       this.$store.default.commit("changedetail",  this.list[index].job);
-      this.$WX.navigateTo("../detail/main");
-     
-
+    tod(index) {
+      this.$WX.navigateTo("../detail/main", { id: this.list[index].job._id });
     },
     deleted(jobId) {
       this.visible = true;
@@ -130,9 +142,9 @@ export default {
         data: { data: this.list[e] }
       });
       this.list[e].job.done = true;
+       this.visible1=true
     },
     chose1(index, index2, done) {
-      console.log('ssssssssssssss')
       if (!done) {
         this.list[index].item[index2].status = !this.list[index].item[index2]
           .status;
@@ -174,7 +186,7 @@ export default {
   position: relative;
   background-color: white;
   margin: auto;
-  width: 90%;
+  width: 95%;
   padding: 30rpx;
   margin-top: 30rpx;
   border-radius: 16rpx;
