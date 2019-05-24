@@ -8,8 +8,10 @@
         <view class="margin-top-sm">不收取任何费用，如果这个项目有帮到你，或者你觉得很赞，可以在GitHub里扫描赞赏码支持一下！</view>
         <view class="margin-top-sm">啦啦啦٩(๑❛ᴗ❛๑)۶</view>
         <view class="margin-top-sm">更多功能敬请期待！</view>
+        <view class="margin-top a">power by 刘固 / 杨东升 / 杨璐歌</view>
       </view>
     </view>
+
   </div>
 </template>
 <style >
@@ -18,5 +20,10 @@
 }
 page {
   background-color: #f1f1f1;
+}
+.a{
+  font-size: 22rpx;
+  font-weight: bold;
+  text-align: center
 }
 </style>
