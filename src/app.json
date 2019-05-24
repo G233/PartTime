@@ -46,8 +46,8 @@
       {
         "pagePath": "pages/mine/main",
         "text": "我的",
-        "iconPath": "./static/images/user.png",
-        "selectedIconPath": "./static/images/user1.png"
+        "iconPath": "./static/images/11.png",
+        "selectedIconPath": "./static/images/1.png"
       }
     ]
   }

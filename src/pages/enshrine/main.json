@@ -5,6 +5,7 @@
       "i-message": "../../static/iview/message/index",
       "i-tag": "../../static/iview/tag/index",
       "i-row": "../../static/iview/row/index",
-      "i-col": "../../static/iview/col/index"
+      "i-col": "../../static/iview/col/index",
+      "i-spin": "../../static/iview/spin/index"
   }
 }

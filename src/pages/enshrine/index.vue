@@ -1,10 +1,10 @@
 <template>
   <div>
-    <view @click="longpress" class="text-grey padding text-xs">tip:长按可删除</view>
+    <view  class="text-grey padding text-xs">tip:长按可取消收藏</view>
     <i-cell v-if="lists.length==0" title="你还没有收藏工作呀！"></i-cell>
     <div v-for="(item, index) in lists" :key="index">
       <div v-show="!item.willd" @click="gotodetail(item.jobId)" @longpress="longpress(index)">
-        <JobCard :hasstatu="true" :job="item.jobId"></JobCard>
+        <JobCard :iscard='true' :hasstatu="true" :job="item.jobId"></JobCard>
       </div>
     </div>
     <button v-if="visible" @click="repeal" :class="btnclass">撤销</button>
@@ -39,6 +39,7 @@ export default {
     this.visible = false;
   },
   onShow() {
+     wx.showNavigationBarLoading()
     this.refresh();
   },
   methods: {
@@ -52,7 +53,7 @@ export default {
         }, 1000);
       }
       $Message({
-        content: "撤销删除成功！",
+        content: "撤销成功！",
         type: "success"
       });
     },
@@ -62,7 +63,7 @@ export default {
       this.btnclass[1] = "fadeInUpBig";
       this.visible = true;
       $Message({
-        content: "删除成功！",
+        content: "取消收藏成功！",
         type: "success"
       });
     },
@@ -70,6 +71,7 @@ export default {
     async refresh() {
       let list = await this.$request.postRequest("/getenshrine");
       this.lists = list.data.data;
+      wx.hideNavigationBarLoading()
     },
     //跳转详情页
     gotodetail(e) {
@@ -80,7 +82,10 @@ export default {
 };
 </script>
 
-<style scoped>
+<style >
+page{
+  background-color: #f1f1f1
+}
 .btn {
   position: absolute;
   bottom: 100rpx;
