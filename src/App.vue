@@ -13,14 +13,19 @@ export default {
     this.getSystemInfo();
 
     //  获取用户信息
-    this.$store.default.commit("setresume");
+    
   },
 
   //判断是否授权，获取用户信息
   methods: {
     //加载首页数据
     lodinglist() {
-      this.$store.default.state.joblist=this.$storage.default.state.joblist
+      try{
+this.$store.default.state.joblist=this.$storage.default.state.joblist
+      }
+      catch(e){
+      }
+      
       this.$store.default.commit("getjoblist");
       setTimeout(() => {
        this.$storage.default.commit("setjoblist",this.$store.default.state.joblist) 
@@ -56,18 +61,10 @@ export default {
         let ress = await this.$request.request("/login", {
           data: { code: res.code }
         });
-        console.log(ress.data.data);
         this.$storage.default.commit("login", ress.data.data);
       }
+      this.$store.default.commit("setresume");
     }
-    // 获取tab栏分类信息
-    // async gettabs() {
-    //   this.$request.request("/getlei").then(res => {
-    //     this.$storage.default.commit("gettabs", res.data.data);
-    //     // 加载首页初始数据
-
-    //   });
-    // }
   }
 };
 </script>

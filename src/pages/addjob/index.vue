@@ -56,7 +56,7 @@
 
       <text class="text-gray padding" style="font-size: 13px;">若未找到合适的类别，请到反馈中提交类别申请</text>
       <div class="flex padding justify-center">
-        <button class="cu-btn bg-blue round lg shadow commitbtn" @click="formSubmit">下一步</button>
+        <button class="cu-btn bg-blue round lg shadow commitbtn1" @click="formSubmit">下一步</button>
       </div>
     </div>
     <div v-else :class="step1">
@@ -82,7 +82,7 @@ import WxValidate from "../../utils/WxValidate.js";
 const { $Message } = require("../../../static/iview/base/index");
 export default {
   onShow() {
-    this.mapCtx = wx.createMapContext("myMap");
+    this.mapCtx = wx.createMapContext("myMap");//创建地图上下文
     this.initValidate(); //验证规则函数
   },
 
@@ -118,7 +118,7 @@ export default {
     };
   },
   computed: {
-    //详情栏样式控制
+    //职位类别
     tabs() {
       return this.$store.default.state.joblist;
     },
@@ -135,6 +135,7 @@ export default {
   },
   onLoad() {},
   methods: {
+    // 进入下一步动画
     nextstep() {
       this.step0 = "animated fadeOutLeft";
 
@@ -142,6 +143,7 @@ export default {
         this.step += 1;
       }, 200);
     },
+    // 选择地点
     async chosemap() {
       let loca = await this.$WX.chooseLocation();
       this.job.site = loca;
@@ -209,7 +211,7 @@ export default {
           required: "请选择职位类别"
         }
       };
-      console.log("aaa");
+     
       this.WxValidate = new WxValidate(rules, messages);
     },
     //调用验证函数
@@ -237,17 +239,6 @@ export default {
       setTimeout(() => {
         this.$WX.navigateBack(1);
       }, 1000);
-    },
-    //保存用户信息
-    async saveuser() {
-      let res = await this.$request.request("/setresume", {
-        data: { data: this.user }
-      });
-
-      $Message({
-        content: res.data.msg,
-        type: "success"
-      });
     },
     //表单验证错误弹窗提示
     showWarn(data) {

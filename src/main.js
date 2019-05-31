@@ -6,8 +6,6 @@ const store = require("./stores/globalStore");
 const storage = require("./stores/storage");
 import wxservice from './utils/WxService';
 import Request from '../config/WxRequest'
-import cuCustom from './components/custom/cu-custom.vue'
-Vue.component('cu-custom', cuCustom)
 Vue.prototype.$WX = new wxservice(); //全局引用 promise 风格微信API
 Vue.prototype.$store = store; //全局引用 store
 Vue.prototype.$storage = storage;
@@ -20,7 +18,6 @@ Vue.prototype.$request = Request //全局与引用 promise 风格 wx.request
 //后加载APP
 
 import App from './App'
-Vue.config._mpTrace = true
 Vue.config.productionTip = false
 App.mpType = 'app'
 

@@ -86,8 +86,10 @@ export default {
   },
   onUnload() {
     this.$store.default.commit("setresume");
-
     Object.assign(this.$data, this.$options.data());
+  },
+  onHide(){
+
   },
 
   methods: {

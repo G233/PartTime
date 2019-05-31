@@ -19,7 +19,7 @@
         <swiper-item id="test">
           <div v-for="(item, _index) in item1.jobs" :key="_index">
             <div id="card" @click="gotodetail(item)">
-              <JobCard  :job="item"></JobCard>
+              <JobCard :job="item"></JobCard>
             </div>
           </div>
           <i-load-more id="bt" tip="真没了" :loading="loding"/>
@@ -75,41 +75,56 @@ export default {
     };
   },
   watch: {
-    // 如果 `question` 发生改变，这个函数就会运行
     jobs: function(newQuestion, oldQuestion) {
-      if (!this.hasjob) this.hasjob = true;
-    },
-    hasjob: function(newQuestion, oldQuestion) {
-      // this.getFields()
+      if (!this.hasjob) {
+        this.getFields();
+        this.hasjob = true;
+      }
     }
   },
   computed: {
+    // 当数据还未接收到的时候计算属性会报错，所以使用了try
     hasresume() {
-      return this.$store.default.state.resume.hasresume;
+      try {
+        return this.$store.default.state.resume.hasresume;
+      } catch (e) {
+        return false;
+      }
     },
     loding() {
       return this.$store.default.state.joblistld;
     },
     jobs() {
-      return this.$store.default.state.joblist;
+      try {
+        return this.$store.default.state.joblist;
+      } catch (e) {
+        return "";
+      }
     },
     //列表长度自适应
     listheight() {
-      let x;
-      if (this.jobs[this.current_scroll].jobs.length < 5) {
+      var x;
+      try {
+        if (this.jobs[this.current_scroll].jobs.length < 5) {
+          x =
+            "height:" +
+            (this.$storage.default.state.SystemInfo.windowHeight - 65) +
+            "px";
+        } else {
+          let y = this.jobs[this.current_scroll].jobs.length * this.height + 64;
+          x = "height:" + y + "px";
+        }
+      } catch (e) {
         x =
           "height:" +
           (this.$storage.default.state.SystemInfo.windowHeight - 65) +
           "px";
-      } else {
-        let y = this.jobs[this.current_scroll].jobs.length * this.height + 64;
-        x = "height:" + y + "px";
       }
-      console.log(x);
       return x;
     }
   },
   onShow() {
+    // 是否处于首页，用于点击底部tab刷新
     setTimeout(() => {
       this.$store.default.state.isindex = true;
     }, 200);
@@ -119,7 +134,6 @@ export default {
   },
   onLoad: function(options) {
     // 打开首页时判断options.Id是否存在 用这个值来判断进入首页的来源是否为用户点击了分享的卡片
-    // 同时可以通过获取到的positionId的值跳转导航到对应的分享详情页
     if (options.id) {
       setTimeout(function() {
         wx.navigateTo({
@@ -128,7 +142,7 @@ export default {
       }, 0);
     }
   },
-
+  // 点击tab刷新
   onTabItemTap({ index }) {
     if (index == 0) {
       if (this.$store.default.state.isindex) {
@@ -156,6 +170,7 @@ export default {
   onPullDownRefresh() {
     this.shuaxin();
   },
+  // 判断上下滑动，控制添加按钮动画
   onPageScroll({ scrollTop }) {
     if (this.scrollTop[this.current_scroll] > scrollTop) {
       if (!this.flag) {
@@ -172,31 +187,33 @@ export default {
     //console.log(this.scrollTop);
   },
   methods: {
+    // 获取职位卡片高度，计算首页高度
     getFields() {
-      wx
-        .createSelectorQuery()
-        .select("#card")
-        .fields(
-          {
-            size: true
-          },
-          res => {
-            this.height = res.height;
-          }
-        )
-        .exec();
+      try {
+        wx
+          .createSelectorQuery()
+          .select("#card")
+          .fields(
+            {
+              size: true
+            },
+            res => {
+              this.height = res.height;
+            }
+          )
+          .exec();
+      } catch (e) {}
     },
     shuaxin() {
       this.$store.default.commit("getjoblist");
     },
+    // 滑动tab保持上次浏览位置
     handleChangeScroll(e) {
       this.current_scroll = e;
-      //console.log(this.scrollTop[e],typeof(this.scrollTop[e]));
       wx.pageScrollTo({
         scrollTop: this.scrollTop[e],
         duration: 0
       });
-      console.log(e);
     },
     swiperchange(e) {
       this.current_scroll = e.mp.detail.current;
@@ -214,19 +231,16 @@ export default {
       this.index = res.mp.detail.value;
     },
     gotodetail(e) {
-      console.log(e);
       this.$WX.navigateTo("../detail/main", { id: e._id });
     },
     addjob() {
       if (!this.hasresume) {
-        console.log("你还没填资料啊");
         this.visible = true;
         return;
       }
       this.$WX.navigateTo("../addjob/main");
     },
     handleClick(e) {
-      console.log(e.mp.detail.index);
       if (e.mp.detail.index == 1) {
         this.$WX.navigateTo("../resume/main");
       }
@@ -238,7 +252,6 @@ export default {
     },
     //刷新函数
     refresh(e) {
-      console.log("刷新");
       $Toast({
         content: "加载中",
         type: "loading"

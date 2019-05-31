@@ -16,7 +16,7 @@
           </div>
           <div class="flex align-center">
             <button open-type="share" class="fenxiang">
-              <image  src="/static/images/fenxiang.png" class="fenxiangpng" @click="collectionclick"></image>
+              <image  src="/static/images/fenxiang.png" class="fenxiangpng"></image>
             </button>
 
             <div v-if="!job.done&&!isme" class="padding margin-tb solid-left"></div>
@@ -24,6 +24,7 @@
           </div>
         </div>
       </div>
+      <!-- 头部 -->
       <div class="title1 padding-top-xl">「工作内容」</div>
       <div class="margin txt1 text-df">{{job.details}}</div>
       <div class="title1">「工作时间」</div>
@@ -87,13 +88,12 @@
       <image src="/static/images/loading.gif" mode="aspectFit" class="gif-black response" style="height:240rpx"></image>
     </div>
     <i-message id="message"/>
-    <i-toast id="toast" />
+ 
   </div>
 </template>
 
 <script>
 const { $Message } = require("../../../static/iview/base/index");
-const { $Toast } = require('../../../static/iview/base/index');
 export default {
   data() {
     return {
@@ -108,13 +108,12 @@ export default {
           color: "#ed3f14"
         }
       ],
-      flagcollection: false,
-      flagwant: false,
-      addinfo: false,
+      flagcollection: false,//是否收藏
+      flagwant: false,//是否申请
+      addinfo: false,//显示附加信息弹窗
       message: "",
       job_id: "",
       isme: false,
-      sharejob: "",
       job: ""
     };
   },
@@ -138,9 +137,6 @@ export default {
     hasresume() {
       return this.$store.default.state.resume.hasresume;
     },
-    // job() {
-    //   return this.$store.default.state.detail;
-    // },
     collectionimages() {
       if (this.flagcollection) {
         return "/static/images/star1.png";
@@ -167,9 +163,9 @@ export default {
     Object.assign(this.$data, this.$options.data());
   },
   async onLoad(options) {
+    //显示顶部加载动画
     wx.showNavigationBarLoading();
     if (options.id) {
-      console.log(options.id);
       let job = await this.$request.postRequest("/getjobd", {
         data: { jobId: options.id }
       });
@@ -186,6 +182,7 @@ export default {
         });
       }
     }
+    // 判断申请、收藏
     let info = await this.$request.postRequest("/getDstatus", {
       data: { jobId: this.job._id }
     });
@@ -202,14 +199,15 @@ export default {
       //已收藏
       this.flagcollection = true;
     }
+    // 是否为自己发布的职位
     if (this.job.openId == this.$store.default.state.resume.openId) {
       this.isme = true;
     }
 
-    // this.markers[0].latitude = this.job.site.latitude;
-    // this.markers[0].longitude = this.job.site.longitude;
+
   },
   methods: {
+    // 点击复制数字
     fuzhi(index,msg){
       console.log(msg)
 wx.setClipboardData({
@@ -276,10 +274,10 @@ wx.setClipboardData({
         this.postmsg("/deletewant");
       }
     },
-    //申请函数
-
-    //收藏点击函数
+  
+    
     collectionclick() {
+      
       if (this.flagcollection) {
         this.postmsg("/deleteenshrine");
       } else {
@@ -287,18 +285,19 @@ wx.setClipboardData({
       }
     },
     handleClick(e) {
-      console.log(e.mp.detail.index);
       if (e.mp.detail.index == 1) {
         this.$WX.navigateTo("../resume/main");
       }
       this.visible = false;
     },
     gotomap() {
-      this.$WX.navigateTo("../showmap/main");
+      let data={
+        latitude:this.job.site.latitude,
+        longitude: this.job.site.longitude
+
+      }
+      this.$WX.navigateTo("../showmap/main",data);
     },
-    backtohome() {
-      this.$WX.switchTab("../list/main");
-    }
   }
 };
 </script>
@@ -312,6 +311,7 @@ wx.setClipboardData({
 .fenxiang {
   background-color: white;
   width: 40rpx;
+  padding-bottom: 35rpx;
 }
 .done {
   background-color: #55bb8a;
@@ -375,9 +375,10 @@ button::after {
   margin-right: 50rpx;
 }
 .fenxiangpng {
+  position: fixed;
   z-index: 1000;
-  height: 40rpx;
-  width: 40rpx;
+  height: 44rpx;
+  width: 44rpx;
   margin-right: 50rpx;
 }
 .tabshu {

@@ -240,24 +240,7 @@ export default {
   font-size: 15px;
   transition: all 0.5s;
 }
-/* @keyframes chose {
-  from {
-    background-color: white;
-  }
-  to {
-    background-color: rgb(67, 167, 250);
-    color: white;
-  }
-}
-@keyframes unchose {
-  from {
-    background-color: rgb(67, 167, 250);
-    color: white;
-  }
-  to {
-    background-color: white;
-  }
-} */
+
 page {
   background-color: #f1f1f1;
 }
