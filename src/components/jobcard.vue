@@ -1,3 +1,4 @@
+
 <template>
   <div id="card" :class="jobcard">
     <view class="flex padding-bottom justify-between align-center">
@@ -36,11 +37,7 @@ export default {
   },
 
   methods: {
-    // commit() {
-    //   this.$emit("resdata", {
-    //     data: this.data
-    //   });
-    // }
+
   }
 };
 </script>

@@ -26,7 +26,7 @@ Request.interceptors.use({
         userId: store.default.state.userId
       }
     }
-    console.log(request.data)
+
 
     return request
   },

@@ -41,11 +41,9 @@ const store = new Vuex.Store({
       let res = await vm.$request
         .request("/getjoblist")
       state.joblist = res.data.data
-      console.log(state.joblist)
       wx.stopPullDownRefresh();
     },
     loadermore: async (state, data) => {
-      console.log(data)
       state.joblistld = true
       let res = await vm.$request
         .request("/loadermore", {
@@ -54,7 +52,6 @@ const store = new Vuex.Store({
             lei: state.joblist[data].name
           }
         })
-      console.log('sss')
       if (res.data.code == 200) {
         state.joblist[data].jobs.push.apply(state.joblist[data].jobs, res.data.data);
         state.joblist[data].page += 1
@@ -62,30 +59,12 @@ const store = new Vuex.Store({
       }
       state.joblistld = false
 
-
-      console.log(res.data)
-
     },
     //更改详情页数据
     changedetail: (state, data) => {
       state.detail = data
     }
   },
-  // actions: {
-  //   getjoblist({
-  //     commit
-  //   }, data) {
-  //     // commit('increment')
-
-  //     for (let x of data) {
-  //       commit('getjoblist', {
-  //         page: 0,
-  //         name: x.name
-  //       })
-  //     }
-
-  //   }
-  // }
 })
 
 export default store

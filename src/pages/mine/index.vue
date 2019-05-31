@@ -73,10 +73,10 @@ export default {
   computed: {
     dot() {
       if (this.$store.default.state.resume.hassee) {
-        console.log("有未读消息");
+        
         return "dotshow";
       } else {
-        console.log("无未读消息");
+  
         return "dothide";
       }
     }

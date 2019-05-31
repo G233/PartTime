@@ -22,28 +22,6 @@ export default {
   computed: {},
   created() {},
   methods: {
-    qingchu() {
-      this.suggestion = "";
-      console.log("清除了！");
-    },
-    tijiao() {
-      if (this.suggestion == "") {
-        console.log("无效的提交");
-        $Message({
-          content: "内容不能为空哦",
-          type: "warning"
-        });
-      } else {
-        //let res= await this.$request.postRequest("");
-        //console.log(res.data.code);
-        console.log("提交成功");
-        $Message({
-          content: "提交成功了哦！",
-          type: "success"
-        });
-        this.qingchu();
-      }
-    }
   }
 };
 </script>
