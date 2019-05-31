@@ -16,7 +16,7 @@
           </div>
           <div class="flex align-center">
             <button open-type="share" class="fenxiang">
-              <image  src="/static/images/fenxiang.png" class="fenxiangpng" @click="collectionclick"></image>
+              <image  src="/static/images/fenxiang.png" class="fenxiangpng"></image>
             </button>
 
             <div v-if="!job.done&&!isme" class="padding margin-tb solid-left"></div>
@@ -312,6 +312,7 @@ wx.setClipboardData({
 .fenxiang {
   background-color: white;
   width: 40rpx;
+  padding-bottom: 35rpx;
 }
 .done {
   background-color: #55bb8a;
@@ -375,9 +376,10 @@ button::after {
   margin-right: 50rpx;
 }
 .fenxiangpng {
+  position: fixed;
   z-index: 1000;
-  height: 40rpx;
-  width: 40rpx;
+  height: 44rpx;
+  width: 44rpx;
   margin-right: 50rpx;
 }
 .tabshu {
