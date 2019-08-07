@@ -1,7 +1,0 @@
-{
-  "usingComponents": {
-    "i-button": "../../static/iview/button/index",
-    "Row": "../../static/iview/row/index",
-    "Col": "../../static/iview/col/index"
-  }
-}
