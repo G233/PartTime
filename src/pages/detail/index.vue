@@ -159,6 +159,9 @@ export default {
       path: "pages/list/main?id=" + this.job._id
     };
   },
+  onShow(){
+    this.$store.default.commit("setresume");
+  },
   onUnload() {
     Object.assign(this.$data, this.$options.data());
   },
