@@ -1,0 +1,11 @@
+{
+    "navigationBarTitleText":"我的申请",
+    "usingComponents": {
+        "i-cell":"../../static/iview/cell/index",
+        "i-message": "../../static/iview/message/index",
+        "i-tag": "../../static/iview/tag/index",
+        "i-card": "../../static/iview/card/index",
+           "i-spin": "../../static/iview/spin/index"
+    }
+    
+}

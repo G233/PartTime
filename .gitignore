@@ -4,7 +4,8 @@ npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 .history
-
+dist
+.vscode
 # Editor directories and files
 .idea
 *.suo

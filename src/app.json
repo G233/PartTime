@@ -1,14 +1,54 @@
 {
   "pages": [
-    "pages/index/main"
-
+    "pages/list/main",
+    "pages/showmap/main",
+    "pages/mywant/main",
+    "pages/myadd/main",
+    "pages/enshrine/main",
+    "pages/mine/main",
+    "pages/about/main",
+    "pages/suggestion/main",
+    "pages/detail/main",
+    "pages/addjob/main",
+    "pages/message/main",
+    "pages/resume/main"
   ],
+  "permission": {
+    "scope.userLocation": {
+      "desc": "获取位置信息仅用于定位地图"
+    }
+  },
   "window": {
     "backgroundTextStyle": "light",
-    "navigationBarBackgroundColor": "#fff",
-    "navigationBarTitleText": "WeChat",
-    "navigationBarTextStyle": "black"
+    "navigationBarBackgroundColor": "#03a9f4",
+    "navigationBarTitleText": "工大课兼",
+    "navigationBarTextStyle": "white",
+   
+    "backgroundColor": "#03a9f4"
+  },
+  "tabBar": {
+    "color": "#838383",
+    "selectedColor": "#3c87cc",
+    "position": "bottom",
+    "borderStyle": "white",
+    "list": [{
+        "pagePath": "pages/list/main",
+        "text": "招人",
+        "iconPath": "./static/images/home.png",
+        "selectedIconPath": "./static/images/home1.png"
+      },
+      {
+        "pagePath": "pages/enshrine/main",
+        "text": "收藏",
+        "iconPath": "./static/images/star2.png",
+        "selectedIconPath": "./static/images/star3.png"
+      },
+      {
+        "pagePath": "pages/mine/main",
+        "text": "我的",
+        "iconPath": "./static/images/11.png",
+        "selectedIconPath": "./static/images/1.png"
+      }
+    ]
   }
-
-
 }

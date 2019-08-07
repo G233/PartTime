@@ -1,0 +1,13 @@
+{
+  
+  "navigationBarTitleText": "我的",
+  "usingComponents": {
+
+
+    "i-message": "../../static/iview/message/index",
+
+    "i-avatar": "../../static/iview/avatar/index"
+
+  }
+
+}

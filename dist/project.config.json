@@ -1,16 +1,28 @@
 {
-	"miniprogramRoot": "wx/",
-	"cloudfunctionRoot": "cloudfunctions/",
+	"description": "项目配置文件",
+	"packOptions": {
+		"ignore": []
+	},
 	"setting": {
 		"urlCheck": true,
 		"es6": true,
 		"postcss": true,
 		"minified": true,
-		"newFeature": true
+		"newFeature": true,
+		"autoAudits": false,
+		"checkInvalidKey": true
 	},
+	"compileType": "miniprogram",
+	"libVersion": "2.6.6",
 	"appid": "wx810c94fefd2a180f",
 	"projectname": "PartTime",
-	"libVersion": "2.2.5",
+	"miniprogramRoot": "wx/",
+	"cloudfunctionRoot": "cloudfunctions/",
+	"cloudfunctionTemplateRoot": "cloudfunctionTemplate",
+	"debugOptions": {
+		"hidedInDevtools": []
+	},
+	"scripts": {},
 	"simulatorType": "wechat",
 	"simulatorPluginLibVersion": {},
 	"condition": {
@@ -30,12 +42,20 @@
 			"list": []
 		},
 		"miniprogram": {
-			"current": 0,
+			"current": -1,
 			"list": [
 				{
 					"id": -1,
 					"name": "db guide",
-					"pathName": "pages/databaseGuide/databaseGuide"
+					"pathName": "pages/databaseGuide/databaseGuide",
+					"query": ""
+				},
+				{
+					"id": 1,
+					"name": "www",
+					"pathName": "pages/list/main",
+					"query": "id=5ce2add366d7ce446b3e7563",
+					"scene": 1007
 				}
 			]
 		}
